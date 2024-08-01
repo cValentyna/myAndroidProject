@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="primary_background">#242235</color>
+    <color name="secondary_background">#FFFFFFFF</color>
+
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
+    <color name="button_color_contacts_register">#FB5E06</color>
+    <color name="social_network_color">#FB5E06</color>
+    <color name="button_log_out_stroke_color">#B2B2B3</color>
+    <color name="error_color">#F93E3E</color>
+
+    <color name="invisible">#00000000</color>
+
+    <color name="primary_brightest_text_font">#FAFAFA</color>
+    <color name="the_brightest_font">#FFFFFF</color>
+    <color name="primary_bright_text_font">#B2B2B3</color>
+    <color name="primary_dark_text_font">#18181F</color>
 </resources>
