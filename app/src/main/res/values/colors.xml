@@ -8,7 +8,7 @@
     <color name="button_color_contacts_register">#FB5E06</color>
     <color name="social_network_color">#FB5E06</color>
     <color name="button_log_out_stroke_color">#B2B2B3</color>
-    <color name="error_color">#F93E3E</color>
+    <color name="log_in_line_color">#B2B2B3</color>
 
     <color name="invisible">#00000000</color>
 

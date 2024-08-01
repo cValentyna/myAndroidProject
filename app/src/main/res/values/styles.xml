@@ -34,6 +34,12 @@
         <item name="android:textColor">@color/the_brightest_font</item>
     </style>
 
+    <style name="log_in_fill_text" parent="primary_heavy_text_style">
+        <item name="android:textSize">@dimen/big_text_size</item>
+        <item name="android:textColor">@color/primary_brightest_text_font</item>
+        <item name="backgroundTint">@color/log_in_line_color</item>
+    </style>
+
     <style name="primary_button_style" parent="Widget.AppCompat.Button">
         <item name="android:textAllCaps">false</item>
         <item name="android:gravity">center</item>
