@@ -1,19 +1,215 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:theme="@style/Theme.MyApp"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_upper_part_main"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="@dimen/layout_weight"
+        android:background="@color/primary_background">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_settings_main"
+            style="@style/title_text_style"
+            android:textAppearance="@style/title_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/settings_margin_start"
+            android:layout_marginTop="@dimen/settings_margin_top"
+
+            android:gravity="center_vertical"
+
+            android:text="@string/settings"
+            app:layout_constraintEnd_toStartOf="@id/bt_log_out_main"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/bt_log_out_main"
+            style="@style/log_out_button_style"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/log_out_button_height"
+            android:layout_marginEnd="@dimen/log_out_button_margin"
+
+            android:text="@string/log_out"
+
+            app:layout_constraintBottom_toBottomOf="@id/tv_settings_main"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_settings_main"
+            app:layout_constraintTop_toTopOf="@id/tv_settings_main"
+
+            app:layout_constraintWidth_max="@dimen/log_out_button_max_width"
+            app:layout_constraintWidth_percent="@dimen/log_out_button_width_percent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_View_main"
+            android:layout_width="@dimen/image_frame"
+            android:layout_height="@dimen/image_frame"
+            app:cardCornerRadius="@dimen/image_radius"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="@dimen/card_view_vertical_bias">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="@dimen/image_view_alpha"
+                android:contentDescription="@string/my_photo"
+                android:scaleType="centerCrop"
+                android:src="@drawable/person_icon_png_transparent_15"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tv_user_name_main"
+            style="@style/log_in_fill_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/user_name_margin_top"
+
+            android:text="@string/user_name"
+            app:layout_constraintBottom_toTopOf="@id/tv_user_job_main"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_View_main"
+            app:layout_constraintVertical_bias="@dimen/user_name_vertical_bias"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tv_user_job_main"
+            style="@style/light_medium_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/user_career"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_View_main"
+            app:layout_constraintVertical_bias="@dimen/user_job_vertical_bias" />
+
+        <TextView
+            android:id="@+id/tv_user_address_main"
+            style="@style/light_medium_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/user_address_margin"
+
+            android:text="@string/user_address"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_user_job_main"
+            app:layout_constraintVertical_bias="@dimen/user_address_vertical_bias" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_lower_part_main"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="@dimen/layout_weight"
+        android:background="@color/secondary_background">
+
+        <FrameLayout
+            android:id="@+id/social_networks_frame"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/edit_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="@dimen/social_network_frame_vertical_bias"
+            app:layout_constraintWidth_percent="@dimen/social_network_frame_width_percent">
+
+            <ImageButton
+                android:id="@+id/facebook_logo_button"
+                style="@style/social_network_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ellipse"
+                android:contentDescription="@string/facebook_button"
+                android:foreground="@drawable/vector_facebook"
+                android:foregroundGravity="center" />
+
+            <ImageButton
+                android:id="@+id/ln_logo_button"
+                style="@style/social_network_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/ellipse"
+                android:contentDescription="@string/linkedin_button"
+                android:foreground="@drawable/vector_linkedin"
+                android:foregroundGravity="center" />
+
+            <ImageButton
+                android:id="@+id/in_logo_button"
+                style="@style/social_network_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="@drawable/ellipse"
+                android:contentDescription="@string/instagram_button"
+                android:foreground="@drawable/vector_insta"
+                android:foregroundGravity="center" />
+
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/edit_button"
+            style="@style/edit_profile_button_style"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/edit_button_height"
+            android:layout_marginVertical="@dimen/edit_button_margin"
+
+            android:text="@string/edit_user_profile"
+
+            app:layout_constraintBottom_toTopOf="@id/view_contact"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:layout_constraintVertical_bias="@dimen/edit_button_vertical_bias"
+            app:layout_constraintWidth_percent="@dimen/primary_width_percent" />
+
+        <Button
+            android:id="@+id/view_contact"
+            style="@style/contacts_button_style"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/view_contact_button_height"
+            android:layout_marginVertical="@dimen/view_contact_button_margin"
+
+            android:text="@string/user_contacts"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:layout_constraintVertical_bias="@dimen/view_contacts_button_vertical_bias"
+            app:layout_constraintWidth_percent="@dimen/primary_width_percent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
