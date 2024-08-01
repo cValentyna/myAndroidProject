@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="primary_heavy_text_style" parent="Theme.MyApp">
+        <item name="fontWeight">@dimen/primary_font_weight</item>
+    </style>
+
+    <style name="primary_light_text_style" parent="Theme.MyApp">
+        <item name="fontWeight">@dimen/smaller_font_weight</item>
+    </style>
+
+    <style name="title_text_style" parent="primary_heavy_text_style">
+        <item name="android:textSize">@dimen/title_text_size</item>
+        <item name="android:textColor">@color/primary_brightest_text_font</item>
+    </style>
+
+    <style name="smallest_text_style" parent="@style/primary_light_text_style">
+        <item name ="android:textSize">@dimen/smallest_text_size</item>
+        <item name="android:textColor">@color/primary_brightest_text_font</item>
+    </style>
+
+    <style name="small_text_style" parent="@style/primary_light_text_style">
+        <item name ="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:textColor">@color/primary_brightest_text_font</item>
+    </style>
+
+    <style name="light_medium_text_style" parent="primary_heavy_text_style">
+        <item name = "android:textSize">@dimen/medium_text_size</item>
+        <item name="android:textColor">@color/primary_bright_text_font</item>
+    </style>
+
+    <style name="lightest_medium_text_style" parent="primary_heavy_text_style">
+        <item name = "android:textSize">@dimen/medium_text_size</item>
+        <item name="android:textColor">@color/the_brightest_font</item>
+    </style>
+
+    <style name="primary_button_style" parent="Widget.AppCompat.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:gravity">center</item>
+        <item name="fontWeight">@dimen/primary_font_weight</item>
+    </style>
+
+    <style name="text_big_button_style" parent="primary_button_style">
+        <item name="android:textSize">@dimen/big_button_text_size</item>
+        <item name="android:letterSpacing">@dimen/space_letters</item>
+    </style>
+
+    <style name="log_out_button_style" parent="primary_button_style">
+        <item name="android:background">@drawable/button_logout</item>
+        <item name="android:textColor">@color/primary_bright_text_font</item>
+        <item name="android:textSize">@dimen/medium_text_size</item>
+    </style>
+
+    <style name="edit_profile_button_style" parent ="primary_button_style" >
+        <item name="android:background">@drawable/button_edit</item>
+        <item name="android:textColor">@color/primary_background</item>
+        <item name="android:textSize">@dimen/medium_text_size</item>
+    </style>
+
+    <style name = "social_network_style" parent="Theme.MyApp">
+        <item name="android:backgroundTint">@color/social_network_color</item>
+        <item name="android:foregroundTint">@color/social_network_color</item>
+    </style>
+
+    <style name="contacts_button_style" parent="text_big_button_style">
+        <item name="android:background">@drawable/button_contacts</item>
+        <item name="android:textColor">@color/the_brightest_font</item>
+    </style>
+
+</resources>
