@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/log_in"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/primary_background"
+android:enabled="true"
+tools:context=".AuthActivity">
+
+<TextView
+    android:id="@+id/tv_acquainted"
+    style="@style/title_text_style"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+
+    android:gravity="center"
+    android:text="@string/acquainted"
+
+    app:layout_constraintBottom_toTopOf="@id/tv_hint_acquainted"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+
+    app:layout_constraintVertical_bias="@dimen/acquainted_vertical_bias"
+    app:layout_constraintVertical_chainStyle="packed"
+    app:layout_constraintWidth_percent="@dimen/primary_width_percent" />
+
+<Space
+    android:id="@+id/spaceWelcome"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+
+    app:layout_constraintBottom_toTopOf="@id/tv_hint_acquainted"
+    app:layout_constraintHeight_max="@dimen/space_max_height"
+    app:layout_constraintHeight_min="@dimen/space_min_height"
+
+    app:layout_constraintHeight_percent="@dimen/space_height_percent"
+    app:layout_constraintTop_toBottomOf="@id/tv_acquainted" />
+
+<TextView
+    android:id="@+id/tv_hint_acquainted"
+    style="@style/smallest_text_style"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:text="@string/register_information"
+
+    app:layout_constraintBottom_toTopOf="@id/upper_space"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/tv_acquainted"
+
+    app:layout_constraintWidth_percent="@dimen/primary_width_percent" />
+
+<Space
+    android:id="@+id/upper_space"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    app:layout_constraintBottom_toTopOf="@id/til_email"
+    app:layout_constraintTop_toBottomOf="@id/tv_hint_acquainted" />
+
+<TextView
+    android:id="@+id/tv_checkbox"
+    style="@style/light_medium_text_style"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+
+    android:text="@string/remember_me"
+
+    app:layout_constraintBottom_toBottomOf="@id/checkbox"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/checkbox"
+    app:layout_constraintTop_toTopOf="@id/checkbox" />
+
+<Space
+    android:id="@+id/space_low"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    app:layout_constraintTop_toBottomOf="@id/checkbox"
+    app:layout_constraintTop_toTopOf="@id/google_button" />
+
+<com.google.android.material.button.MaterialButton
+    android:id="@+id/google_button"
+    style="@style/google_button_style"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_marginBottom="3dp"
+    android:text="@string/google"
+
+    android:theme="@style/Theme.MaterialComponents"
+    app:icon="@drawable/android_google_icon"
+
+    app:layout_constrainedHeight="true"
+    app:layout_constraintBottom_toTopOf="@id/bt_register"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHeight_max="@dimen/google_button_max_height"
+    app:layout_constraintHeight_min="@dimen/google_button_min_height"
+    app:layout_constraintHeight_percent="@dimen/google_button_height_percent"
+
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+
+    app:layout_constraintVertical_bias="@dimen/google_button_vertical_bias"
+    app:layout_constraintWidth_percent="@dimen/primary_width_percent" />
+
+<TextView
+    android:id="@+id/tv_between_buttons"
+    style="@style/log_in_fill_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/text_between_buttons_padding_vertical"
+
+    android:gravity="center"
+    android:text="@string/text_or"
+
+    app:layout_constraintBottom_toTopOf="@id/bt_register"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/google_button"
+
+    app:layout_constraintVertical_bias="@dimen/text_between_buttons_vertical_bias" />
+
+
+<Button
+    android:id="@+id/bt_register"
+    style="@style/register_button_style"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_marginTop="0dp"
+
+    android:text="@string/bt_text_register"
+
+    app:layout_constrainedHeight="true"
+    app:layout_constraintHeight_max="@dimen/register_button_max_height"
+    app:layout_constraintHeight_min="@dimen/register_button_min_height"
+    app:layout_constraintHeight_percent="@dimen/register_button_height_percent"
+
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@id/tv_between_buttons"
+
+    app:layout_constraintVertical_bias="@dimen/register_button_vertical_bias"
+    app:layout_constraintWidth_percent="@dimen/primary_width_percent" />
+
+<TextView
+    android:id="@+id/tv_terms"
+    style="@style/small_text_style"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:text="@string/text_terms"
+
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/bt_register"
+
+    app:layout_constraintVertical_bias="@dimen/agreement_vertical_bias"
+    app:layout_constraintWidth_percent="@dimen/smaller_width_percent" />
+
+<TextView
+    android:id="@+id/tv_have_account"
+    style="@style/light_medium_text_style"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="start"
+    android:layout_marginBottom="@dimen/have_account_margin"
+
+    android:text="@string/text_have_account"
+
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@id/tv_sign_in"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/tv_terms"
+    app:layout_constraintHorizontal_chainStyle="packed"
+    app:layout_constraintVertical_bias="@dimen/have_account_vertical_bias" />
+
+<TextView
+    android:id="@+id/tv_sign_in"
+    style="@style/lightest_medium_text_style"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end"
+    android:paddingStart="@dimen/sign_in_margin"
+
+    android:text="@string/text_sign_in"
+
+    app:layout_constraintBottom_toBottomOf="@id/tv_have_account"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/tv_have_account"
+    app:layout_constraintTop_toTopOf="@id/tv_have_account"
+    tools:ignore="RtlSymmetry" />
+
+<!--  TextInputLayouts are located here, because when they were higher
+  next parts of layout weren't visible for binding.
+   I did not find reason.
+  -->
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/til_email"
+    style="@style/TextInputLayout_style"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:enabled="true"
+    android:hint="@string/e_mail"
+
+    app:layout_constraintHeight_max="@dimen/email_layout_max_height"
+    app:layout_constraintHeight_min="@dimen/email_layout_min_height"
+    app:layout_constraintHeight_percent="@dimen/email_layout_height_percent"
+
+    app:layout_constraintBottom_toTopOf="@id/l_password"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/tv_hint_acquainted"
+
+    app:layout_constraintVertical_chainStyle="packed"
+    app:layout_constraintWidth_percent="@dimen/primary_width_percent">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/et_email"
+        style="@style/log_in_fill_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/email_textInput_margin"
+        android:inputType="textEmailAddress"
+        android:paddingVertical="@dimen/email_textInput_padding"
+        />
+</com.google.android.material.textfield.TextInputLayout>
+
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/l_password"
+    style="@style/TextInputLayout_style"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+
+    android:hint="@string/password"
+    app:endIconMode="password_toggle"
+
+    app:layout_constraintHeight_max="@dimen/password_layout_max_height"
+    app:layout_constraintHeight_min="@dimen/password_layout_min_height"
+    app:layout_constraintHeight_percent="@dimen/password_layout_height_percent"
+
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/til_email"
+    app:layout_constraintBottom_toTopOf="@id/checkbox"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintWidth_percent="@dimen/primary_width_percent">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/et_password"
+        style="@style/log_in_fill_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/password_textInput_margin"
+        android:inputType="textPassword"
+        android:paddingVertical="@dimen/email_textInput_padding">
+    </com.google.android.material.textfield.TextInputEditText>
+
+</com.google.android.material.textfield.TextInputLayout>
+
+<CheckBox
+    android:id="@+id/checkbox"
+    android:layout_width="wrap_content"
+    android:layout_height="0dp"
+
+    android:buttonTint="@color/primary_brightest_text_font"
+
+    app:layout_constraintHeight_max="@dimen/check_box_max_height"
+    app:layout_constraintHeight_min="@dimen/check_box_min_height"
+    app:layout_constraintHeight_percent="@dimen/check_box_height_percent"
+
+    app:layout_constraintBottom_toBottomOf="@id/space_low"
+    app:layout_constraintEnd_toStartOf="@id/tv_checkbox"
+    app:layout_constraintStart_toStartOf="@id/l_password"
+    app:layout_constraintTop_toBottomOf="@id/l_password"
+
+    app:layout_constraintHorizontal_bias="@dimen/check_box_horizontal_bias"
+    app:layout_constraintHorizontal_chainStyle="packed">
+</CheckBox>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

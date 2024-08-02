@@ -17,4 +17,7 @@
     <color name="the_brightest_font">#FFFFFF</color>
     <color name="primary_bright_text_font">#B2B2B3</color>
     <color name="primary_dark_text_font">#18181F</color>
+
+    <color name="error_color">#F93E3E</color>
+    <color name="button_google_background">#FAFAFA</color>
 </resources>

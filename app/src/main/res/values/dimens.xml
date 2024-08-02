@@ -56,4 +56,51 @@
     <dimen name="view_contacts_button_vertical_bias">0.95</dimen>
 
     <dimen name="user_name_margin_top">10dp</dimen>
+
+    <!-- Activity auth -->
+
+    <dimen name="acquainted_vertical_bias">0.8</dimen>
+
+    <dimen name="space_height_percent">0.002</dimen>
+    <dimen name="space_min_height">0dp</dimen>
+    <dimen name="space_max_height">5dp</dimen>
+
+    <dimen name="google_button_height_percent">0.055</dimen>
+    <dimen name="google_button_max_height">50dp</dimen>
+    <dimen name="google_button_min_height">40dp</dimen>
+    <dimen name="google_button_vertical_bias">0.95</dimen>
+
+    <dimen name="text_between_buttons_margin_top">1dp</dimen>
+    <dimen name="text_between_buttons_margin_bottom">5dp</dimen>
+    <dimen name="text_between_buttons_vertical_bias">0.5</dimen>
+    <dimen name="text_between_buttons_padding_vertical">-5dp</dimen>
+
+    <dimen name="register_button_height_percent">0.075</dimen>
+    <dimen name="register_button_max_height">65dp</dimen>
+    <dimen name="register_button_min_height">55dp</dimen>
+    <dimen name="register_button_vertical_bias">0.25</dimen>
+
+    <dimen name="agreement_vertical_bias">0.1</dimen>
+
+    <dimen name="have_account_vertical_bias">0.5</dimen>
+    <dimen name="have_account_margin">10dp</dimen>
+
+    <dimen name="sign_in_margin">10dp</dimen>
+
+    <dimen name="email_layout_max_height">70dp</dimen>
+    <dimen name="email_layout_min_height">57dp</dimen>
+    <dimen name="email_layout_height_percent">0.175</dimen>
+    <dimen name="email_layout_vertical_bias">0.5</dimen>
+    <dimen name="email_textInput_margin">-14dp</dimen>
+    <dimen name="email_textInput_padding">-5dp</dimen>
+
+    <dimen name="password_layout_max_height">80dp</dimen>
+    <dimen name="password_layout_min_height">57dp</dimen>
+    <dimen name="password_layout_height_percent">0.19</dimen>
+    <dimen name="password_textInput_margin">-14dp</dimen>
+
+    <dimen name="check_box_max_height">30dp</dimen>
+    <dimen name="check_box_min_height">18dp</dimen>
+    <dimen name="check_box_height_percent">0.05</dimen>
+    <dimen name="check_box_horizontal_bias">0</dimen>
 </resources>

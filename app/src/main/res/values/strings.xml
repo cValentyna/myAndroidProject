@@ -12,5 +12,21 @@
     <string name="edit_user_profile">Edit profile</string>
     <string name="user_contacts">VIEW MY CONTACTS</string>
 
+<!--    AuthActivity-->
+
+    <string name="hello">Hello!</string>
+    <string name="register_information">Fill out the profile and go to the application!</string>
+    <string name="acquainted">Let\'s get acquainted</string>
+    <string name="google">GOOGLE</string>
+    <string name="text_terms">By clicking Register you agree to our Terms   \n and Conditions</string>
+    <string name="text_or">or</string>
+    <string name="bt_text_register">REGISTER</string>
+    <string name="text_have_account">Already have an account?</string>
+    <string name="text_sign_in">Sign in</string>
+
+    <string name="e_mail">E-mail</string>
+    <string name="password">Password</string>
+    <string name="remember_me">Remember me</string>
+
 
 </resources>
