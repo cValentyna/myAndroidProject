@@ -10,6 +10,7 @@ import com.project.myapp.databinding.ActivityAuthBinding
 
 class AuthActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAuthBinding
+    private lateinit var userName: String
     private var isUserEmailValid = false
     private var isUserPasswordValid = false
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,8 +36,12 @@ class AuthActivity : AppCompatActivity() {
         // processing button "Register" if email and password are valid go to Main activity
         binding.btRegister.setOnClickListener {
             if (isEmailAndPasswordCorrect()) {
+                getName(binding.etEmail.text.toString())
                 val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
+                val option = ActivityOptionsCompat.makeCustomAnimation(
+                    this, R.anim.slide_in_left, R.anim.slide_out_left )
+                intent.putExtra("userName",userName)
+                startActivity(intent, option.toBundle())
                 finish()
             } else {
                 Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show()
@@ -105,5 +110,15 @@ class AuthActivity : AppCompatActivity() {
         return isUserEmailValid && isUserPasswordValid
                 && binding.etEmail.text.toString().isNotEmpty()
                 && binding.etPassword.text.toString().isNotEmpty()
+    }
+
+    /* Receives name from Email
+  */
+    private fun getName(email: String): String {
+        val partOfEmail =
+            email.substring(0, email.indexOf('@')).replace("\\.".toRegex(), " ").lowercase()
+        userName = partOfEmail.trim().split("\\s+".toRegex())
+            .joinToString(" ") { it -> it.replaceFirstChar { it.uppercaseChar() } }
+        return userName
     }
 }
