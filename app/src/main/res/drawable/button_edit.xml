@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/radius_button" />
+            <stroke android:width="@dimen/stroke_width_button" android:color="@color/primary_background" />
+            <gradient android:type="linear" android:angle="90"
+                android:startColor="@color/button_edit_contacts_gradient" />
+        </shape>
+    </item>
+
     <item>
     <shape android:shape="rectangle">
         <corners android:radius="@dimen/radius_button" />
