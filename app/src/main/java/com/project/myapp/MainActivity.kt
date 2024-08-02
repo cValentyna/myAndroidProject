@@ -17,6 +17,9 @@ class MainActivity : AppCompatActivity() {
 
         binding.tvUserNameMain.text=intent.getStringExtra("userName")
 
+        // changes default image
+        binding.imageView.setImageResource(R.drawable.bee)
+
         // processes log-out button return
         binding.btLogOutMain.setOnClickListener {
             val intent = Intent(this@MainActivity, AuthActivity::class.java)
