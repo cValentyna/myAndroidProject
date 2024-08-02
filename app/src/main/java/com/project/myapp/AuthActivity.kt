@@ -10,6 +10,9 @@ import com.project.myapp.databinding.ActivityAuthBinding
 
 class AuthActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAuthBinding
+    // preferences for data storage
+    private lateinit var pref: Preferences
+
     private lateinit var userName: String
     private var isUserEmailValid = false
     private var isUserPasswordValid = false
@@ -19,6 +22,8 @@ class AuthActivity : AppCompatActivity() {
         binding = ActivityAuthBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        pref = Preferences(this)
 
         /*
         check email and password when they are not empty
@@ -37,6 +42,7 @@ class AuthActivity : AppCompatActivity() {
         binding.btRegister.setOnClickListener {
             if (isEmailAndPasswordCorrect()) {
                 getName(binding.etEmail.text.toString())
+                savePreferences()
                 val intent = Intent(this, MainActivity::class.java)
                 val option = ActivityOptionsCompat.makeCustomAnimation(
                     this, R.anim.slide_in_left, R.anim.slide_out_left )
@@ -56,6 +62,17 @@ class AuthActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    // start MainActivity if information was saved and wasn't deleted
+
+    override fun onStart() {
+        super.onStart()
+        if (pref.getSavedBoolean(Preferences.CHECKBOX_KEY)) {
+            val intent = Intent(this@AuthActivity, MainActivity::class.java)
+            intent.putExtra("userName", pref.getSavedText(Preferences.NAME_KEY))
+            startActivity(intent)
+        }
     }
 
     private fun validateEmail(text: CharSequence?) {
@@ -120,5 +137,14 @@ class AuthActivity : AppCompatActivity() {
         userName = partOfEmail.trim().split("\\s+".toRegex())
             .joinToString(" ") { it -> it.replaceFirstChar { it.uppercaseChar() } }
         return userName
+    }
+
+    private fun savePreferences() {
+        if (binding.checkbox.isChecked) {
+            pref.saveBoolean(Preferences.CHECKBOX_KEY, binding.checkbox.isChecked)
+            pref.saveText(Preferences.EMAIL_KEY, binding.etEmail.text.toString())
+            pref.saveText(Preferences.PASSWORD_KEY, binding.etPassword.text.toString())
+            pref.saveText(Preferences.NAME_KEY, userName)
+        }
     }
 }

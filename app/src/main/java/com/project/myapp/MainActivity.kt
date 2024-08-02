@@ -8,12 +8,15 @@ import com.project.myapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var pref:Preferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding=ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        pref = Preferences(this)
 
         binding.tvUserNameMain.text=intent.getStringExtra("userName")
 
@@ -22,6 +25,7 @@ class MainActivity : AppCompatActivity() {
 
         // processes log-out button return
         binding.btLogOutMain.setOnClickListener {
+            pref.clearPreferences()
             val intent = Intent(this@MainActivity, AuthActivity::class.java)
             val option = ActivityOptionsCompat.makeCustomAnimation(
                 this,
