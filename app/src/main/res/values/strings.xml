@@ -28,5 +28,15 @@
     <string name="password">Password</string>
     <string name="remember_me">Remember me</string>
 
+    <string name="error_password_lower_case">Password must contain at least 1 lower case letter such as (a-z).</string>
+    <string name="error_password_unpredictable_symbols"> You can use only letters, numbers and special signs.</string>
+    <string name="error_password_upper_case">Password must contain at least 1 upper case letter such as (A-Z).</string>
+    <string name="error_password_digit">Password must contain at least one digit such as (0–9).</string>
+    <string name="error_special_symbol"><![CDATA[Password must contain at least one special symbol such as (#?!@$%^&*-).]]></string>
+    <string name="error_password_minimum_characters">Password must contain at least 6 characters.</string>
+    <string name="error_e_mail_address">Incorrect E-Mail address</string>
+    <string name="error_email_empty">Email is required.</string>
+    <string name="error_password_empty">Password is required.</string>
+
 
 </resources>
