@@ -1,16 +1,17 @@
 <resources>
     <string name="app_name">MyApp!</string>
-    <string name="settings">Settings</string>
-    <string name="log_out">Log out</string>
-    <string name="my_photo">My Photo</string>
-    <string name="user_name">User Name</string>
-    <string name="user_career">Android Developer</string>
-    <string name="user_address">65009 Kanatna St, 27</string>
-    <string name="facebook_button">facebook button</string>
-    <string name="linkedin_button">linkedin button</string>
-    <string name="instagram_button">instagram button</string>
-    <string name="edit_user_profile">Edit profile</string>
-    <string name="user_contacts">VIEW MY CONTACTS</string>
+    <!--  activity_main-->
+    <string name="main_settings">Settings</string>
+    <string name="main_log_out">Log out</string>
+    <string name="main_user_photo">My Photo</string>
+    <string name="main_user_name">User Name g</string>
+    <string name="main_user_career">Android Developer g</string>
+    <string name="main_user_address">65009 Kanatna St, 27 g</string>
+    <string name="main_facebook_button">facebook button</string>
+    <string name="main_linkedin_button">linkedin button</string>
+    <string name="main_instagram_button">instagram button</string>
+    <string name="main_edit_user_profile">Edit profile</string>
+    <string name="main_user_contacts">VIEW MY CONTACTS</string>
 
 
 </resources>

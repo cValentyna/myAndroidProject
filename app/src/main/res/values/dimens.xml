@@ -1,59 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="radius_button">6dp</dimen>
-    <dimen name="stroke_width_button">2dp</dimen>
+    <dimen name="size_radius_button">6dp</dimen>
+    <dimen name="width_stroke_button">2dp</dimen>
 
-    <dimen name="image_frame">113dp</dimen>
-    <dimen name="image_radius">56dp</dimen>
+    <dimen name="size_percent_image_portrait">0.33</dimen>
+    <dimen name="size_percent_image_landscape">0.25</dimen>
+    <dimen name="size_percent_radius_image">0.5</dimen>
 
     <!--  Text size, weight, etc..  -->
 
-    <dimen name="title_text_size">24sp</dimen>
-    <dimen name="big_text_size">18sp</dimen>
-    <dimen name="big_button_text_size">16sp</dimen>
-    <dimen name="medium_text_size">14sp</dimen>
-    <dimen name="smallest_text_size">12sp</dimen>
+    <dimen name="textsize_title">24sp</dimen>
+    <dimen name="textsize_big">18sp</dimen>
+    <dimen name="textsize_big_button">16sp</dimen>
+    <dimen name="textsize_medium">14sp</dimen>
+    <dimen name="textsize_small">12sp</dimen>
 
-    <dimen name="primary_font_weight">600</dimen>
-    <dimen name="smaller_font_weight">400</dimen>
-
+    <dimen name="weight_font_primary">600</dimen>
+    <dimen name="weight_font_smaller">400</dimen>
     <dimen name="space_letters">0.15</dimen>
 
     <!-- percents and biases-->
-    <dimen name="primary_width_percent">0.9</dimen>
-    <dimen name="smaller_width_percent">0.8</dimen>
+    <dimen name="width_percent_primary">0.9</dimen>
+    <dimen name="width_percent_smaller">0.8</dimen>
 
     <!-- Activity main-->
-    <dimen name="layout_weight">1</dimen>
 
-    <dimen name="settings_margin_start">20dp</dimen>
-    <dimen name="settings_margin_top">20dp</dimen>
+    <dimen name="margin_settings_start">20dp</dimen>
+    <dimen name="margin_settings_top">20dp</dimen>
 
-    <dimen name="log_out_button_height">40dp</dimen>
-    <dimen name="log_out_button_margin">20dp</dimen>
-    <dimen name="log_out_button_max_width">200dp</dimen>
-    <dimen name="log_out_button_width_percent">0.3</dimen>
+    <dimen name="height_log_out_button">40dp</dimen>
+    <dimen name="margin_log_out_button">20dp</dimen>
+    <dimen name="width_log_out_button_max">200dp</dimen>
+    <dimen name="width_percent_log_out_button">0.3</dimen>
 
-    <dimen name="card_view_vertical_bias">0.3</dimen>
-    <dimen name="image_view_alpha">0.9</dimen>
+    <dimen name="bias_vertical_card_view">0.3</dimen>
+    <dimen name="alpha_image_view">0.9</dimen>
 
-    <dimen name="user_name_vertical_bias">0.8</dimen>
-    <dimen name="user_job_vertical_bias">0.5</dimen>
+    <dimen name="bias_vertical_user_name">0.3</dimen>
+    <dimen name="bias_vertical_user_job">0.5</dimen>
 
-    <dimen name="user_address_vertical_bias">0.5</dimen>
-    <dimen name="user_address_margin">5dp</dimen>
+    <dimen name="bias_vertical_user_address">0.5</dimen>
+    <dimen name="margin_user_address">5dp</dimen>
 
-    <dimen name ="social_network_frame_vertical_bias">0.4</dimen>
-    <dimen name ="social_network_frame_width_percent">0.7</dimen>
+    <dimen name="bias_vertical_social_network_frame">0.4</dimen>
+    <dimen name="width_percent_social_network_frame">0.7</dimen>
 
-    <dimen name="edit_button_height">40dp</dimen>
-    <dimen name="edit_button_height_pressed">60dp</dimen>
-    <dimen name="edit_button_margin">2dp</dimen>
-    <dimen name="edit_button_vertical_bias">0.95</dimen>
+    <dimen name="height_edit_button">40dp</dimen>
+    <!--    <dimen name="edit_button_height_pressed">60dp</dimen>-->
+    <dimen name="margin_edit_button">2dp</dimen>
+    <dimen name="bias_vertical_edit_button">0.95</dimen>
 
-    <dimen name="view_contact_button_height">55dp</dimen>
-    <dimen name="view_contact_button_margin">2dp</dimen>
-    <dimen name="view_contacts_button_vertical_bias">0.95</dimen>
+    <dimen name="height_view_contact_button">55dp</dimen>
+    <dimen name="margin_view_contact_button">2dp</dimen>
+    <dimen name="bias_vertical_view_contacts_button">0.95</dimen>
 
-    <dimen name="user_name_margin_top">10dp</dimen>
+    <dimen name="margin_top_user_name">8dp</dimen>
+    <dimen name="margin_social_networks">16dp</dimen>
 </resources>
