@@ -4,8 +4,8 @@
     <string name="main_settings">Settings</string>
     <string name="main_log_out">Log out</string>
     <string name="main_user_photo">My Photo</string>
-    <string name="main_user_name">User Name g</string>
-    <string name="main_user_career">Android Developer g</string>
+    <string name="main_user_name">User Name</string>
+    <string name="main_user_career">Android Developer</string>
     <string name="main_user_address">65009 Kanatna St, 27></string>
     <string name="main_facebook_button">facebook button</string>
     <string name="main_linkedin_button">linkedin button</string>
