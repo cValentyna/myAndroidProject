@@ -55,5 +55,7 @@
     <dimen name="bias_vertical_view_contacts_button">0.95</dimen>
 
     <dimen name="margin_top_user_name">8dp</dimen>
+    <dimen name="margin_top_user_job">8dp</dimen>
+    <dimen name="margin_bottom_user_job">16dp</dimen>
     <dimen name="margin_social_networks">16dp</dimen>
 </resources>

@@ -94,7 +94,8 @@
         android:id="@+id/tv_main_user_job"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_top_user_name"
+        android:layout_marginTop="@dimen/margin_top_user_job"
+        android:layout_marginBottom="@dimen/margin_bottom_user_job"
 
         android:text="@string/main_user_career"
         android:textAppearance="@style/TextAppearance_light_medium_text"
@@ -181,7 +182,6 @@
         android:id="@+id/bt_main_contact"
         android:layout_width="0dp"
         android:layout_height="@dimen/height_view_contact_button"
-        android:layout_marginVertical="@dimen/margin_view_contact_button"
 
         android:background="@drawable/main_button_contacts"
         android:text="@string/main_user_contacts"
