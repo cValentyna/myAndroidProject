@@ -2,10 +2,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- default styles for different fontWeights api under 26   -->
-    <style name="primary_text_style" >
+    <style name="primary_text_style" parent="@style/TextAppearance.AppCompat" >
         <item name="fontFamily">@font/open_sans_semibold</item>
     </style>
-    <style name="primary_light_text_style" parent="Theme.MyApp">
+    <style name="primary_light_text_style" parent="@style/TextAppearance.AppCompat">
         <item name="fontFamily">@font/open_sans</item>
     </style>
 
@@ -20,8 +20,8 @@
         <item name="android:textColor">@color/primary_brightest_text_font</item>
     </style>
 
-    <style name="light_medium_text_style" parent="primary_text_style">
-        <item name = "android:textSize">@dimen/textsize_medium</item>
+    <style name="TextAppearance_light_medium_text" parent="primary_text_style">
+        <item name ="android:textSize">@dimen/textsize_medium</item>
         <item name="android:textColor">@color/primary_bright_text_font</item>
     </style>
 
