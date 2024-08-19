@@ -42,7 +42,7 @@
         android:layout_height="@dimen/height_log_out_button"
         android:layout_marginEnd="@dimen/margin_log_out_button"
 
-        android:background="@drawable/button_logout"
+        android:background="@drawable/main_button_logout"
         android:textAppearance="@style/TextAppearance_bt_log_out"
         android:text="@string/main_log_out"
 
@@ -97,7 +97,7 @@
         android:layout_marginBottom="@dimen/margin_top_user_name"
 
         android:text="@string/main_user_career"
-        android:textAppearance="@style/light_medium_text_style"
+        android:textAppearance="@style/TextAppearance_light_medium_text"
 
         app:layout_constraintBottom_toTopOf="@id/tv_main_user_address"
         app:layout_constraintEnd_toEndOf="parent"
@@ -110,7 +110,7 @@
         android:layout_height="wrap_content"
 
         android:text="@string/main_user_address"
-        android:textAppearance="@style/light_medium_text_style"
+        android:textAppearance="@style/TextAppearance_light_medium_text"
 
         app:layout_constraintBottom_toBottomOf="@id/v_main_top"
         app:layout_constraintEnd_toEndOf="parent"
@@ -123,7 +123,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_social_networks"
 
-        android:src="@drawable/full_fb"
+        android:src="@drawable/main_full_fb"
 
         app:layout_constraintBottom_toTopOf="@id/bt_main_edit"
         app:layout_constraintEnd_toStartOf="@id/iv_main_linkedin"
@@ -138,7 +138,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_social_networks"
 
-        android:src="@drawable/full_ln"
+        android:src="@drawable/main_full_ln"
 
         app:layout_constraintBottom_toTopOf="@id/bt_main_edit"
         app:layout_constraintEnd_toStartOf="@id/iv_main_instagram"
@@ -152,7 +152,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_social_networks"
 
-        android:src="@drawable/full_insta"
+        android:src="@drawable/main_full_insta"
 
         app:layout_constraintBottom_toTopOf="@id/bt_main_edit"
         app:layout_constraintEnd_toEndOf="parent"
@@ -166,7 +166,7 @@
         android:layout_height="@dimen/height_edit_button"
         android:layout_marginVertical="@dimen/margin_edit_button"
 
-        android:background="@drawable/button_edit"
+        android:background="@drawable/main_bt_edit"
         android:text="@string/main_edit_user_profile"
         android:textAppearance="@style/TextAppearance_bt_edit_profile"
 
@@ -183,7 +183,7 @@
         android:layout_height="@dimen/height_view_contact_button"
         android:layout_marginVertical="@dimen/margin_view_contact_button"
 
-        android:background="@drawable/button_contacts"
+        android:background="@drawable/main_button_contacts"
         android:text="@string/main_user_contacts"
         android:textAppearance="@style/TextAppearance_bt_contact"
 
