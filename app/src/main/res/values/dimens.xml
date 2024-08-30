@@ -11,7 +11,7 @@
     <dimen name="textsize_big">18sp</dimen>
     <dimen name="textsize_big_button">16sp</dimen>
     <dimen name="textsize_medium">14sp</dimen>
-
+    <dimen name="textsize_small">12sp</dimen>
     <item name="weight_font_primary" format="integer" type="dimen">600</item>
     <item name="weight_font_smaller" format="integer" type="dimen">400</item>
     <dimen name="space_letters">0.15</dimen>
@@ -50,4 +50,35 @@
     <dimen name="margin_top_user_job">8dp</dimen>
     <dimen name="margin_bottom_user_job">16dp</dimen>
     <dimen name="margin_social_networks">16dp</dimen>
+
+    <!-- Activity auth -->
+
+    <dimen name="bias_vertical_auth_acquainted">0.85</dimen>
+    <dimen name="margin_bottom_auth_upper_text">8dp</dimen>
+
+    <dimen name="width_percent_auth_buttons">0.9</dimen>
+    <dimen name="height_percent_bt_google">0.055</dimen>
+    <dimen name="height_min_bt_google">40dp</dimen>
+    <dimen name="height_max_bt_google">46dp</dimen>
+    <dimen name="bias_vertical_bt_google">0.92</dimen>
+
+    <dimen name="bias_vertical_text_between_buttons">0.5</dimen>
+
+    <dimen name="height_percent_bt_register">0.075</dimen>
+    <dimen name="height_max_bt_register">63dp</dimen>
+    <dimen name="height_min_bt_register">55dp</dimen>
+    <dimen name="bias_vertical_bt_register">0.27</dimen>
+
+    <dimen name="bias_vertical_tv_agreement">0.5</dimen>
+<!--    <dimen name="bias_vertical_tv_have_account">0.5</dimen>-->
+    <dimen name="margin_start_tv_sign_in">12dp</dimen>
+    <dimen name="bias_vertical_email_layout">0.75</dimen>
+    <dimen name="bias_horizontal_checkbox">0</dimen>
+    <dimen name="padding_text_textInputEditText">8dp</dimen>
+    <dimen name="margin_error">-10dp</dimen>
+    <dimen name="padding_text_top_textInputEditText">18dp</dimen>
+    <dimen name="padding_text">8dp</dimen>
+    <dimen name="margin_checkbox">4dp</dimen>
+    <dimen name="margin_auth_small">8dp</dimen>
+    <dimen name="margin_bottom">5dp</dimen>
 </resources>
