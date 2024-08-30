@@ -60,7 +60,7 @@
         android:src="@drawable/person_icon_png_transparent_15"
         app:shapeAppearanceOverlay="@style/shapeAppearance_image"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintWidth_percent="@dimen/size_percent_image"
+        app:layout_constraintHeight_percent="@dimen/size_percent_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/ViewMainTopPart"
@@ -80,14 +80,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageViewMainPhoto"
         app:layout_constraintVertical_bias="@dimen/bias_vertical_user_name"
-        app:layout_constraintVertical_chainStyle="packed"/>
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewMainUserJob"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top_user_job"
-        android:layout_marginBottom="@dimen/margin_bottom_user_job"
+        android:layout_marginBottom="@dimen/margin_top_user_name"
         android:text="@string/main_user_career"
         android:textAppearance="@style/textAppearance_light_medium_text"
         app:layout_constraintBottom_toTopOf="@id/textViewMainUserAddress"
@@ -136,6 +135,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_social_networks"
+        android:scaleType="centerCrop"
         android:src="@drawable/main_full_insta"
         app:layout_constraintBottom_toTopOf="@id/buttonMainEdit"
         app:layout_constraintEnd_toEndOf="parent"
@@ -162,6 +162,7 @@
         android:id="@+id/buttonMainContact"
         android:layout_width="0dp"
         android:layout_height="@dimen/height_view_contact_button"
+        android:layout_marginVertical="@dimen/margin_view_contact_button"
         android:background="@drawable/main_button_contacts"
         android:text="@string/main_user_contacts"
         android:textAppearance="@style/textAppearance_bt_contact"

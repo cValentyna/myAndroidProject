@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- default text styles for different fontWeights under 28 api   -->
+    <style name="primary_text_style" parent="@style/TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/open_sans</item>
+        <item name="android:fontWeight">@dimen/weight_font_primary</item>
+    </style>
+
+    <style name="primary_light_text_style" parent="@style/TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/open_sans</item>
+        <item name="android:fontWeight">@dimen/weight_font_smaller</item>
+    </style>
+
+</resources>

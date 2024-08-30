@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="size_radius_button">6dp</dimen>
+    <dimen name="width_stroke_button">2dp</dimen>
+
+    <dimen name="size_percent_image">0.33</dimen>
+
+    <!--  Text size, weight, etc..  -->
+
+    <dimen name="textsize_title">24sp</dimen>
+    <dimen name="textsize_big">18sp</dimen>
+    <dimen name="textsize_big_button">16sp</dimen>
+    <dimen name="textsize_medium">14sp</dimen>
+
+    <item name="weight_font_primary" format="integer" type="dimen">600</item>
+    <item name="weight_font_smaller" format="integer" type="dimen">400</item>
+    <dimen name="space_letters">0.15</dimen>
+
+    <!-- percents and biases-->
+    <dimen name="width_percent_primary">0.9</dimen>
+
+    <!-- Activity main-->
+    <dimen name="bias_top_view">0</dimen>
+    <dimen name="height_percent_top_view">0.5</dimen>
+
+    <dimen name="margin_settings_start">20dp</dimen>
+    <dimen name="margin_settings_top">20dp</dimen>
+
+    <dimen name="height_log_out_button">40dp</dimen>
+    <dimen name="margin_log_out_button">20dp</dimen>
+    <dimen name="width_log_out_button_max">200dp</dimen>
+    <dimen name="width_percent_log_out_button">0.3</dimen>
+
+    <dimen name="bias_vertical_card_view">0.3</dimen>
+    <dimen name="alpha_image_view">0.9</dimen>
+
+    <dimen name="bias_vertical_user_name">0.3</dimen>
+
+    <dimen name="bias_vertical_social_network_frame">0.4</dimen>
+
+    <dimen name="height_edit_button">40dp</dimen>
+    <dimen name="margin_edit_button">2dp</dimen>
+    <dimen name="bias_vertical_edit_button">0.95</dimen>
+
+    <dimen name="height_view_contact_button">55dp</dimen>
+    <dimen name="margin_view_contact_button">2dp</dimen>
+    <dimen name="bias_vertical_view_contacts_button">0.95</dimen>
+
+    <dimen name="margin_top_user_name">8dp</dimen>
+    <dimen name="margin_top_user_job">8dp</dimen>
+    <dimen name="margin_bottom_user_job">16dp</dimen>
+    <dimen name="margin_social_networks">16dp</dimen>
+</resources>
