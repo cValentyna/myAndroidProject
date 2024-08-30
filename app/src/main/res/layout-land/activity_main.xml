@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+    android:id="@+id/activityMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/secondary_background"
@@ -10,183 +10,166 @@
     tools:context=".MainActivity">
 
     <View
-        android:id="@+id/v_main_top"
-        android:layout_width="match_parent"
+        android:id="@+id/ViewMainTopPart"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/primary_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="0.5"
+        app:layout_constraintHeight_percent="@dimen/height_percent_top_view"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0" />
+        app:layout_constraintVertical_bias="@dimen/bias_top_view" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_main_settings"
-
+        android:id="@+id/textViewMainSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        
         android:layout_marginStart="@dimen/margin_settings_start"
         android:layout_marginTop="@dimen/margin_settings_top"
         android:gravity="center_vertical"
-
         android:text="@string/main_settings"
         android:textAppearance="@style/textAppearance_title_text"
-        app:layout_constraintEnd_toStartOf="@id/bt_main_log_out"
+        app:layout_constraintEnd_toStartOf="@id/buttonMainLogout"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/bt_main_log_out"
+        android:id="@+id/buttonMainLogout"
         android:layout_width="0dp"
         android:layout_height="@dimen/height_log_out_button"
         android:layout_marginEnd="@dimen/margin_log_out_button"
-
         android:background="@drawable/main_button_logout"
-        android:textAppearance="@style/TextAppearance_bt_log_out"
+        android:textAppearance="@style/textAppearance_bt_log_out"
         android:text="@string/main_log_out"
-        
-        app:layout_constraintBottom_toBottomOf="@id/tv_main_settings"
+        app:layout_constraintBottom_toBottomOf="@id/textViewMainSettings"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tv_main_settings"
-        app:layout_constraintTop_toTopOf="@id/tv_main_settings"
+        app:layout_constraintStart_toEndOf="@id/textViewMainSettings"
+        app:layout_constraintTop_toTopOf="@id/textViewMainSettings"
         app:layout_constraintWidth_max="@dimen/width_log_out_button_max"
         app:layout_constraintWidth_percent="@dimen/width_percent_log_out_button" />
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imageView_main_photo"
+        android:id="@+id/imageViewMainPhoto"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:alpha="@dimen/alpha_image_view"
-
         android:background="@color/secondary_background"
         android:scaleType="centerCrop"
         android:src="@drawable/person_icon_png_transparent_15"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance_image"
-        
+        app:shapeAppearanceOverlay="@style/shapeAppearance_image"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintHeight_percent="@dimen/size_percent_image_landscape"
-
+        app:layout_constraintHeight_percent="@dimen/size_percent_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/v_main_top"
+        app:layout_constraintBottom_toBottomOf="@id/ViewMainTopPart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="@dimen/bias_vertical_card_view"
         android:contentDescription="@string/main_user_photo"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_main_user_name"
-
+        android:id="@+id/textViewMainUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_user_name"
-
         android:text="@string/main_user_name"
         android:textAppearance="@style/textAppearance_log_in_fill_text"
-
-        app:layout_constraintBottom_toTopOf="@id/tv_main_user_job"
+        app:layout_constraintBottom_toTopOf="@id/textViewMainUserJob"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView_main_photo"
+        app:layout_constraintTop_toBottomOf="@id/imageViewMainPhoto"
         app:layout_constraintVertical_bias="@dimen/bias_vertical_user_name"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_main_user_job"
+        android:id="@+id/textViewMainUserJob"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_top_user_name"
         android:text="@string/main_user_career"
-
-        android:textAppearance="@style/TextAppearance_light_medium_text"
-        app:layout_constraintBottom_toTopOf="@id/tv_main_user_address"
+        android:textAppearance="@style/textAppearance_light_medium_text"
+        app:layout_constraintBottom_toTopOf="@id/textViewMainUserAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_main_user_name" />
+        app:layout_constraintTop_toBottomOf="@id/textViewMainUserName" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_main_user_address"
+        android:id="@+id/textViewMainUserAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:text="@string/main_user_address"
-        android:textAppearance="@style/TextAppearance_light_medium_text"
-
-        app:layout_constraintBottom_toBottomOf="@id/v_main_top"
+        android:textAppearance="@style/textAppearance_light_medium_text"
+        app:layout_constraintBottom_toBottomOf="@id/ViewMainTopPart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_main_user_job" />
+        app:layout_constraintTop_toBottomOf="@id/textViewMainUserJob" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_main_facebook"
+        android:id="@+id/imageViewMainFacebook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_social_networks"
         android:src="@drawable/main_full_fb"
-        app:layout_constraintBottom_toTopOf="@id/bt_main_edit"
-        app:layout_constraintEnd_toStartOf="@id/iv_main_linkedin"
+        app:layout_constraintBottom_toTopOf="@id/buttonMainEdit"
+        app:layout_constraintEnd_toStartOf="@id/imageViewMainLinkedin"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/v_main_top"
+        app:layout_constraintTop_toBottomOf="@id/ViewMainTopPart"
         app:layout_constraintVertical_bias="@dimen/bias_vertical_social_network_frame" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_main_linkedin"
+        android:id="@+id/imageViewMainLinkedin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_social_networks"
         android:src="@drawable/main_full_ln"
-        app:layout_constraintBottom_toTopOf="@id/bt_main_edit"
-        app:layout_constraintEnd_toStartOf="@id/iv_main_instagram"
-        app:layout_constraintStart_toEndOf="@id/iv_main_facebook"
-        app:layout_constraintTop_toBottomOf="@id/v_main_top"
+        app:layout_constraintBottom_toTopOf="@id/buttonMainEdit"
+        app:layout_constraintEnd_toStartOf="@id/imageViewMainInstagram"
+        app:layout_constraintStart_toEndOf="@id/imageViewMainFacebook"
+        app:layout_constraintTop_toBottomOf="@id/ViewMainTopPart"
         app:layout_constraintVertical_bias="@dimen/bias_vertical_social_network_frame" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_main_instagram"
+        android:id="@+id/imageViewMainInstagram"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_social_networks"
         android:scaleType="centerCrop"
         android:src="@drawable/main_full_insta"
-        app:layout_constraintBottom_toTopOf="@id/bt_main_edit"
+        app:layout_constraintBottom_toTopOf="@id/buttonMainEdit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/iv_main_linkedin"
-        app:layout_constraintTop_toBottomOf="@id/v_main_top"
+        app:layout_constraintStart_toEndOf="@id/imageViewMainLinkedin"
+        app:layout_constraintTop_toBottomOf="@id/ViewMainTopPart"
         app:layout_constraintVertical_bias="@dimen/bias_vertical_social_network_frame" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/bt_main_edit"
+        android:id="@+id/buttonMainEdit"
         android:layout_width="0dp"
         android:layout_height="@dimen/height_edit_button"
         android:layout_marginVertical="@dimen/margin_edit_button"
         android:background="@drawable/main_bt_edit"
-
         android:text="@string/main_edit_user_profile"
-        android:textAppearance="@style/TextAppearance_bt_edit_profile"
-
-        app:layout_constraintBottom_toTopOf="@id/bt_main_contact"
+        android:textAppearance="@style/textAppearance_bt_edit_profile"
+        app:layout_constraintBottom_toTopOf="@id/buttonMainContact"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/v_main_top"
+        app:layout_constraintTop_toBottomOf="@id/ViewMainTopPart"
         app:layout_constraintVertical_bias="@dimen/bias_vertical_edit_button"
         app:layout_constraintWidth_percent="@dimen/width_percent_primary" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/bt_main_contact"
+        android:id="@+id/buttonMainContact"
         android:layout_width="0dp"
         android:layout_height="@dimen/height_view_contact_button"
         android:layout_marginVertical="@dimen/margin_view_contact_button"
-
         android:background="@drawable/main_button_contacts"
         android:text="@string/main_user_contacts"
-        android:textAppearance="@style/TextAppearance_bt_contact"
-
+        android:textAppearance="@style/textAppearance_bt_contact"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/v_main_top"
-
+        app:layout_constraintTop_toBottomOf="@id/ViewMainTopPart"
         app:layout_constraintVertical_bias="@dimen/bias_vertical_view_contacts_button"
         app:layout_constraintWidth_percent="@dimen/width_percent_primary" />
 

@@ -7,11 +7,7 @@
     <string name="main_user_name">User Name</string>
     <string name="main_user_career">Android Developer</string>
     <string name="main_user_address">65009 Kanatna St, 27</string>
-    <string name="main_facebook_button">facebook button</string>
-    <string name="main_linkedin_button">linkedin button</string>
-    <string name="main_instagram_button">instagram button</string>
     <string name="main_edit_user_profile">Edit profile</string>
     <string name="main_user_contacts">VIEW MY CONTACTS</string>
-
 
 </resources>
