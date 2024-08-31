@@ -5,13 +5,13 @@
 
     <!-- Activity auth -->
     <dimen name="bias_vertical_auth_acquainted">0.85</dimen>
-    <dimen name="margin_bottom_auth_upper_text">8dp</dimen>
+    <dimen name="margin_bottom_auth_upper_text">0dp</dimen>
 
     <dimen name="width_percent_auth_buttons">0.4</dimen>
-    <dimen name="height_percent_bt_google">0.061</dimen>
+    <dimen name="height_percent_bt_google">0.065</dimen>
     <dimen name="height_min_bt_google">40dp</dimen>
-    <dimen name="height_max_bt_google">46dp</dimen>
-    <dimen name="bias_vertical_bt_google">0.75</dimen>
+    <dimen name="height_max_bt_google">48dp</dimen>
+    <dimen name="bias_vertical_bt_google">0.8</dimen>
 
     <dimen name="bias_vertical_text_between_buttons">0.5</dimen>
     <dimen name="bias_vertical_tv_agreement">0.5</dimen>

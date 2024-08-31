@@ -59,7 +59,7 @@
     <dimen name="width_percent_auth_buttons">0.9</dimen>
     <dimen name="height_percent_bt_google">0.055</dimen>
     <dimen name="height_min_bt_google">40dp</dimen>
-    <dimen name="height_max_bt_google">46dp</dimen>
+    <dimen name="height_max_bt_google">48dp</dimen>
     <dimen name="bias_vertical_bt_google">0.92</dimen>
 
     <dimen name="bias_vertical_text_between_buttons">0.5</dimen>

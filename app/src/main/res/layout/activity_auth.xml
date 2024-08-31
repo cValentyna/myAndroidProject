@@ -39,19 +39,8 @@
         app:layout_constraintTop_toBottomOf="@id/textViewAuthAcquainted"
         app:layout_constraintWidth_percent="@dimen/width_percent_primary" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/textViewAuthCheckbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/padding_text"
-        android:text="@string/remember_me"
-        android:textAppearance="@style/textAppearance_light_medium_text"
-        app:layout_constraintBottom_toBottomOf="@id/checkboxAuth"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/checkboxAuth"
-        app:layout_constraintTop_toTopOf="@id/checkboxAuth"
-        tools:ignore="RtlSymmetry" />
-
+<!--  I tried to follow buttons size from figma design,
+but I also can change if it is necessary-->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonAuthGoogle"
         style="@style/google_button_style"
@@ -181,7 +170,6 @@
         style="@style/textInputLayout_style"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_auth_small"
         android:hint="@string/password"
         app:endIconMode="password_toggle"
         app:layout_constraintBottom_toTopOf="@id/checkboxAuth"
@@ -202,19 +190,21 @@
             android:paddingEnd="@dimen/padding_text_textInputEditText" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- without margin start location of checkbox was strange   -->
-    <com.google.android.material.checkbox.MaterialCheckBox
+    <!-- without margin start location of checkbox was strange
+        added text inside checkbox and minimum height-->
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/checkboxAuth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_checkbox"
         android:button="@drawable/auth_checkbox_different_states"
-        app:layout_constraintBottom_toTopOf="@id/buttonAuthGoogle"
-        app:layout_constraintEnd_toStartOf="@id/textViewAuthCheckbox"
+        android:layout_marginStart="@dimen/margin_checkbox"
+        app:layout_constraintHeight_min="48dp"
+        android:paddingHorizontal="@dimen/padding_text"
+        android:text="@string/remember_me"
+        style="@style/textAppearance_light_medium_text"
         app:layout_constraintHorizontal_bias="@dimen/bias_horizontal_checkbox"
-        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="@id/textInputLayoutAuthPassword"
         app:layout_constraintTop_toBottomOf="@id/textInputLayoutAuthPassword"
-        tools:ignore="RtlSymmetry" />
+        app:layout_constraintBottom_toTopOf="@id/buttonAuthGoogle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
