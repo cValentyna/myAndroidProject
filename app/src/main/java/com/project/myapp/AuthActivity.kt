@@ -23,12 +23,13 @@ class AuthActivity : AppCompatActivity() {
             insets
         }
 
-       /* shows errors just for visualize
+       /* shows errors just for visualize. They have not validation yet
         * */
         binding.textInputEditTextAuthEmail.doOnTextChanged { text: CharSequence?, _, _, _ ->
             if (text != null) {
                 if (text.isNotEmpty()) {
-                    binding.textInputLayoutAuthEmail.helperText = "Incorrect E-Mail address"
+                    binding.textInputLayoutAuthEmail.helperText =
+                        getString(R.string.error_validation_email)
                 } else {
                     binding.textInputLayoutAuthEmail.helperText = null
                 }
@@ -39,7 +40,7 @@ class AuthActivity : AppCompatActivity() {
             if (text != null) {
                 if (text.isNotEmpty()) {
                     binding.textInputLayoutAuthPassword.helperText =
-                        "Your password must include a minimum of 8 characters."
+                        getString(R.string.error_validation_password)
                 } else {
                     binding.textInputLayoutAuthPassword.helperText = null
                 }
