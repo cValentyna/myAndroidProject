@@ -15,7 +15,8 @@
     <string name="register_information">Fill out the profile and go to the application!</string>
     <string name="acquainted">Let\'s get acquainted</string>
     <string name="google">Google</string>
-    <string name="text_terms">By clicking Register you agree to our Terms   \n and Conditions</string>
+<!--    <string name="text_terms">By clicking Register you agree to our Terms   \n and Conditions</string>-->
+    <string name="text_terms">By clicking Register you agree to our Terms and Conditions</string>
     <string name="text_or">or</string>
     <string name="bt_text_register">Register</string>
     <string name="text_have_account">Already have an account?</string>

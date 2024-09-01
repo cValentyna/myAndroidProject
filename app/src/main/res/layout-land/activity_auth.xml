@@ -21,9 +21,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="@dimen/bias_vertical_auth_acquainted"
         app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintWidth_percent="@dimen/width_percent_primary" />
+        app:layout_constraintWidth_percent="@dimen/width_percent_primary"
+        app:layout_constraintVertical_bias="@dimen/bias_vertical_auth_acquainted"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewAuthHintAcquainted"
@@ -48,7 +48,7 @@
         android:textAppearance="@style/textAppearance_bt_google"
         android:theme="@style/Theme.MaterialComponents"
         app:icon="@drawable/auth_android_google_icon"
-        app:layout_constraintHeight_max="@dimen/height_max_bt_google"
+        app:layout_constraintHeight_max="48dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -168,7 +168,7 @@
         app:boxBackgroundMode="outline"
         app:cursorColor="@color/the_brightest_font"
         app:endIconMode="password_toggle"
-        app:layout_constraintBottom_toTopOf="@id/checkboxAuth"
+        app:layout_constraintBottom_toTopOf="@id/buttonAuthGoogle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textInputLayoutAuthEmail"
@@ -179,6 +179,7 @@
             style="@style/textAppearance_log_in_filling_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:layout_marginBottom="@dimen/margin_error"
             android:inputType="textPassword"
             android:paddingStart="@dimen/padding_text_textInputEditText"
@@ -199,6 +200,7 @@
         app:layout_constraintHorizontal_bias="@dimen/bias_horizontal_checkbox"
         app:layout_constraintStart_toStartOf="@id/textInputLayoutAuthPassword"
         app:layout_constraintTop_toBottomOf="@id/textInputLayoutAuthPassword"
-        app:layout_constraintBottom_toTopOf="@id/buttonAuthGoogle" />
+        app:layout_constraintBottom_toTopOf="@id/buttonAuthGoogle"
+        app:layout_constraintVertical_bias="0"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
