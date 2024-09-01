@@ -26,7 +26,7 @@
     <dimen name="margin_settings_start">20dp</dimen>
     <dimen name="margin_settings_top">20dp</dimen>
 
-    <dimen name="height_log_out_button">40dp</dimen>
+    <dimen name="height_log_out_button">48dp</dimen>
     <dimen name="margin_log_out_button">20dp</dimen>
     <dimen name="width_log_out_button_max">200dp</dimen>
     <dimen name="width_percent_log_out_button">0.3</dimen>
@@ -38,7 +38,7 @@
 
     <dimen name="bias_vertical_social_network_frame">0.4</dimen>
 
-    <dimen name="height_edit_button">40dp</dimen>
+    <dimen name="height_edit_button">48dp</dimen>
     <dimen name="margin_edit_button">2dp</dimen>
     <dimen name="bias_vertical_edit_button">0.95</dimen>
 
@@ -57,9 +57,9 @@
     <dimen name="margin_bottom_auth_upper_text">8dp</dimen>
 
     <dimen name="width_percent_auth_buttons">0.9</dimen>
-    <dimen name="height_percent_bt_google">0.055</dimen>
-    <dimen name="height_min_bt_google">40dp</dimen>
-    <dimen name="height_max_bt_google">48dp</dimen>
+    <dimen name="height_percent_bt_google">0.066</dimen>
+    <dimen name="height_min_bt_google">48dp</dimen>
+    <dimen name="height_max_bt_google">55dp</dimen>
     <dimen name="bias_vertical_bt_google">0.92</dimen>
 
     <dimen name="bias_vertical_text_between_buttons">0.5</dimen>
@@ -72,7 +72,7 @@
     <dimen name="bias_vertical_tv_agreement">0.5</dimen>
 <!--    <dimen name="bias_vertical_tv_have_account">0.5</dimen>-->
     <dimen name="margin_start_tv_sign_in">12dp</dimen>
-    <dimen name="bias_vertical_email_layout">0.75</dimen>
+    <dimen name="bias_vertical_email_layout">0.80</dimen>
     <dimen name="bias_horizontal_checkbox">0</dimen>
     <dimen name="padding_text_textInputEditText">8dp</dimen>
     <dimen name="margin_error">-10dp</dimen>
