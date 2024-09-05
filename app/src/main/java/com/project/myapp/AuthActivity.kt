@@ -3,54 +3,57 @@ package com.project.myapp
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doOnTextChanged
 import com.project.myapp.databinding.ActivityAuthBinding
 
 class AuthActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityAuthBinding
+    private val binding: ActivityAuthBinding by lazy {
+        ActivityAuthBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAuthBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.activityAuth) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        setContentView(binding.root)
+
+        // removed ViewCompat.setOnApplyWindowInsetsListener
+
+        // processes Registration button
+        setOnClickListener()
+        /* shows errors just for visualize. They have not validation yet
+         The error still appears when the user starts typing
+         * */
+        setTextChangedListener()
+    }
+
+    private fun setOnClickListener() {
+        binding.apply {
+            buttonAuthRegister.setOnClickListener {
+                val intent = Intent(this@AuthActivity, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
+    }
 
-       /* shows errors just for visualize. They have not validation yet
-        * */
-        binding.textInputEditTextAuthEmail.doOnTextChanged { text: CharSequence?, _, _, _ ->
-            if (text != null) {
-                if (text.isNotEmpty()) {
-                    binding.textInputLayoutAuthEmail.helperText =
+    private fun setTextChangedListener() {
+        binding.apply {
+            textInputEditTextAuthEmail.doOnTextChanged { text: CharSequence?, _, _, _ ->
+                if (!text.isNullOrEmpty() || textInputEditTextAuthEmail.text.toString() != "email") {
+                    textInputLayoutAuthEmail.helperText =
                         getString(R.string.error_validation_email)
                 } else {
-                    binding.textInputLayoutAuthEmail.helperText = null
+                    textInputLayoutAuthEmail.helperText = null
                 }
             }
-        }
-
-        binding.textInputEditTextAuthPassword.doOnTextChanged { text: CharSequence?, _, _, _ ->
-            if (text != null) {
-                if (text.isNotEmpty()) {
-                    binding.textInputLayoutAuthPassword.helperText =
+            textInputEditTextAuthPassword.doOnTextChanged { text: CharSequence?, _, _, _ ->
+                if (!text.isNullOrEmpty()) {
+                    textInputLayoutAuthPassword.helperText =
                         getString(R.string.error_validation_password)
                 } else {
-                    binding.textInputLayoutAuthPassword.helperText = null
+                    textInputLayoutAuthPassword.helperText = null
                 }
             }
-        }
-
-        binding.buttonAuthRegister.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
         }
     }
 }
