@@ -2,7 +2,7 @@
 <resources>
 
     <!-- default styles for different fontWeights api under 26   -->
-    <style name="primary_text_style" parent="@style/TextAppearance.AppCompat" >
+    <style name="primary_text_style" parent="@style/TextAppearance.AppCompat">
         <item name="fontFamily">@font/open_sans_semibold</item>
     </style>
 
@@ -10,7 +10,7 @@
         <item name="fontFamily">@font/open_sans</item>
     </style>
 
-<!--    textViews-->
+    <!--    textViews` styles common to Main and Auth Activities-->
     <style name="textAppearance_title_text" parent="primary_text_style">
         <item name="android:textSize">@dimen/textsize_title</item>
         <item name="android:textColor">@color/primary_brightest_text_font</item>
@@ -22,11 +22,11 @@
     </style>
 
     <style name="textAppearance_light_medium_text" parent="primary_text_style">
-        <item name ="android:textSize">@dimen/textsize_medium</item>
+        <item name="android:textSize">@dimen/textsize_medium</item>
         <item name="android:textColor">@color/primary_bright_text_font</item>
     </style>
 
-    <style name="text_big_button_style" parent="primary_text_style" >
+    <style name="text_big_button_style" parent="primary_text_style">
         <item name="android:textSize">@dimen/textsize_big_button</item>
         <item name="android:letterSpacing">@dimen/space_letters</item>
     </style>
@@ -44,10 +44,71 @@
     <style name="textAppearance_bt_contact" parent="text_big_button_style">
         <item name="android:textColor">@color/the_brightest_font</item>
     </style>
-<!-- style for image frame   -->
+    <!-- style for image frame   -->
     <style name="shapeAppearance_image" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
+    </style>
+
+    <!--  Styles authActivity  -->
+
+    <style name="textAppearance_smallest_text" parent="@style/primary_light_text_style">
+        <item name="android:textSize">@dimen/textsize_small</item>
+        <item name="android:textColor">@color/primary_brightest_text_font</item>
+    </style>
+
+    <style name="textAppearance_small_text" parent="@style/primary_light_text_style">
+        <item name="android:textSize">@dimen/textsize_medium</item>
+        <item name="android:textColor">@color/primary_brightest_text_font</item>
+    </style>
+
+    <style name="textAppearance_lightest_medium_text" parent="primary_text_style">
+        <item name="android:textSize">@dimen/textsize_medium</item>
+        <item name="android:textColor">@color/the_brightest_font</item>
+    </style>
+
+    <style name="textAppearance_log_in_filling_text" parent="@style/textAppearance_log_in_fill_text">
+        <item name="backgroundTint">@color/auth_underline</item>
+    </style>
+
+    <style name="textAppearance_hint" parent="@style/primary_text_style">
+        <item name="android:textSize">@dimen/textsize_medium</item>
+    </style>
+
+    <style name="textAppearance_error" parent="@style/primary_light_text_style">
+        <item name="android:textSize">@dimen/textsize_small</item>
+        <item name="android:textColor">@color/error_color</item>
+    </style>
+
+    <style name="textInputLayout_style">
+        <item name="boxBackgroundMode">outline</item>
+        <item name="cursorColor">@color/the_brightest_font</item>
+        <item name="expandedHintEnabled">false</item>
+        <item name="hintTextAppearance">@style/textAppearance_hint</item>
+        <!-- without hintTextColor become black when textInputLayout is focused  -->
+        <item name="hintTextColor">@color/primary_bright_text_font</item>
+        <item name="android:textColorHint">@color/primary_bright_text_font</item>
+        <item name="errorEnabled">true</item>
+        <item name="helperTextEnabled">true</item>
+        <item name="helperTextTextAppearance">@style/textAppearance_error</item>
+    </style>
+
+    <style name="textAppearance_bt_google" parent="text_big_button_style">
+        <item name="android:textColor">@color/primary_dark_text_font</item>
+    </style>
+
+    <style name="google_button_style" parent="@style/Theme.MaterialComponents">
+        <item name="android:backgroundTint">@color/button_google_background</item>
+        <item name="cornerRadius">@dimen/size_radius_button</item>
+        <item name="iconTint">@color/invisible</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconTintMode">add</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetTop">0dp</item>
+    </style>
+
+    <style name="textAppearance_bt_register" parent="text_big_button_style">
+        <item name="android:textColor">@color/primary_brightest_text_font</item>
     </style>
 
 </resources>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activityAuth"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_background"
+    android:enabled="true"
+    tools:context=".AuthActivity">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewAuthAcquainted"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_bottom_auth_upper_text"
+        android:gravity="center"
+        android:text="@string/acquainted"
+        android:textAppearance="@style/textAppearance_title_text"
+        app:layout_constraintBottom_toTopOf="@id/textViewAuthHintAcquainted"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintWidth_percent="@dimen/width_percent_primary"
+        app:layout_constraintVertical_bias="@dimen/bias_vertical_auth_acquainted"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewAuthHintAcquainted"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/register_information"
+        android:textAppearance="@style/textAppearance_smallest_text"
+        app:layout_constraintBottom_toTopOf="@id/textInputLayoutAuthEmail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewAuthAcquainted"
+        app:layout_constraintWidth_percent="@dimen/width_percent_primary" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonAuthGoogle"
+        style="@style/google_button_style"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/google"
+        android:textAllCaps="true"
+        android:textAppearance="@style/textAppearance_bt_google"
+        android:theme="@style/Theme.MaterialComponents"
+        app:icon="@drawable/auth_android_google_icon"
+        app:layout_constraintHeight_max="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/textViewAuthBetweenButtons"
+        app:layout_constraintVertical_bias="@dimen/bias_vertical_bt_google"
+        app:layout_constraintWidth_percent="@dimen/width_percent_auth_buttons"
+        app:layout_constraintHorizontal_chainStyle="spread"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewAuthBetweenButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/text_or"
+        android:textAppearance="@style/textAppearance_log_in_fill_text"
+        app:layout_constraintTop_toTopOf="@id/buttonAuthGoogle"
+        app:layout_constraintEnd_toStartOf="@id/buttonAuthRegister"
+        app:layout_constraintStart_toEndOf="@id/buttonAuthGoogle"
+        app:layout_constraintBottom_toBottomOf="@id/buttonAuthGoogle"
+        app:layout_constraintVertical_bias="@dimen/bias_vertical_text_between_buttons" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonAuthRegister"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/auth_button_register"
+        android:text="@string/bt_text_register"
+        android:textAllCaps="true"
+        android:textAppearance="@style/textAppearance_bt_register"
+        app:layout_constraintBottom_toBottomOf="@id/buttonAuthGoogle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/textViewAuthBetweenButtons"
+        app:layout_constraintTop_toTopOf="@id/buttonAuthGoogle"
+        app:layout_constraintWidth_percent="@dimen/width_percent_auth_buttons" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewAuthTerms"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/text_terms"
+        android:textAppearance="@style/textAppearance_small_text"
+        app:layout_constraintBottom_toTopOf="@id/textViewAuthHaveAccount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonAuthRegister"
+        app:layout_constraintVertical_bias="@dimen/bias_vertical_tv_agreement"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintWidth_percent="@dimen/width_percent_primary" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewAuthHaveAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginBottom="5dp"
+        android:text="@string/text_have_account"
+        android:textAppearance="@style/textAppearance_light_medium_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/textViewAuthSignIn"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewAuthTerms" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textViewAuthSignIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:paddingStart="@dimen/margin_start_tv_sign_in"
+        android:text="@string/text_sign_in"
+        android:textAppearance="@style/textAppearance_lightest_medium_text"
+        app:layout_constraintBottom_toBottomOf="@id/textViewAuthHaveAccount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/textViewAuthHaveAccount"
+        app:layout_constraintTop_toTopOf="@id/textViewAuthHaveAccount"
+        tools:ignore="RtlSymmetry" />
+
+    <!--  TextInputLayouts are located here, because when they were higher
+      next parts of layout weren't visible for binding.
+       I did not find reason.
+      -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutAuthEmail"
+        style="@style/textInputLayout_style"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/e_mail"
+        app:boxBackgroundMode="outline"
+        app:cursorColor="@color/the_brightest_font"
+        app:layout_constraintBottom_toTopOf="@id/textInputLayoutAuthPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="@dimen/bias_vertical_email_layout"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintWidth_percent="@dimen/width_percent_primary">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditTextAuthEmail"
+            style="@style/textAppearance_log_in_filling_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_error"
+            android:inputType="textEmailAddress"
+            android:paddingStart="@dimen/padding_text_textInputEditText"
+            android:paddingTop="@dimen/padding_text_top_textInputEditText"
+            android:paddingEnd="@dimen/padding_text_textInputEditText" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutAuthPassword"
+        style="@style/textInputLayout_style"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/password"
+        app:boxBackgroundMode="outline"
+        app:cursorColor="@color/the_brightest_font"
+        app:endIconMode="password_toggle"
+        app:layout_constraintBottom_toTopOf="@id/buttonAuthGoogle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayoutAuthEmail"
+        app:layout_constraintWidth_percent="@dimen/width_percent_primary">
+        
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditTextAuthPassword"
+            style="@style/textAppearance_log_in_filling_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginBottom="@dimen/margin_error"
+            android:inputType="textPassword"
+            android:paddingStart="@dimen/padding_text_textInputEditText"
+            android:paddingTop="@dimen/padding_text_top_textInputEditText"
+            android:paddingEnd="@dimen/padding_text_textInputEditText" />
+    </com.google.android.material.textfield.TextInputLayout>
+<!--    added text inside checkbox and minimum height-->
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/checkboxAuth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/auth_checkbox_different_states"
+        android:layout_marginStart="@dimen/margin_checkbox"
+        app:layout_constraintHeight_min="48dp"
+        android:paddingHorizontal="@dimen/padding_text"
+        android:text="@string/remember_me"
+        style="@style/textAppearance_light_medium_text"
+        app:layout_constraintHorizontal_bias="@dimen/bias_horizontal_checkbox"
+        app:layout_constraintStart_toStartOf="@id/textInputLayoutAuthPassword"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayoutAuthPassword"
+        app:layout_constraintBottom_toTopOf="@id/buttonAuthGoogle"
+        app:layout_constraintVertical_bias="0"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
