@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.widget.doOnTextChanged
 import com.project.myapp.databinding.ActivityAuthBinding
 
@@ -42,8 +43,9 @@ class AuthActivity : AppCompatActivity() {
                 if (isEmailAndPasswordCorrect()) {
                     getName(textInputEditTextAuthEmail.text.toString())
                     val intent = Intent(this@AuthActivity, MainActivity::class.java)
+                    val option = ActivityOptionsCompat.makeCustomAnimation(this@AuthActivity, R.anim.slide_in_left, R.anim.slide_out_left)
                     intent.putExtra("userName", userName)
-                    startActivity(intent)
+                    startActivity(intent, option.toBundle())
                     finish()
                 } else {
                     wasRegisterButtonClicked = true
@@ -126,7 +128,7 @@ class AuthActivity : AppCompatActivity() {
 
     private fun validatePassword(text: CharSequence?) {
         // pattern if special_symbol can be present
-        val pattern = Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[\\w#?!@\$%^&*-]{6,}$")
+        val pattern = Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[\\w#?!@\$%^&*-]{8,}$")
         val patternExpectedSymbols = Regex("^[\\w#?!@\$%^&*-]+\$")
         val patternDigit = Regex("(?=.*[0-9])")
         val patternLetterLC = Regex("(?=.*[a-z])")
