@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        getName()
         setOnClickListener()
     }
 
@@ -24,5 +25,9 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    private fun getName() {
+        binding.textViewMainUserName.text = intent.getStringExtra("userName")
     }
 }
