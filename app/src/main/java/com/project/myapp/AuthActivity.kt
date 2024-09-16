@@ -2,6 +2,7 @@ package com.project.myapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
@@ -21,7 +22,6 @@ class AuthActivity : AppCompatActivity() {
     private var firstFocusPassword = false
 
     private var wasRegisterButtonClicked = false
-    private lateinit var userName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,9 +41,14 @@ class AuthActivity : AppCompatActivity() {
                 validateEmail(textInputEditTextAuthEmail.text)
                 validatePassword(textInputEditTextAuthPassword.text)
                 if (isEmailAndPasswordCorrect()) {
-                    getName(textInputEditTextAuthEmail.text.toString())
+                    val userName = getName(textInputEditTextAuthEmail.text.toString())
                     val intent = Intent(this@AuthActivity, MainActivity::class.java)
-                    val option = ActivityOptionsCompat.makeCustomAnimation(this@AuthActivity, R.anim.slide_in_left, R.anim.slide_out_left)
+                    val option =
+                        ActivityOptionsCompat.makeCustomAnimation(
+                            this@AuthActivity,
+                            R.anim.slide_in_left,
+                            R.anim.slide_out_left,
+                        )
                     intent.putExtra("userName", userName)
                     startActivity(intent, option.toBundle())
                     finish()
@@ -116,8 +121,8 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun validateEmail(text: CharSequence?) {
-        val pattern = Regex("^[\\w-.]+@([\\w-]+\\.)+\\w{2,}\$")
-        if (!pattern.containsMatchIn(text.toString()) && text.toString().isNotEmpty()) {
+        val pattern = Patterns.EMAIL_ADDRESS.matcher(text.toString()).matches()
+        if (!pattern && text.toString().isNotEmpty()) {
             isUserEmailValid = false
             binding.textInputLayoutAuthEmail.helperText = getString(R.string.error_e_mail_address)
         } else {
@@ -191,14 +196,9 @@ class AuthActivity : AppCompatActivity() {
 
     /* Receives name from Email
      */
-    private fun getName(email: String): String {
-        val partOfEmail =
-            email.substring(0, email.indexOf('@')).replace("[._]".toRegex(), " ").lowercase()
-        userName =
-            partOfEmail
-                .trim()
-                .split("\\s+".toRegex())
-                .joinToString(" ") { it -> it.replaceFirstChar { it.uppercaseChar() } }
-        return userName
-    }
+    private fun getName(email: String): String =
+        email
+            .substringBefore("@")
+            .split(".", "_")
+            .joinToString(" ") { it -> it.lowercase().replaceFirstChar { it.uppercaseChar() } }
 }
