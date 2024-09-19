@@ -1,27 +1,22 @@
-package com.project.myapp
+package com.project.myapp.screens.auth
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.widget.doOnTextChanged
+import com.project.myapp.R
 import com.project.myapp.databinding.ActivityAuthBinding
+import com.project.myapp.screens.main.MainActivity
 
 class AuthActivity : AppCompatActivity() {
     private val binding: ActivityAuthBinding by lazy {
         ActivityAuthBinding.inflate(layoutInflater)
     }
-    private var isUserEmailValid = false
-    private var isUserPasswordValid = false
-
-    private var wasFocusEmail = false
-    private var firstFocusEmail = false
-    private var wasFocusPassword = false
-    private var firstFocusPassword = false
-
-    private var wasRegisterButtonClicked = false
+    private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +48,9 @@ class AuthActivity : AppCompatActivity() {
                     startActivity(intent, option.toBundle())
                     finish()
                 } else {
-                    wasRegisterButtonClicked = true
+                    viewModel.updateState {
+                        copy(wasRegisterButtonClicked = true)
+                    }
                     Toast
                         .makeText(
                             this@AuthActivity,
@@ -74,22 +71,29 @@ class AuthActivity : AppCompatActivity() {
         binding.apply {
             textInputEditTextAuthEmail.setOnFocusChangeListener { v, hasFocus ->
                 if (hasFocus) {
-                    firstFocusEmail = true
-                    wasFocusEmail = false
-                } else if (!v.isFocused && firstFocusEmail) {
-                    wasFocusEmail = true
+                    viewModel.updateState {
+                        copy(firstFocusEmail = true, wasFocusEmail = false)
+                    }
+                } else if (!v.isFocused && viewModel.authState.value.firstFocusEmail) {
+                    viewModel.updateState {
+                        copy(wasFocusEmail = true)
+                    }
                 }
-                if (wasFocusEmail) {
+                if (viewModel.authState.value.wasFocusEmail) {
                     validateEmail(textInputEditTextAuthEmail.text)
                 }
             }
             textInputEditTextAuthPassword.setOnFocusChangeListener { v, hasFocus ->
                 if (hasFocus) {
-                    firstFocusPassword = true
-                } else if (!v.isFocused && firstFocusPassword) {
-                    wasFocusPassword = true
+                    viewModel.updateState {
+                        copy(firstFocusPassword = true)
+                    }
+                } else if (!v.isFocused && viewModel.authState.value.firstFocusPassword) {
+                    viewModel.updateState {
+                        copy(wasFocusPassword = true)
+                    }
                 }
-                if (wasFocusPassword) {
+                if (viewModel.authState.value.wasFocusPassword) {
                     validatePassword(textInputEditTextAuthPassword.text.toString())
                 }
             }
@@ -106,14 +110,14 @@ class AuthActivity : AppCompatActivity() {
     private fun setTextChangedListener() {
         binding.apply {
             textInputEditTextAuthEmail.doOnTextChanged { text: CharSequence?, _, _, _ ->
-                if (wasFocusEmail) {
+                if (viewModel.authState.value.wasFocusEmail) {
                     validateEmail(text)
                 } else {
                     textInputLayoutAuthEmail.helperText = null
                 }
             }
             textInputEditTextAuthPassword.doOnTextChanged { text: CharSequence?, _, _, _ ->
-                if (wasFocusPassword || wasRegisterButtonClicked) {
+                if (viewModel.authState.value.wasFocusPassword || viewModel.authState.value.wasRegisterButtonClicked) {
                     validatePassword(text)
                 }
             }
@@ -123,10 +127,14 @@ class AuthActivity : AppCompatActivity() {
     private fun validateEmail(text: CharSequence?) {
         val pattern = Patterns.EMAIL_ADDRESS.matcher(text.toString()).matches()
         if (!pattern && text.toString().isNotEmpty()) {
-            isUserEmailValid = false
+            viewModel.updateState {
+                copy(isUserEmailValid = false)
+            }
             binding.textInputLayoutAuthEmail.helperText = getString(R.string.error_e_mail_address)
         } else {
-            isUserEmailValid = true
+            viewModel.updateState {
+                copy(isUserEmailValid = true)
+            }
             binding.textInputLayoutAuthEmail.helperText = null
         }
     }
@@ -141,7 +149,9 @@ class AuthActivity : AppCompatActivity() {
         val patternCount = Regex("([\\w#?!@\$%^&*-]{8,})")
 
         if (!pattern.containsMatchIn(text.toString()) && text.toString().isNotEmpty()) {
-            isUserPasswordValid = false
+            viewModel.updateState {
+                copy(isUserPasswordValid = false)
+            }
             when {
                 !patternExpectedSymbols.containsMatchIn(text.toString()) ->
                     binding.textInputLayoutAuthPassword.helperText =
@@ -165,7 +175,9 @@ class AuthActivity : AppCompatActivity() {
             }
         } else {
             binding.textInputLayoutAuthPassword.helperText = null
-            isUserPasswordValid = true
+            viewModel.updateState {
+                copy(isUserPasswordValid = true)
+            }
         }
     }
 
@@ -173,20 +185,24 @@ class AuthActivity : AppCompatActivity() {
         binding.apply {
             if (textInputEditTextAuthEmail.text.toString().isEmpty()
             ) {
-                isUserEmailValid = false
+                viewModel.updateState {
+                    copy(isUserEmailValid = false)
+                }
                 textInputLayoutAuthEmail.helperText = getString(R.string.error_email_empty)
             }
             if (textInputEditTextAuthPassword.text.toString().isEmpty()
             ) {
-                isUserPasswordValid = false
+                viewModel.updateState {
+                    copy(isUserPasswordValid = false)
+                }
                 textInputLayoutAuthPassword.helperText = getString(R.string.error_password_empty)
             }
         }
     }
 
     private fun isEmailAndPasswordCorrect(): Boolean =
-        isUserEmailValid &&
-            isUserPasswordValid &&
+        viewModel.authState.value.isUserEmailValid &&
+            viewModel.authState.value.isUserPasswordValid &&
             binding.textInputEditTextAuthPassword.text
                 .toString()
                 .isNotEmpty() &&
