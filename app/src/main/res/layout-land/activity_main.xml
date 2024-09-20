@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/secondary_background"
     android:theme="@style/Theme.MyApp"
-    tools:context=".MainActivity">
+    tools:context=".screens.main.MainActivity">
 
     <View
         android:id="@+id/ViewMainTopPart"
