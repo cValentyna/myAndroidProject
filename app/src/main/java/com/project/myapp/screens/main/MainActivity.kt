@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
+import com.project.myapp.ExtensionUtil.setEnableEdgeToEdge
+import com.project.myapp.ExtensionUtil.setVisualize
 import com.project.myapp.R
 import com.project.myapp.databinding.ActivityMainBinding
 import com.project.myapp.screens.auth.AuthActivity
@@ -15,9 +17,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+        setView()
         getName()
         setOnClickListener()
+    }
+
+    private fun setView() {
+        this.setEnableEdgeToEdge()
+        setContentView(binding.root)
+        binding.root.setVisualize()
     }
 
     private fun setOnClickListener() {

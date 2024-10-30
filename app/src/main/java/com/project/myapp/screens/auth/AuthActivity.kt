@@ -8,6 +8,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.widget.doOnTextChanged
+import com.project.myapp.ExtensionUtil.setEnableEdgeToEdge
+import com.project.myapp.ExtensionUtil.setVisualize
 import com.project.myapp.R
 import com.project.myapp.databinding.ActivityAuthBinding
 import com.project.myapp.screens.main.MainActivity
@@ -20,10 +22,16 @@ class AuthActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+        setView()
         setFocusListener()
         setTextChangedListener()
         setOnClickListener()
+    }
+
+    private fun setView() {
+        this.setEnableEdgeToEdge()
+        setContentView(binding.root)
+        binding.root.setVisualize()
     }
 
     /* Processes register button
