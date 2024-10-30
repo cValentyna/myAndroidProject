@@ -7,16 +7,25 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.lifecycleScope
+import com.project.myapp.DataStore
+import com.project.myapp.DataStoreKeys.USER_NAME
 import com.project.myapp.ExtensionUtil.setEnableEdgeToEdge
 import com.project.myapp.ExtensionUtil.setVisualize
 import com.project.myapp.R
 import com.project.myapp.Validation
 import com.project.myapp.databinding.ActivityAuthBinding
 import com.project.myapp.screens.main.MainActivity
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class AuthActivity : AppCompatActivity() {
     private val binding: ActivityAuthBinding by lazy {
         ActivityAuthBinding.inflate(layoutInflater)
+    }
+    private val dataStore: DataStore by lazy {
+        DataStore(this)
     }
     private val viewModel: AuthViewModel by viewModels()
 
@@ -26,6 +35,11 @@ class AuthActivity : AppCompatActivity() {
         setFocusListener()
         setTextChangedListener()
         setOnClickListener()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        goToNextActivityIfUserSaved()
     }
 
     private fun setView() {
@@ -45,6 +59,16 @@ class AuthActivity : AppCompatActivity() {
                 validatePassword()
                 if (isEmailAndPasswordCorrect()) {
                     val userName = getName(textInputEditTextAuthEmail.text.toString())
+
+                    if (checkboxAuth.isChecked) {
+                        saveUser(
+                            checkboxAuth.isChecked,
+                            textInputEditTextAuthEmail.text.toString(),
+                            textInputEditTextAuthPassword.text.toString(),
+                            userName,
+                        )
+                    }
+
                     val intent = Intent(this@AuthActivity, MainActivity::class.java)
                     val option =
                         ActivityOptionsCompat.makeCustomAnimation(
@@ -67,6 +91,39 @@ class AuthActivity : AppCompatActivity() {
                         ).show()
                     showErrorIfEmpty()
                 }
+            }
+        }
+    }
+
+    /*
+      Saves user information if necessary
+     */
+    private fun saveUser(
+        isChecked: Boolean,
+        email: String,
+        password: String,
+        name: String,
+    ) {
+        lifecycleScope.launch {
+            dataStore.saveData(isChecked, email, password, name)
+        }
+    }
+
+    /*
+     If user was saved goes to MainActivity
+     */
+
+    private fun goToNextActivityIfUserSaved() {
+        lifecycleScope.launch {
+            // runBlocking added to prevent  AuthActivity screen from being shown if the user has been saved
+            if (runBlocking { dataStore.getWasChecked().first() }) {
+                val intent = Intent(this@AuthActivity, MainActivity::class.java)
+                intent.putExtra(
+                    "userName",
+                    runBlocking { dataStore.getSavedSting(USER_NAME).first() },
+                )
+                startActivity(intent)
+                finish()
             }
         }
     }
