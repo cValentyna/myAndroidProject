@@ -2,7 +2,6 @@ package com.project.myapp.screens.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +10,7 @@ import androidx.core.widget.doOnTextChanged
 import com.project.myapp.ExtensionUtil.setEnableEdgeToEdge
 import com.project.myapp.ExtensionUtil.setVisualize
 import com.project.myapp.R
+import com.project.myapp.Validation
 import com.project.myapp.databinding.ActivityAuthBinding
 import com.project.myapp.screens.main.MainActivity
 
@@ -41,8 +41,8 @@ class AuthActivity : AppCompatActivity() {
     private fun setOnClickListener() {
         binding.apply {
             buttonAuthRegister.setOnClickListener {
-                validateEmail(textInputEditTextAuthEmail.text)
-                validatePassword(textInputEditTextAuthPassword.text)
+                validateEmail()
+                validatePassword()
                 if (isEmailAndPasswordCorrect()) {
                     val userName = getName(textInputEditTextAuthEmail.text.toString())
                     val intent = Intent(this@AuthActivity, MainActivity::class.java)
@@ -88,7 +88,7 @@ class AuthActivity : AppCompatActivity() {
                     }
                 }
                 if (viewModel.authState.value.wasFocusEmail) {
-                    validateEmail(textInputEditTextAuthEmail.text)
+                    validateEmail()
                 }
             }
             textInputEditTextAuthPassword.setOnFocusChangeListener { v, hasFocus ->
@@ -102,7 +102,7 @@ class AuthActivity : AppCompatActivity() {
                     }
                 }
                 if (viewModel.authState.value.wasFocusPassword) {
-                    validatePassword(textInputEditTextAuthPassword.text.toString())
+                    validatePassword()
                 }
             }
         }
@@ -117,93 +117,83 @@ class AuthActivity : AppCompatActivity() {
      */
     private fun setTextChangedListener() {
         binding.apply {
-            textInputEditTextAuthEmail.doOnTextChanged { text: CharSequence?, _, _, _ ->
+            textInputEditTextAuthEmail.doOnTextChanged { _, _, _, _ ->
                 if (viewModel.authState.value.wasFocusEmail) {
-                    validateEmail(text)
+                    validateEmail()
                 } else {
                     textInputLayoutAuthEmail.helperText = null
                 }
             }
-            textInputEditTextAuthPassword.doOnTextChanged { text: CharSequence?, _, _, _ ->
+            textInputEditTextAuthPassword.doOnTextChanged { _, _, _, _ ->
                 if (viewModel.authState.value.wasFocusPassword || viewModel.authState.value.wasRegisterButtonClicked) {
-                    validatePassword(text)
+                    validatePassword()
                 }
             }
         }
     }
 
-    private fun validateEmail(text: CharSequence?) {
-        val pattern = Patterns.EMAIL_ADDRESS.matcher(text.toString()).matches()
-        if (!pattern && text.toString().isNotEmpty()) {
-            viewModel.updateState {
-                copy(isUserEmailValid = false)
+    private fun validateEmail() {
+        binding.apply {
+            val helperText =
+                Validation.validateEmail(
+                    textInputEditTextAuthEmail.text.toString(),
+                    this@AuthActivity,
+                )
+            textInputLayoutAuthEmail.helperText = helperText
+            if (helperText != null) {
+                viewModel.updateState {
+                    copy(isUserEmailValid = false)
+                }
+            } else {
+                viewModel.updateState {
+                    copy(isUserEmailValid = true)
+                }
             }
-            binding.textInputLayoutAuthEmail.helperText = getString(R.string.error_e_mail_address)
-        } else {
-            viewModel.updateState {
-                copy(isUserEmailValid = true)
-            }
-            binding.textInputLayoutAuthEmail.helperText = null
         }
     }
 
-    private fun validatePassword(text: CharSequence?) {
-        // pattern if special_symbol can be present
-        val pattern = Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[\\w#?!@\$%^&*-]{8,}$")
-        val patternExpectedSymbols = Regex("^[\\w#?!@\$%^&*-]+\$")
-        val patternDigit = Regex("(?=.*[0-9])")
-        val patternLetterLC = Regex("(?=.*[a-z])")
-        val patternLetterUC = Regex("(?=.*[A-Z])")
-        val patternCount = Regex("([\\w#?!@\$%^&*-]{8,})")
-
-        if (!pattern.containsMatchIn(text.toString()) && text.toString().isNotEmpty()) {
-            viewModel.updateState {
-                copy(isUserPasswordValid = false)
-            }
-            when {
-                !patternExpectedSymbols.containsMatchIn(text.toString()) ->
-                    binding.textInputLayoutAuthPassword.helperText =
-                        getString(R.string.error_password_unpredictable_symbols)
-
-                !patternLetterLC.containsMatchIn(text.toString()) ->
-                    binding.textInputLayoutAuthPassword.helperText =
-                        getString(R.string.error_password_lower_case)
-
-                !patternLetterUC.containsMatchIn(text.toString()) ->
-                    binding.textInputLayoutAuthPassword.helperText =
-                        getString(R.string.error_password_upper_case)
-
-                !patternDigit.containsMatchIn(text.toString()) ->
-                    binding.textInputLayoutAuthPassword.helperText =
-                        getString(R.string.error_password_digit)
-
-                !patternCount.containsMatchIn(text.toString()) ->
-                    binding.textInputLayoutAuthPassword.helperText =
-                        getString(R.string.error_password_minimum_characters)
-            }
-        } else {
-            binding.textInputLayoutAuthPassword.helperText = null
-            viewModel.updateState {
-                copy(isUserPasswordValid = true)
+    private fun validatePassword() {
+        binding.apply {
+            val helperText =
+                Validation.validatePassword(
+                    textInputEditTextAuthPassword.text.toString(),
+                    this@AuthActivity,
+                )
+            textInputLayoutAuthPassword.helperText = helperText
+            if (helperText != null) {
+                viewModel.updateState {
+                    copy(isUserPasswordValid = false)
+                }
+            } else {
+                viewModel.updateState {
+                    copy(isUserPasswordValid = true)
+                }
             }
         }
     }
 
     private fun showErrorIfEmpty() {
         binding.apply {
-            if (textInputEditTextAuthEmail.text.toString().isEmpty()
-            ) {
+            if (textInputEditTextAuthEmail.text.toString().isEmpty()) {
+                textInputLayoutAuthEmail.helperText =
+                    Validation.emptyEmail(
+                        textInputEditTextAuthEmail.text.toString(),
+                        this@AuthActivity,
+                    )
                 viewModel.updateState {
                     copy(isUserEmailValid = false)
                 }
-                textInputLayoutAuthEmail.helperText = getString(R.string.error_email_empty)
             }
-            if (textInputEditTextAuthPassword.text.toString().isEmpty()
-            ) {
+
+            if (textInputEditTextAuthPassword.text.toString().isEmpty()) {
+                textInputLayoutAuthPassword.helperText =
+                    Validation.emptyPassword(
+                        textInputEditTextAuthPassword.text.toString(),
+                        this@AuthActivity,
+                    )
                 viewModel.updateState {
                     copy(isUserPasswordValid = false)
                 }
-                textInputLayoutAuthPassword.helperText = getString(R.string.error_password_empty)
             }
         }
     }
@@ -211,7 +201,7 @@ class AuthActivity : AppCompatActivity() {
     private fun isEmailAndPasswordCorrect(): Boolean =
         viewModel.authState.value.isUserEmailValid &&
             viewModel.authState.value.isUserPasswordValid &&
-            binding.textInputEditTextAuthPassword.text
+            binding.textInputEditTextAuthEmail.text
                 .toString()
                 .isNotEmpty() &&
             binding.textInputEditTextAuthPassword.text
@@ -224,5 +214,7 @@ class AuthActivity : AppCompatActivity() {
         email
             .substringBefore("@")
             .split(".", "_")
-            .joinToString(" ") { it -> it.lowercase().replaceFirstChar { it.uppercaseChar() } }
+            .joinToString(" ") { it ->
+                it.lowercase().replaceFirstChar { it.uppercaseChar() }
+            }
 }
