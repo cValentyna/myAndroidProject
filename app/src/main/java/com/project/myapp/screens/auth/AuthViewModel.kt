@@ -5,8 +5,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-
-// ViewModel for saving AuthActivity state
+/*
+  ViewModel for saving AuthActivity state
+ */
 
 class AuthViewModel : ViewModel() {
     private val _authState = MutableStateFlow(AuthState())
