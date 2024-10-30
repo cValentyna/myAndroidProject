@@ -203,7 +203,7 @@ class AuthActivity : AppCompatActivity() {
     private fun isEmailAndPasswordCorrect(): Boolean =
         viewModel.authState.value.isUserEmailValid &&
             viewModel.authState.value.isUserPasswordValid &&
-            binding.textInputEditTextAuthPassword.text
+            binding.textInputEditTextAuthEmail.text
                 .toString()
                 .isNotEmpty() &&
             binding.textInputEditTextAuthPassword.text
