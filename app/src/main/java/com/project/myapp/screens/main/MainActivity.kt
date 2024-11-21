@@ -4,10 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
+import com.project.myapp.HolderKeys.USER_NAME_KEY
 import com.project.myapp.R
 import com.project.myapp.databinding.ActivityMainBinding
 import com.project.myapp.screens.auth.AuthActivity
-import com.project.myapp.ui.HolderKeys.USER_NAME_KEY
 
 class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {

@@ -3,7 +3,6 @@ package com.project.myapp.screens.auth
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
@@ -11,6 +10,8 @@ import androidx.core.widget.doOnTextChanged
 import com.project.myapp.R
 import com.project.myapp.databinding.ActivityAuthBinding
 import com.project.myapp.screens.main.MainActivity
+import com.project.myapp.ExtensionUtils.toast
+import com.project.myapp.HolderKeys.USER_NAME_KEY
 
 class AuthActivity : AppCompatActivity() {
     private val binding: ActivityAuthBinding by lazy {
@@ -33,33 +34,38 @@ class AuthActivity : AppCompatActivity() {
     private fun setOnClickListener() {
         binding.apply {
             buttonAuthRegister.setOnClickListener {
-                validateEmail(textInputEditTextAuthEmail.text)
-                validatePassword(textInputEditTextAuthPassword.text)
-                if (isEmailAndPasswordCorrect()) {
-                    val userName = getName(textInputEditTextAuthEmail.text.toString())
-                    val intent = Intent(this@AuthActivity, MainActivity::class.java)
-                    val option =
-                        ActivityOptionsCompat.makeCustomAnimation(
-                            this@AuthActivity,
-                            R.anim.slide_in_left,
-                            R.anim.slide_out_left,
-                        )
-                    intent.putExtra("userName", userName)
-                    startActivity(intent, option.toBundle())
-                    finish()
-                } else {
-                    viewModel.updateState {
-                        copy(wasRegisterButtonClicked = true)
-                    }
-                    Toast
-                        .makeText(
-                            this@AuthActivity,
-                            getString(R.string.error_invalid_email_or_password),
-                            Toast.LENGTH_SHORT,
-                        ).show()
-                    showErrorIfEmpty()
-                }
+                processingAuthRegisterButton()
             }
+        }
+    }
+
+    private fun goToNextActivity() {
+        val userName = getName(binding.textInputEditTextAuthEmail.text.toString())
+        val intent = Intent(this@AuthActivity, MainActivity::class.java)
+        val option =
+            ActivityOptionsCompat.makeCustomAnimation(
+                this@AuthActivity,
+                R.anim.slide_in_left,
+                R.anim.slide_out_left,
+            )
+        intent.putExtra(USER_NAME_KEY, userName)
+        startActivity(intent, option.toBundle())
+        finish()
+    }
+
+    private fun processingIncorrectData() {
+        viewModel.updateState {
+            copy(wasRegisterButtonClicked = true)
+        }
+        this@AuthActivity.toast(getString(R.string.error_invalid_email_or_password))
+        showErrorIfEmpty()
+    }
+
+    private fun processingAuthRegisterButton() {
+        if (isEmailPasswordCorrect()) {
+            goToNextActivity()
+        } else {
+            processingIncorrectData()
         }
     }
 
@@ -200,7 +206,7 @@ class AuthActivity : AppCompatActivity() {
         }
     }
 
-    private fun isEmailAndPasswordCorrect(): Boolean =
+    private fun isEmailPasswordCorrect(): Boolean =
         viewModel.authState.value.isUserEmailValid &&
             viewModel.authState.value.isUserPasswordValid &&
             binding.textInputEditTextAuthEmail.text

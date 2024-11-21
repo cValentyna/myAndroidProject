@@ -1,4 +1,4 @@
-package com.project.myapp.ui
+package com.project.myapp
 
 object HolderKeys {
     const val USER_NAME_KEY = "userName"
