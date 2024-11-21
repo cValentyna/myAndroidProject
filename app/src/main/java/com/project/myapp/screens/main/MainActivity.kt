@@ -7,6 +7,7 @@ import androidx.core.app.ActivityOptionsCompat
 import com.project.myapp.R
 import com.project.myapp.databinding.ActivityMainBinding
 import com.project.myapp.screens.auth.AuthActivity
+import com.project.myapp.ui.HolderKeys.USER_NAME_KEY
 
 class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
@@ -16,27 +17,29 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        getName()
+        setName()
         setOnClickListener()
     }
 
     private fun setOnClickListener() {
-        binding.apply {
-            buttonMainLogout.setOnClickListener {
-                val intent = Intent(this@MainActivity, AuthActivity::class.java)
-                val option =
-                    ActivityOptionsCompat.makeCustomAnimation(
-                        this@MainActivity,
-                        R.anim.slide_in_right,
-                        R.anim.slide_out_right,
-                    )
-                startActivity(intent, option.toBundle())
-                finish()
-            }
+        binding.buttonMainLogout.setOnClickListener {
+            goToPreviousActivity()
         }
     }
 
-    private fun getName() {
-        binding.textViewMainUserName.text = intent.getStringExtra("userName")
+    private fun goToPreviousActivity() {
+        val intent = Intent(this@MainActivity, AuthActivity::class.java)
+        val option =
+            ActivityOptionsCompat.makeCustomAnimation(
+                this@MainActivity,
+                R.anim.slide_in_right,
+                R.anim.slide_out_right,
+            )
+        startActivity(intent, option.toBundle())
+        finish()
+    }
+
+    private fun setName() {
+        binding.textViewMainUserName.text = intent.getStringExtra(USER_NAME_KEY)
     }
 }
