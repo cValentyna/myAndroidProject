@@ -2,16 +2,15 @@ package com.project.myapp.screens.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Patterns
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.widget.doOnTextChanged
+import com.project.myapp.ExtensionUtils.toast
+import com.project.myapp.HolderKeys.USER_NAME_KEY
 import com.project.myapp.R
 import com.project.myapp.databinding.ActivityAuthBinding
 import com.project.myapp.screens.main.MainActivity
-import com.project.myapp.ExtensionUtils.toast
-import com.project.myapp.HolderKeys.USER_NAME_KEY
 
 class AuthActivity : AppCompatActivity() {
     private val binding: ActivityAuthBinding by lazy {
@@ -27,10 +26,6 @@ class AuthActivity : AppCompatActivity() {
         setOnClickListener()
     }
 
-    /* Processes register button
-    if email and password are correct - starts next activity and gives name from email
-    else shows errors
-     * */
     private fun setOnClickListener() {
         binding.apply {
             buttonAuthRegister.setOnClickListener {
@@ -39,8 +34,37 @@ class AuthActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Processes register button -  validates credentials if they are incorrect:
+     * shows errors, else starts next activity and gives name from email
+     */
+    private fun processingAuthRegisterButton() {
+        validateCredentials()
+        if (viewModel.isEmailCorrect() && viewModel.isPasswordCorrect()) {
+            goToNextActivity()
+        } else {
+            this@AuthActivity.toast(getString(R.string.error_invalid_email_or_password))
+        }
+    }
+
+    /**
+     * Validates authorisation data after click registration button
+     */
+    private fun validateCredentials() {
+        viewModel.updateRegistrationButtonClicked()
+        binding.apply {
+            textInputLayoutAuthEmail.helperText =
+                viewModel.checkEmailByClick(textInputEditTextAuthEmail.text.toString())
+            textInputLayoutAuthPassword.helperText =
+                viewModel.checkPasswordByClick(textInputEditTextAuthPassword.text.toString())
+        }
+    }
+
+    /**
+     * Starts new activity
+     */
     private fun goToNextActivity() {
-        val userName = getName(binding.textInputEditTextAuthEmail.text.toString())
+        val userName = viewModel.getName(binding.textInputEditTextAuthEmail.text.toString())
         val intent = Intent(this@AuthActivity, MainActivity::class.java)
         val option =
             ActivityOptionsCompat.makeCustomAnimation(
@@ -53,174 +77,60 @@ class AuthActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun processingIncorrectData() {
-        viewModel.updateState {
-            copy(wasRegisterButtonClicked = true)
-        }
-        this@AuthActivity.toast(getString(R.string.error_invalid_email_or_password))
-        showErrorIfEmpty()
-    }
-
-    private fun processingAuthRegisterButton() {
-        if (isEmailPasswordCorrect()) {
-            goToNextActivity()
-        } else {
-            processingIncorrectData()
-        }
-    }
-
-    /*
-    This method validates email and password if their InputEditText was focused,
-    but lost it.
+    /** This method validates email and password if their InputEditText was focused,
+     * but lost it.
      */
     private fun setFocusListener() {
         binding.apply {
             textInputEditTextAuthEmail.setOnFocusChangeListener { v, hasFocus ->
-                if (hasFocus) {
-                    viewModel.updateState {
-                        copy(firstFocusEmail = true, wasFocusEmail = false)
-                    }
-                } else if (!v.isFocused && viewModel.authState.value.firstFocusEmail) {
-                    viewModel.updateState {
-                        copy(wasFocusEmail = true)
-                    }
-                }
-                if (viewModel.authState.value.wasFocusEmail) {
-                    validateEmail(textInputEditTextAuthEmail.text)
+                viewModel.focusEmailUpdate(hasFocus, v.isFocused)
+                if (viewModel.wasEmailFocus()) {
+                    validateEmail()
                 }
             }
             textInputEditTextAuthPassword.setOnFocusChangeListener { v, hasFocus ->
-                if (hasFocus) {
-                    viewModel.updateState {
-                        copy(firstFocusPassword = true)
-                    }
-                } else if (!v.isFocused && viewModel.authState.value.firstFocusPassword) {
-                    viewModel.updateState {
-                        copy(wasFocusPassword = true)
-                    }
-                }
-                if (viewModel.authState.value.wasFocusPassword) {
-                    validatePassword(textInputEditTextAuthPassword.text.toString())
+                viewModel.focusPasswordUpdate(hasFocus, v.isFocused)
+                if (viewModel.wasPasswordFocus()) {
+                    validatePassword()
                 }
             }
         }
     }
 
-    /*
-    If register button was pressed or textInputEditText was focused and lost focus,
-    error will be shown if input text did not pass validation
-    when user is correcting:
-    email - error will not be shown
-    password - error will be shown until password is correct
+    /** If register button was pressed or textInputEditText was focused and lost focus,
+     * error will be shown if input text did not pass validation
+     * when user is correcting:
+     * email - error will not be shown
+     * password - error will be shown until password is correct
      */
     private fun setTextChangedListener() {
         binding.apply {
-            textInputEditTextAuthEmail.doOnTextChanged { text: CharSequence?, _, _, _ ->
-                if (viewModel.authState.value.wasFocusEmail) {
-                    validateEmail(text)
+            textInputEditTextAuthEmail.doOnTextChanged { _, _, _, _ ->
+                if (viewModel.wasEmailFocus()) {
+                    validateEmail()
                 } else {
                     textInputLayoutAuthEmail.helperText = null
                 }
             }
-            textInputEditTextAuthPassword.doOnTextChanged { text: CharSequence?, _, _, _ ->
-                if (viewModel.authState.value.wasFocusPassword || viewModel.authState.value.wasRegisterButtonClicked) {
-                    validatePassword(text)
+            textInputEditTextAuthPassword.doOnTextChanged { _, _, _, _ ->
+                if (viewModel.wasPasswordFocus() || viewModel.wasRegisterButtonClicked()) {
+                    validatePassword()
                 }
             }
         }
     }
 
-    private fun validateEmail(text: CharSequence?) {
-        val pattern = Patterns.EMAIL_ADDRESS.matcher(text.toString()).matches()
-        if (!pattern && text.toString().isNotEmpty()) {
-            viewModel.updateState {
-                copy(isUserEmailValid = false)
-            }
-            binding.textInputLayoutAuthEmail.helperText = getString(R.string.error_e_mail_address)
-        } else {
-            viewModel.updateState {
-                copy(isUserEmailValid = true)
-            }
-            binding.textInputLayoutAuthEmail.helperText = null
-        }
-    }
-
-    private fun validatePassword(text: CharSequence?) {
-        // pattern if special_symbol can be present
-        val pattern = Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[\\w#?!@\$%^&*-]{8,}$")
-        val patternExpectedSymbols = Regex("^[\\w#?!@\$%^&*-]+\$")
-        val patternDigit = Regex("(?=.*[0-9])")
-        val patternLetterLC = Regex("(?=.*[a-z])")
-        val patternLetterUC = Regex("(?=.*[A-Z])")
-        val patternCount = Regex("([\\w#?!@\$%^&*-]{8,})")
-
-        if (!pattern.containsMatchIn(text.toString()) && text.toString().isNotEmpty()) {
-            viewModel.updateState {
-                copy(isUserPasswordValid = false)
-            }
-            when {
-                !patternExpectedSymbols.containsMatchIn(text.toString()) ->
-                    binding.textInputLayoutAuthPassword.helperText =
-                        getString(R.string.error_password_unpredictable_symbols)
-
-                !patternLetterLC.containsMatchIn(text.toString()) ->
-                    binding.textInputLayoutAuthPassword.helperText =
-                        getString(R.string.error_password_lower_case)
-
-                !patternLetterUC.containsMatchIn(text.toString()) ->
-                    binding.textInputLayoutAuthPassword.helperText =
-                        getString(R.string.error_password_upper_case)
-
-                !patternDigit.containsMatchIn(text.toString()) ->
-                    binding.textInputLayoutAuthPassword.helperText =
-                        getString(R.string.error_password_digit)
-
-                !patternCount.containsMatchIn(text.toString()) ->
-                    binding.textInputLayoutAuthPassword.helperText =
-                        getString(R.string.error_password_minimum_characters)
-            }
-        } else {
-            binding.textInputLayoutAuthPassword.helperText = null
-            viewModel.updateState {
-                copy(isUserPasswordValid = true)
-            }
-        }
-    }
-
-    private fun showErrorIfEmpty() {
+    private fun validateEmail() {
         binding.apply {
-            if (textInputEditTextAuthEmail.text.toString().isEmpty()
-            ) {
-                viewModel.updateState {
-                    copy(isUserEmailValid = false)
-                }
-                textInputLayoutAuthEmail.helperText = getString(R.string.error_email_empty)
-            }
-            if (textInputEditTextAuthPassword.text.toString().isEmpty()
-            ) {
-                viewModel.updateState {
-                    copy(isUserPasswordValid = false)
-                }
-                textInputLayoutAuthPassword.helperText = getString(R.string.error_password_empty)
-            }
+            textInputLayoutAuthEmail.helperText =
+                viewModel.validateEmail(textInputEditTextAuthEmail.text.toString())
         }
     }
 
-    private fun isEmailPasswordCorrect(): Boolean =
-        viewModel.authState.value.isUserEmailValid &&
-            viewModel.authState.value.isUserPasswordValid &&
-            binding.textInputEditTextAuthEmail.text
-                .toString()
-                .isNotEmpty() &&
-            binding.textInputEditTextAuthPassword.text
-                .toString()
-                .isNotEmpty()
-
-    /* Receives name from Email
-     */
-    private fun getName(email: String): String =
-        email
-            .substringBefore("@")
-            .split(".", "_")
-            .joinToString(" ") { it -> it.lowercase().replaceFirstChar { it.uppercaseChar() } }
+    private fun validatePassword() {
+        binding.apply {
+            textInputLayoutAuthPassword.helperText =
+                viewModel.validatePassword(textInputEditTextAuthPassword.text.toString())
+        }
+    }
 }

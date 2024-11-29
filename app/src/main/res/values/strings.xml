@@ -24,12 +24,14 @@
     <string name="password">Password</string>
     <string name="remember_me">Remember me</string>
 
-    <string name="error_password_lower_case">Password must include at least 1 lower case letter such as (a-z).</string>
-    <string name="error_password_unpredictable_symbols"><![CDATA[You can use only letters, numbers and special signs as (#?!@$%^&*-).]]></string>
-    <string name="error_password_upper_case">Password must include at least 1 upper case letter such as (A-Z).</string>
+    <string name="error_password_letters">Password must include at least 1 letter such as (A-z).</string>
+    <string name="error_password_unpredictable_symbols">You can use only letters and numbers.</string>
     <string name="error_password_digit">Password must include at least one digit such as (0–9).</string>
-    <string name="error_special_symbol"><![CDATA[Password must include at least one special symbol such as (#?!@$%^&*-).]]></string>
     <string name="error_password_minimum_characters">Your password must include a minimum of 8 characters.</string>
+
+    <string name="error_password_upper_case">Password must include at least 1 upper case letter such as (A-Z).</string>
+
+    <string name="error_special_symbol"><![CDATA[Password must include at least one special symbol such as (#?!@$%^&*-).]]></string>
     <string name="error_e_mail_address">Incorrect E-Mail address</string>
     <string name="error_email_empty">Email is required.</string>
     <string name="error_password_empty">Password is required.</string>
