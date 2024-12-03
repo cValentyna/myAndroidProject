@@ -6,11 +6,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.widget.doOnTextChanged
-import com.project.myapp.ExtensionUtils.toast
 import com.project.myapp.HolderKeys.USER_NAME_KEY
 import com.project.myapp.R
 import com.project.myapp.databinding.ActivityAuthBinding
 import com.project.myapp.screens.main.MainActivity
+import com.project.myapp.toast
 
 class AuthActivity : AppCompatActivity() {
     private val binding: ActivityAuthBinding by lazy {
@@ -55,8 +55,10 @@ class AuthActivity : AppCompatActivity() {
         binding.apply {
             textInputLayoutAuthEmail.helperText =
                 viewModel.checkEmailByClick(textInputEditTextAuthEmail.text.toString())
+            ?.let{getString(it)}
             textInputLayoutAuthPassword.helperText =
                 viewModel.checkPasswordByClick(textInputEditTextAuthPassword.text.toString())
+                    ?.let { getString(it) }
         }
     }
 
@@ -124,6 +126,7 @@ class AuthActivity : AppCompatActivity() {
         binding.apply {
             textInputLayoutAuthEmail.helperText =
                 viewModel.validateEmail(textInputEditTextAuthEmail.text.toString())
+                    ?.let{getString(it)}
         }
     }
 
@@ -131,6 +134,7 @@ class AuthActivity : AppCompatActivity() {
         binding.apply {
             textInputLayoutAuthPassword.helperText =
                 viewModel.validatePassword(textInputEditTextAuthPassword.text.toString())
+                    ?.let { getString(it) }
         }
     }
 }

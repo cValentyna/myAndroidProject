@@ -1,9 +1,8 @@
 package com.project.myapp.screens.auth
 
-import android.app.Application
 import android.util.Patterns
 import androidx.core.text.isDigitsOnly
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import com.project.myapp.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,9 +13,7 @@ import kotlinx.coroutines.flow.update
  * ViewModel for saving AuthActivity state
  */
 
-class AuthViewModel(
-    application: Application,
-) : AndroidViewModel(application) {
+class AuthViewModel : ViewModel() {
     private val _authState = MutableStateFlow(AuthState())
     val authState: StateFlow<AuthState> get() = _authState.asStateFlow()
 
@@ -72,10 +69,15 @@ class AuthViewModel(
         }
     }
 
-    private fun getString(int: Int): String = getApplication<Application>().getString(int)
+    /**
+     * This method checks
+     * @param text - password
+     * @return Int- the string id if the verification failed,
+     * or null if the password is empty or correct
+     */
 
-    fun validatePassword(text: CharSequence): String? {
-        val check =
+    fun validatePassword(text: CharSequence): Int? {
+        val isCheckFail =
             text.toString().isNotEmpty() &&
                 (
                     !text.toString().validSigns() ||
@@ -84,52 +86,60 @@ class AuthViewModel(
                         text.toString().length < MINIMUM_PASSWORD_SIZE
                 )
 
-        if (check) {
+        if (isCheckFail) {
             updateState { copy(isUserPasswordValid = false) }
-            return when {
-                !text.toString().validSigns() ->
-                    getString(R.string.error_password_unpredictable_symbols)
-
-                text.toString().onlyLetters() ->
-                    getString(R.string.error_password_digit)
-
-                text.toString().isDigitsOnly() ->
-                    getString(R.string.error_password_letters)
-
-                text.toString().length < MINIMUM_PASSWORD_SIZE ->
-                    getString(R.string.error_password_minimum_characters)
-
-                else -> null
-            }
+        } else {
+            updateState { copy(isUserPasswordValid = true) }
         }
-        updateState { copy(isUserPasswordValid = true) }
-        return null
+
+        return when {
+            !text.toString().validSigns() ->
+                R.string.error_password_unpredictable_symbols
+
+            text.toString().onlyLetters() ->
+                R.string.error_password_digit
+
+            text.toString().isDigitsOnly() ->
+                R.string.error_password_letters
+
+            text.toString().length < MINIMUM_PASSWORD_SIZE ->
+                R.string.error_password_minimum_characters
+
+            else -> null
+        }
     }
 
-    fun validateEmail(text: CharSequence): String? {
+    /**
+     * This method checks
+     * @param text - email
+     * @return Int- the string id if the verification failed,
+     * or null if the password is empty or correct
+     */
+
+    fun validateEmail(text: CharSequence): Int? {
         val pattern = Patterns.EMAIL_ADDRESS.matcher(text.toString()).matches()
         return if (!pattern && text.toString().isNotEmpty()) {
             updateState { copy(isUserEmailValid = false) }
-            getString(R.string.error_e_mail_address)
+            R.string.error_e_mail_address
         } else {
             updateState { copy(isUserEmailValid = true) }
             null
         }
     }
 
-    fun checkEmailByClick(text: CharSequence): String? {
+    fun checkEmailByClick(text: CharSequence): Int? {
         if (text.isEmpty()) {
             updateState { copy(isUserEmailValid = false) }
-            return getString(R.string.error_email_empty)
+            return R.string.error_email_empty
         } else {
             return validateEmail(text)
         }
     }
 
-    fun checkPasswordByClick(text: CharSequence): String? {
+    fun checkPasswordByClick(text: CharSequence): Int? {
         if (text.isEmpty()) {
             updateState { copy(isUserPasswordValid = false) }
-            return getString(R.string.error_password_empty)
+            return R.string.error_password_empty
         } else {
             return validatePassword(text)
         }
@@ -138,13 +148,13 @@ class AuthViewModel(
     /**
      * Receives name from
      * @param email
+     * @return name
      */
     fun getName(email: String): String =
         email
             .substringBefore("@")
             .split(".", "_")
-            .joinToString(" ")
-            { it -> it.lowercase().replaceFirstChar{ it.uppercaseChar() } }
+            .joinToString(" ") { it -> it.lowercase().replaceFirstChar { it.uppercaseChar() } }
 
     companion object {
         const val MINIMUM_PASSWORD_SIZE = 8
