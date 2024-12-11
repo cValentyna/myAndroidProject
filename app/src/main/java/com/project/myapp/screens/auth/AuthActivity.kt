@@ -6,7 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.widget.doOnTextChanged
-import com.project.myapp.HolderKeys.USER_NAME_KEY
+import com.project.myapp.KeysHolder.USER_NAME_KEY
 import com.project.myapp.R
 import com.project.myapp.databinding.ActivityAuthBinding
 import com.project.myapp.screens.main.MainActivity
@@ -55,7 +55,7 @@ class AuthActivity : AppCompatActivity() {
         binding.apply {
             textInputLayoutAuthEmail.helperText =
                 viewModel.checkEmailByClick(textInputEditTextAuthEmail.text.toString())
-            ?.let{getString(it)}
+                    ?.let { getString(it) }
             textInputLayoutAuthPassword.helperText =
                 viewModel.checkPasswordByClick(textInputEditTextAuthPassword.text.toString())
                     ?.let { getString(it) }
@@ -126,7 +126,7 @@ class AuthActivity : AppCompatActivity() {
         binding.apply {
             textInputLayoutAuthEmail.helperText =
                 viewModel.validateEmail(textInputEditTextAuthEmail.text.toString())
-                    ?.let{getString(it)}
+                    ?.let { getString(it) }
         }
     }
 

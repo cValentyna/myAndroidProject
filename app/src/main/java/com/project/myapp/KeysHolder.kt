@@ -1,5 +1,5 @@
 package com.project.myapp
 
-object HolderKeys {
+object KeysHolder {
     const val USER_NAME_KEY = "userName"
 }
