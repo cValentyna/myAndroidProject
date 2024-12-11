@@ -1,6 +1,7 @@
 package com.project.myapp.screens.auth
 
 import android.util.Patterns
+import androidx.annotation.StringRes
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import com.project.myapp.R
@@ -75,7 +76,7 @@ class AuthViewModel : ViewModel() {
      * @return Int- the string id if the verification failed,
      * or null if the password is empty or correct
      */
-
+    @StringRes
     fun validatePassword(text: CharSequence): Int? {
         val isCheckFail =
             text.toString().isNotEmpty() &&
@@ -102,7 +103,7 @@ class AuthViewModel : ViewModel() {
             text.toString().isDigitsOnly() ->
                 R.string.error_password_letters
 
-            text.toString().length < MINIMUM_PASSWORD_SIZE ->
+            text.toString().length <= MINIMUM_PASSWORD_SIZE ->
                 R.string.error_password_minimum_characters
 
             else -> null
@@ -115,7 +116,7 @@ class AuthViewModel : ViewModel() {
      * @return Int- the string id if the verification failed,
      * or null if the password is empty or correct
      */
-
+    @StringRes
     fun validateEmail(text: CharSequence): Int? {
         val pattern = Patterns.EMAIL_ADDRESS.matcher(text.toString()).matches()
         return if (!pattern && text.toString().isNotEmpty()) {
@@ -127,6 +128,7 @@ class AuthViewModel : ViewModel() {
         }
     }
 
+    @StringRes
     fun checkEmailByClick(text: CharSequence): Int? {
         if (text.isEmpty()) {
             updateState { copy(isUserEmailValid = false) }
@@ -136,6 +138,7 @@ class AuthViewModel : ViewModel() {
         }
     }
 
+    @StringRes
     fun checkPasswordByClick(text: CharSequence): Int? {
         if (text.isEmpty()) {
             updateState { copy(isUserPasswordValid = false) }
