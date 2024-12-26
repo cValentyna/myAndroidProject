@@ -103,7 +103,7 @@ class AuthViewModel : ViewModel() {
             text.toString().isDigitsOnly() ->
                 R.string.error_password_letters
 
-            text.toString().length <= MINIMUM_PASSWORD_SIZE ->
+            text.toString().length < MINIMUM_PASSWORD_SIZE ->
                 R.string.error_password_minimum_characters
 
             else -> null
