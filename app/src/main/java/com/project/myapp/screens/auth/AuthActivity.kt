@@ -24,47 +24,95 @@ class AuthActivity : AppCompatActivity() {
         setFocusListener()
         setTextChangedListener()
         setOnClickListener()
+        setObservers()
     }
 
+    /**
+     * Sets clickListener
+     * when button is clicked - validates credentials
+     */
     private fun setOnClickListener() {
         binding.apply {
             buttonAuthRegister.setOnClickListener {
-                processingAuthRegisterButton()
+                viewModel.checkCredentials(
+                    textInputEditTextAuthEmail.text.toString(),
+                    textInputEditTextAuthPassword.text.toString(),
+                )
             }
         }
     }
 
     /**
-     * Processes register button -  validates credentials if they are incorrect:
-     * shows errors, else starts next activity and gives name from email
+     * Sets TextChangedListeners
+     * pauses email and password validation when text inside fields changes
      */
-    private fun processingAuthRegisterButton() {
-        validateCredentials()
-        if (viewModel.isEmailCorrect() && viewModel.isPasswordCorrect()) {
-            goToNextActivity()
-        } else {
-            this@AuthActivity.toast(getString(R.string.error_invalid_email_or_password))
-        }
-    }
 
-    /**
-     * Validates authorisation data after click registration button
-     */
-    private fun validateCredentials() {
-        viewModel.updateRegistrationButtonClicked()
+    private fun setTextChangedListener() {
         binding.apply {
-            textInputLayoutAuthEmail.helperText =
-                viewModel.checkEmailByClick(textInputEditTextAuthEmail.text.toString())
-                    ?.let { getString(it) }
-            textInputLayoutAuthPassword.helperText =
-                viewModel.checkPasswordByClick(textInputEditTextAuthPassword.text.toString())
-                    ?.let { getString(it) }
+            textInputEditTextAuthEmail.doOnTextChanged { _, _, _, _ ->
+                viewModel.pauseCheckEmail()
+            }
+            textInputEditTextAuthPassword.doOnTextChanged { _, _, _, _ ->
+                viewModel.pauseCheckPassword()
+            }
         }
     }
 
     /**
-     * Starts new activity
+     * Sets focusListeners
+     * validates email and password when they lost focus
      */
+    private fun setFocusListener() {
+        binding.apply {
+            textInputEditTextAuthEmail.setOnFocusChangeListener { _, hasFocus ->
+                if (!hasFocus) {
+                    viewModel.validateEmail(textInputEditTextAuthEmail.text.toString())
+                }
+            }
+            textInputEditTextAuthPassword.setOnFocusChangeListener { _, hasFocus ->
+                if (!hasFocus) {
+                    viewModel.validatePassword(textInputEditTextAuthPassword.text.toString())
+                }
+            }
+        }
+    }
+
+    /**
+     * Sets Observers
+     *
+     */
+    private fun setObservers() {
+        viewModel.passwordState.observe(this) { state ->
+            binding.textInputLayoutAuthPassword.error =
+                when (state) {
+                    is AuthState.PasswordState.Error -> state.message?.let { getString(it) }
+                    is AuthState.PasswordState.Empty -> state.message?.let { getString(it) }
+                    is AuthState.PasswordState.InvisibleError,
+                    is AuthState.PasswordState.Valid -> null
+                }
+        }
+
+        viewModel.emailState.observe(this) { state ->
+            binding.textInputLayoutAuthEmail.error =
+                when (state) {
+                    is AuthState.EmailState.Error -> state.message?.let { getString(it) }
+                    is AuthState.EmailState.Empty -> state.message?.let { getString(it) }
+                    is AuthState.EmailState.InvisibleError,
+                    is AuthState.EmailState.Valid
+                    -> null
+                }
+        }
+
+        viewModel.credentialsState.observe(this) { state ->
+            when (state) {
+                is AuthState.Error ->
+                    this.toast(state.message?.let { getString(it) }.toString())
+                is AuthState.Valid -> goToNextActivity()
+            }
+        }
+    }
+
+
     private fun goToNextActivity() {
         val userName = viewModel.getName(binding.textInputEditTextAuthEmail.text.toString())
         val intent = Intent(this@AuthActivity, MainActivity::class.java)
@@ -77,64 +125,5 @@ class AuthActivity : AppCompatActivity() {
         intent.putExtra(USER_NAME_KEY, userName)
         startActivity(intent, option.toBundle())
         finish()
-    }
-
-    /** This method validates email and password if their InputEditText was focused,
-     * but lost it.
-     */
-    private fun setFocusListener() {
-        binding.apply {
-            textInputEditTextAuthEmail.setOnFocusChangeListener { v, hasFocus ->
-                viewModel.focusEmailUpdate(hasFocus, v.isFocused)
-                if (viewModel.wasEmailFocus()) {
-                    validateEmail()
-                }
-            }
-            textInputEditTextAuthPassword.setOnFocusChangeListener { v, hasFocus ->
-                viewModel.focusPasswordUpdate(hasFocus, v.isFocused)
-                if (viewModel.wasPasswordFocus()) {
-                    validatePassword()
-                }
-            }
-        }
-    }
-
-    /** If register button was pressed or textInputEditText was focused and lost focus,
-     * error will be shown if input text did not pass validation
-     * when user is correcting:
-     * email - error will not be shown
-     * password - error will be shown until password is correct
-     */
-    private fun setTextChangedListener() {
-        binding.apply {
-            textInputEditTextAuthEmail.doOnTextChanged { _, _, _, _ ->
-                if (viewModel.wasEmailFocus()) {
-                    validateEmail()
-                } else {
-                    textInputLayoutAuthEmail.helperText = null
-                }
-            }
-            textInputEditTextAuthPassword.doOnTextChanged { _, _, _, _ ->
-                if (viewModel.wasPasswordFocus() || viewModel.wasRegisterButtonClicked()) {
-                    validatePassword()
-                }
-            }
-        }
-    }
-
-    private fun validateEmail() {
-        binding.apply {
-            textInputLayoutAuthEmail.helperText =
-                viewModel.validateEmail(textInputEditTextAuthEmail.text.toString())
-                    ?.let { getString(it) }
-        }
-    }
-
-    private fun validatePassword() {
-        binding.apply {
-            textInputLayoutAuthPassword.helperText =
-                viewModel.validatePassword(textInputEditTextAuthPassword.text.toString())
-                    ?.let { getString(it) }
-        }
     }
 }
