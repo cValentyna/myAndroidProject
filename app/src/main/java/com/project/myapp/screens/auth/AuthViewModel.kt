@@ -1,150 +1,154 @@
 package com.project.myapp.screens.auth
 
 import android.util.Patterns
-import androidx.annotation.StringRes
 import androidx.core.text.isDigitsOnly
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.project.myapp.R
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 
 /**
  * ViewModel for saving AuthActivity state
  */
 
 class AuthViewModel : ViewModel() {
-    private val _authState = MutableStateFlow(AuthState())
-    val authState: StateFlow<AuthState> get() = _authState.asStateFlow()
+    /**
+     * Variables to track the states
+     */
+    private val _credentialsState = MutableLiveData<AuthState>()
+    val credentialsState: LiveData<AuthState> get() = _credentialsState
 
-    private fun updateState(reducer: AuthState.() -> AuthState) {
-        _authState.update(reducer)
-    }
+    private val _emailState = MutableLiveData<AuthState.EmailState>()
+    val emailState: LiveData<AuthState.EmailState> get() = _emailState
 
-    fun focusEmailUpdate(
-        hasFocus: Boolean,
-        isFocused: Boolean,
-    ) {
-        if (hasFocus) {
-            updateState {
-                copy(firstFocusEmail = true, wasFocusEmail = false)
-            }
-        } else if (!isFocused && authState.value.firstFocusEmail) {
-            updateState {
-                copy(wasFocusEmail = true)
-            }
-        }
-    }
+    private val _passwordState = MutableLiveData<AuthState.PasswordState>()
+    val passwordState: LiveData<AuthState.PasswordState> get() = _passwordState
 
-    fun focusPasswordUpdate(
-        hasFocus: Boolean,
-        isFocused: Boolean,
-    ) {
-        if (hasFocus) {
-            updateState {
-                copy(firstFocusPassword = true)
-            }
-        } else if (!isFocused && authState.value.firstFocusPassword) {
-            updateState {
-                copy(wasFocusPassword = true)
-            }
-        }
-    }
+    /**
+     * Validates email when email is not empty  and changes _emailState.value
+     */
 
-    fun wasEmailFocus(): Boolean = authState.value.wasFocusEmail
-
-    fun wasPasswordFocus(): Boolean = authState.value.wasFocusPassword
-
-    fun wasRegisterButtonClicked(): Boolean = authState.value.wasRegisterButtonClicked
-
-    fun isPasswordCorrect(): Boolean = authState.value.isUserPasswordValid
-
-    fun isEmailCorrect(): Boolean = authState.value.isUserEmailValid
-
-    fun updateRegistrationButtonClicked() {
-        if (!authState.value.wasRegisterButtonClicked) {
-            updateState {
-                copy(wasRegisterButtonClicked = true)
-            }
+    fun validateEmail(email: String) {
+        val pattern = Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        if (!pattern && email.isNotEmpty()){
+            _emailState.value = AuthState.EmailState.Error(getEmailError())
+        } else if (pattern) {
+            _emailState.value = AuthState.EmailState.Valid
         }
     }
 
     /**
-     * This method checks
-     * @param text - password
-     * @return Int- the string id if the verification failed,
-     * or null if the password is empty or correct
+     * Changes emailState.value to AuthState.EmailState.InvisibleError
+     * when validation is not required
      */
-    @StringRes
-    fun validatePassword(text: CharSequence): Int? {
-        val isCheckFail =
-            text.toString().isNotEmpty() &&
-                (
-                    !text.toString().validSigns() ||
-                        text.toString().isDigitsOnly() ||
-                        text.toString().onlyLetters() ||
-                        text.toString().length < MINIMUM_PASSWORD_SIZE
-                )
+    fun pauseCheckEmail() {
+        _emailState.value = AuthState.EmailState.InvisibleError
+    }
 
-        if (isCheckFail) {
-            updateState { copy(isUserPasswordValid = false) }
+    /**
+     * Gets an email error when  email is invalid
+     */
+
+    private fun getEmailError(): Int {
+        return R.string.error_e_mail_address
+    }
+
+    /**
+     * Validates password when it is not empty  and changes _passwordState.value
+     */
+
+    fun validatePassword(password: String) {
+        val isFailed =
+            password.isNotEmpty() && (
+                    !password.validSigns() ||
+                            password.isDigitsOnly() ||
+                            password.onlyLetters() ||
+                            password.length < MINIMUM_PASSWORD_SIZE)
+
+        if (isFailed) {
+            _passwordState.value = AuthState.PasswordState.Error(getPasswordError(password))
         } else {
-            updateState { copy(isUserPasswordValid = true) }
+            _passwordState.value =AuthState.PasswordState.Valid
         }
+    }
 
+    /**
+     * Gets a password error when  filled password is invalid, depends on the reason for the error
+     */
+
+    private fun getPasswordError(text: String): Int? {
         return when {
-            !text.toString().validSigns() ->
+            !text.validSigns() ->
                 R.string.error_password_unpredictable_symbols
 
-            text.toString().onlyLetters() ->
+            text.onlyLetters() ->
                 R.string.error_password_digit
 
-            text.toString().isDigitsOnly() ->
+            text.isDigitsOnly() ->
                 R.string.error_password_letters
 
-            text.toString().length < MINIMUM_PASSWORD_SIZE ->
+            text.length < MINIMUM_PASSWORD_SIZE ->
                 R.string.error_password_minimum_characters
 
             else -> null
         }
     }
 
+
     /**
-     * This method checks
-     * @param text - email
-     * @return Int- the string id if the verification failed,
-     * or null if the password is empty or correct
+     * Changes _passwordState.value to AuthState.EmailState.InvisibleError
+     * when validation is not required
      */
-    @StringRes
-    fun validateEmail(text: CharSequence): Int? {
-        val pattern = Patterns.EMAIL_ADDRESS.matcher(text.toString()).matches()
-        return if (!pattern && text.toString().isNotEmpty()) {
-            updateState { copy(isUserEmailValid = false) }
-            R.string.error_e_mail_address
+
+    fun pauseCheckPassword() {
+        _passwordState.value = AuthState.PasswordState.InvisibleError
+    }
+
+    /**
+     * Checks credentials
+     * @param email
+     * @param password
+     * When both fields need to be checked at the same time
+     * Depending on the result, changes _credentialsState.value
+     */
+
+    fun checkCredentials(email: String, password: String) {
+
+        checkEmailByClick(email)
+        checkPasswordByClick(password)
+
+        if (_passwordState.value is AuthState.PasswordState.Valid
+            && _emailState.value is AuthState.EmailState.Valid) {
+            _credentialsState.value = AuthState.Valid
         } else {
-            updateState { copy(isUserEmailValid = true) }
-            null
+            _credentialsState.value = AuthState.Error(R.string.error_invalid_email_or_password)
         }
     }
 
-    @StringRes
-    fun checkEmailByClick(text: CharSequence): Int? {
-        if (text.isEmpty()) {
-            updateState { copy(isUserEmailValid = false) }
-            return R.string.error_email_empty
+    /**
+     * Validates
+     * @param email
+     * when user clicked authorization button
+     */
+
+    private fun checkEmailByClick(email:String) {
+        if (email.isEmpty()) {
+            _emailState.value = AuthState.EmailState.Empty(R.string.error_email_empty)
         } else {
-            return validateEmail(text)
+            validateEmail(email)
         }
     }
 
-    @StringRes
-    fun checkPasswordByClick(text: CharSequence): Int? {
-        if (text.isEmpty()) {
-            updateState { copy(isUserPasswordValid = false) }
-            return R.string.error_password_empty
+    /**
+     * Validates
+     * @param password
+     * when user clicked authorization button
+     */
+    private fun checkPasswordByClick(password: String) {
+        if (password.isEmpty()) {
+            _passwordState.value = AuthState.PasswordState.Empty(R.string.error_password_empty)
         } else {
-            return validatePassword(text)
+            validatePassword(password)
         }
     }
 
@@ -153,11 +157,16 @@ class AuthViewModel : ViewModel() {
      * @param email
      * @return name
      */
+
     fun getName(email: String): String =
         email
             .substringBefore("@")
             .split(".", "_")
             .joinToString(" ") { it -> it.lowercase().replaceFirstChar { it.uppercaseChar() } }
+
+    /**
+     * Companion object for password validation
+     */
 
     companion object {
         const val MINIMUM_PASSWORD_SIZE = 8
