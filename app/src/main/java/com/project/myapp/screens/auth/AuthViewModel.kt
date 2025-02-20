@@ -1,6 +1,7 @@
 package com.project.myapp.screens.auth
 
 import android.util.Patterns
+import androidx.annotation.StringRes
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -48,7 +49,7 @@ class AuthViewModel : ViewModel() {
     /**
      * Gets an email error when  email is invalid
      */
-
+    @StringRes
     private fun getEmailError(): Int {
         return R.string.error_e_mail_address
     }
@@ -75,6 +76,7 @@ class AuthViewModel : ViewModel() {
     /**
      * Gets a password error when  filled password is invalid, depends on the reason for the error
      */
+    @StringRes
 
     private fun getPasswordError(text: String): Int? {
         return when {
