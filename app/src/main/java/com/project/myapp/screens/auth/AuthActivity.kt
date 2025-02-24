@@ -6,11 +6,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.lifecycleScope
 import com.project.myapp.KeysHolder.USER_NAME_KEY
 import com.project.myapp.R
 import com.project.myapp.databinding.ActivityAuthBinding
 import com.project.myapp.screens.main.MainActivity
 import com.project.myapp.toast
+import kotlinx.coroutines.launch
 
 class AuthActivity : AppCompatActivity() {
     private val binding: ActivityAuthBinding by lazy {
@@ -82,36 +84,44 @@ class AuthActivity : AppCompatActivity() {
      *
      */
     private fun setObservers() {
-        viewModel.passwordState.observe(this) { state ->
-            binding.textInputLayoutAuthPassword.error =
-                when (state) {
-                    is AuthState.PasswordState.Error -> state.message?.let { getString(it) }
-                    is AuthState.PasswordState.Empty -> state.message?.let { getString(it) }
-                    is AuthState.PasswordState.InvisibleError,
-                    is AuthState.PasswordState.Valid -> null
-                }
+        lifecycleScope.launch {
+            viewModel.passwordState.collect { state ->
+                binding.textInputLayoutAuthPassword.error =
+                    when (state) {
+                        is AuthState.PasswordState.Error -> state.message?.let { getString(it) }
+                        is AuthState.PasswordState.Empty -> state.message?.let { getString(it) }
+                        is AuthState.PasswordState.InvisibleError,
+                        is AuthState.PasswordState.Valid,
+                        is AuthState.PasswordState.Initial,
+                        -> null
+                    }
+            }
+        }
+        lifecycleScope.launch {
+            viewModel.emailState.collect { state ->
+                binding.textInputLayoutAuthEmail.error =
+                    when (state) {
+                        is AuthState.EmailState.Error -> state.message?.let { getString(it) }
+                        is AuthState.EmailState.Empty -> state.message?.let { getString(it) }
+                        is AuthState.EmailState.InvisibleError,
+                        is AuthState.EmailState.Valid,
+                        is AuthState.EmailState.Initial,
+                        -> null
+                    }
+            }
         }
 
-        viewModel.emailState.observe(this) { state ->
-            binding.textInputLayoutAuthEmail.error =
+        lifecycleScope.launch {
+            viewModel.credentialsState.collect { state ->
                 when (state) {
-                    is AuthState.EmailState.Error -> state.message?.let { getString(it) }
-                    is AuthState.EmailState.Empty -> state.message?.let { getString(it) }
-                    is AuthState.EmailState.InvisibleError,
-                    is AuthState.EmailState.Valid
-                    -> null
+                    is AuthState.Error ->
+                        toast(state.message?.let { getString(it) }.toString())
+                    is AuthState.Valid -> goToNextActivity()
+                    is AuthState.Initial -> {}
                 }
-        }
-
-        viewModel.credentialsState.observe(this) { state ->
-            when (state) {
-                is AuthState.Error ->
-                    this.toast(state.message?.let { getString(it) }.toString())
-                is AuthState.Valid -> goToNextActivity()
             }
         }
     }
-
 
     private fun goToNextActivity() {
         val userName = viewModel.getName(binding.textInputEditTextAuthEmail.text.toString())
