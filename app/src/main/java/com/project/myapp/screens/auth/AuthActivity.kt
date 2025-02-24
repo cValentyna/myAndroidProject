@@ -10,8 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import com.project.myapp.KeysHolder.USER_NAME_KEY
 import com.project.myapp.R
 import com.project.myapp.databinding.ActivityAuthBinding
+import com.project.myapp.ext.toast
 import com.project.myapp.screens.main.MainActivity
-import com.project.myapp.toast
 import kotlinx.coroutines.launch
 
 class AuthActivity : AppCompatActivity() {
@@ -80,19 +80,28 @@ class AuthActivity : AppCompatActivity() {
     }
 
     /**
-     * Sets Observers
-     *
+     * Sets collectors for monitored states
      */
     private fun setStatesCollectors() {
         lifecycleScope.launch {
             viewModel.passwordState.collect { state ->
                 binding.textInputLayoutAuthPassword.helperText =
                     when (state) {
-                        is AuthState.PasswordState.ErrorInvalidSign -> getString(R.string.error_password_unpredictable_symbols)
-                        is AuthState.PasswordState.ErrorLessCharacters -> getString(R.string.error_password_minimum_characters)
-                        is AuthState.PasswordState.ErrorNoNumber -> getString(R.string.error_password_digit)
-                        is AuthState.PasswordState.ErrorNoLetter -> getString(R.string.error_password_letters)
-                        is AuthState.PasswordState.ErrorEmpty -> getString(R.string.error_password_empty)
+                        is AuthState.PasswordState.ErrorInvalidSign ->
+                            getString(R.string.error_password_unpredictable_symbols)
+
+                        is AuthState.PasswordState.ErrorLessCharacters ->
+                            getString(R.string.error_password_minimum_characters)
+
+                        is AuthState.PasswordState.ErrorNoNumber ->
+                            getString(R.string.error_password_digit)
+
+                        is AuthState.PasswordState.ErrorNoLetter ->
+                            getString(R.string.error_password_letters)
+
+                        is AuthState.PasswordState.ErrorEmpty ->
+                            getString(R.string.error_password_empty)
+
                         is AuthState.PasswordState.InvisibleError,
                         is AuthState.PasswordState.Valid,
                         is AuthState.PasswordState.Initial,
@@ -129,16 +138,19 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun goToNextActivity() {
-        val userName = viewModel.getName(binding.textInputEditTextAuthEmail.text.toString())
-        val intent = Intent(this@AuthActivity, MainActivity::class.java)
-        val option =
+        val userName = viewModel.parseName(binding.textInputEditTextAuthEmail.text.toString())
+        val animation =
             ActivityOptionsCompat.makeCustomAnimation(
                 this@AuthActivity,
                 R.anim.slide_in_left,
                 R.anim.slide_out_left,
             )
-        intent.putExtra(USER_NAME_KEY, userName)
-        startActivity(intent, option.toBundle())
+        val intent =
+            Intent(this, MainActivity::class.java).apply {
+                putExtra(USER_NAME_KEY, userName)
+            }
+
+        startActivity(intent, animation.toBundle())
         finish()
     }
 }

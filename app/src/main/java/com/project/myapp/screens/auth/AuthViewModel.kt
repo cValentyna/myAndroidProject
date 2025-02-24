@@ -89,7 +89,10 @@ class AuthViewModel : ViewModel() {
      * Depending on the result, changes _credentialsState.value
      */
 
-    fun checkCredentials(email: String, password: String) {
+    fun checkCredentials(
+        email: String,
+        password: String,
+    ) {
         validateEmail(email)
         validatePassword(password)
 
@@ -108,7 +111,7 @@ class AuthViewModel : ViewModel() {
      * @return name
      */
 
-    fun getName(email: String): String =
+    fun parseName(email: String): String =
         email
             .substringBefore("@")
             .split(".", "_")
