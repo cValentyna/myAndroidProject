@@ -9,38 +9,34 @@ sealed class AuthState {
 
     data object Valid : AuthState()
 
-    data class Error(
-        val message: Int?,
-    ) : AuthState()
+    data object Error : AuthState()
 
     sealed class EmailState {
         data object Initial : EmailState()
 
         data object Valid : EmailState()
 
-        data class Error(
-            val message: Int?,
-        ) : EmailState()
+        data object Error : EmailState()
 
-        data class Empty(
-            val message: Int?,
-        ) : EmailState()
+        data object ErrorEmpty : EmailState()
 
         data object InvisibleError : EmailState()
     }
 
     sealed class PasswordState {
-        data object Valid : PasswordState()
-
         data object Initial : PasswordState()
 
-        data class Error(
-            val message: Int?,
-        ) : PasswordState()
+        data object Valid : PasswordState()
 
-        data class Empty(
-            val message: Int?,
-        ) : PasswordState()
+        data object ErrorInvalidSign : PasswordState()
+
+        data object ErrorNoLetter : PasswordState()
+
+        data object ErrorNoNumber : PasswordState()
+
+        data object ErrorLessCharacters : PasswordState()
+
+        data object ErrorEmpty : PasswordState()
 
         data object InvisibleError : PasswordState()
     }

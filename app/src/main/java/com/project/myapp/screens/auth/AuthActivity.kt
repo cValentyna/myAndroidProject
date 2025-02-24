@@ -26,7 +26,7 @@ class AuthActivity : AppCompatActivity() {
         setFocusListener()
         setTextChangedListener()
         setOnClickListener()
-        setObservers()
+        setStatesCollectors()
     }
 
     /**
@@ -83,13 +83,16 @@ class AuthActivity : AppCompatActivity() {
      * Sets Observers
      *
      */
-    private fun setObservers() {
+    private fun setStatesCollectors() {
         lifecycleScope.launch {
             viewModel.passwordState.collect { state ->
-                binding.textInputLayoutAuthPassword.error =
+                binding.textInputLayoutAuthPassword.helperText =
                     when (state) {
-                        is AuthState.PasswordState.Error -> state.message?.let { getString(it) }
-                        is AuthState.PasswordState.Empty -> state.message?.let { getString(it) }
+                        is AuthState.PasswordState.ErrorInvalidSign -> getString(R.string.error_password_unpredictable_symbols)
+                        is AuthState.PasswordState.ErrorLessCharacters -> getString(R.string.error_password_minimum_characters)
+                        is AuthState.PasswordState.ErrorNoNumber -> getString(R.string.error_password_digit)
+                        is AuthState.PasswordState.ErrorNoLetter -> getString(R.string.error_password_letters)
+                        is AuthState.PasswordState.ErrorEmpty -> getString(R.string.error_password_empty)
                         is AuthState.PasswordState.InvisibleError,
                         is AuthState.PasswordState.Valid,
                         is AuthState.PasswordState.Initial,
@@ -97,12 +100,13 @@ class AuthActivity : AppCompatActivity() {
                     }
             }
         }
+
         lifecycleScope.launch {
             viewModel.emailState.collect { state ->
-                binding.textInputLayoutAuthEmail.error =
+                binding.textInputLayoutAuthEmail.helperText =
                     when (state) {
-                        is AuthState.EmailState.Error -> state.message?.let { getString(it) }
-                        is AuthState.EmailState.Empty -> state.message?.let { getString(it) }
+                        is AuthState.EmailState.Error -> getString(R.string.error_incorrect_e_mail_address)
+                        is AuthState.EmailState.ErrorEmpty -> getString(R.string.error_email_empty)
                         is AuthState.EmailState.InvisibleError,
                         is AuthState.EmailState.Valid,
                         is AuthState.EmailState.Initial,
@@ -115,7 +119,8 @@ class AuthActivity : AppCompatActivity() {
             viewModel.credentialsState.collect { state ->
                 when (state) {
                     is AuthState.Error ->
-                        toast(state.message?.let { getString(it) }.toString())
+                        toast(getString(R.string.error_invalid_email_or_password))
+
                     is AuthState.Valid -> goToNextActivity()
                     is AuthState.Initial -> {}
                 }

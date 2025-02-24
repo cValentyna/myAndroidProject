@@ -1,10 +1,8 @@
 package com.project.myapp.screens.auth
 
 import android.util.Patterns
-import androidx.annotation.StringRes
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
-import com.project.myapp.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -26,13 +24,15 @@ class AuthViewModel : ViewModel() {
     val passwordState: StateFlow<AuthState.PasswordState> get() = _passwordState
 
     /**
-     * Validates email when email is not empty  and changes _emailState.value
+     * Validates email, changes _emailState.value as AuthState.EmailState
+     * which depends on filled data
      */
-
     fun validateEmail(email: String) {
         val pattern = Patterns.EMAIL_ADDRESS.matcher(email).matches()
         if (!pattern && email.isNotEmpty()) {
-            _emailState.value = AuthState.EmailState.Error(getEmailError())
+            _emailState.value = AuthState.EmailState.Error
+        } else if (email.isEmpty()) {
+            _emailState.value = AuthState.EmailState.ErrorEmpty
         } else if (pattern) {
             _emailState.value = AuthState.EmailState.Valid
         }
@@ -40,63 +40,41 @@ class AuthViewModel : ViewModel() {
 
     /**
      * Changes emailState.value to AuthState.EmailState.InvisibleError
-     * when validation is not required
+     * when validation is not required (user changes text inside chosen field)
      */
     fun pauseCheckEmail() {
         _emailState.value = AuthState.EmailState.InvisibleError
     }
 
     /**
-     * Gets an email error when  email is invalid
-     */
-    @StringRes
-    private fun getEmailError(): Int = R.string.error_incorrect_e_mail_address
-
-    /**
-     * Validates password when it is not empty  and changes _passwordState.value
+     * Validates password, changes _passwordState.value as AuthState.PasswordState
+     * which depends on filled data
      */
 
-    fun validatePassword(password: String) {
-        val isFailed =
-            password.isNotEmpty() &&
-                (
-                    !password.validSigns() ||
-                        password.isDigitsOnly() ||
-                        password.onlyLetters() ||
-                        password.length < MINIMUM_PASSWORD_SIZE
-                )
+    fun validatePassword(text: String) {
+        when {
+            text.isEmpty() ->
+                _passwordState.value = AuthState.PasswordState.ErrorEmpty
 
-        if (isFailed) {
-            _passwordState.value = AuthState.PasswordState.Error(getPasswordError(password))
-        } else {
-            _passwordState.value = AuthState.PasswordState.Valid
+            !text.validSigns() ->
+                _passwordState.value = AuthState.PasswordState.ErrorInvalidSign
+
+            text.onlyLetters() ->
+                _passwordState.value = AuthState.PasswordState.ErrorNoNumber
+
+            text.isDigitsOnly() ->
+                _passwordState.value = AuthState.PasswordState.ErrorNoLetter
+
+            text.length < MINIMUM_PASSWORD_SIZE ->
+                _passwordState.value = AuthState.PasswordState.ErrorLessCharacters
+
+            else -> _passwordState.value = AuthState.PasswordState.Valid
         }
     }
 
     /**
-     * Gets a password error when  filled password is invalid, depends on the reason for the error
-     */
-    @StringRes
-    private fun getPasswordError(text: String): Int? =
-        when {
-            !text.validSigns() ->
-                R.string.error_password_unpredictable_symbols
-
-            text.onlyLetters() ->
-                R.string.error_password_digit
-
-            text.isDigitsOnly() ->
-                R.string.error_password_letters
-
-            text.length < MINIMUM_PASSWORD_SIZE ->
-                R.string.error_password_minimum_characters
-
-            else -> null
-        }
-
-    /**
-     * Changes _passwordState.value to AuthState.EmailState.InvisibleError
-     * when validation is not required
+     * Changes _passwordState.value to AuthState.Password.InvisibleError
+     * when validation is not required (user changes text inside chosen field)
      */
 
     fun pauseCheckPassword() {
@@ -111,46 +89,16 @@ class AuthViewModel : ViewModel() {
      * Depending on the result, changes _credentialsState.value
      */
 
-    fun checkCredentials(
-        email: String,
-        password: String,
-    ) {
-        checkEmailByClick(email)
-        checkPasswordByClick(password)
+    fun checkCredentials(email: String, password: String) {
+        validateEmail(email)
+        validatePassword(password)
 
         if (_passwordState.value is AuthState.PasswordState.Valid &&
             _emailState.value is AuthState.EmailState.Valid
         ) {
             _credentialsState.value = AuthState.Valid
         } else {
-            _credentialsState.value = AuthState.Error(R.string.error_invalid_email_or_password)
-        }
-    }
-
-    /**
-     * Validates
-     * @param email
-     * when user clicked authorization button
-     */
-
-    private fun checkEmailByClick(email: String) {
-        if (email.isEmpty()) {
-            _emailState.value = AuthState.EmailState.Empty(R.string.error_email_empty)
-        } else {
-            validateEmail(email)
-        }
-    }
-
-    /**
-     * Validates
-     * @param password
-     * when user clicked authorization button
-     */
-    private fun checkPasswordByClick(password: String) {
-        if (password.isEmpty()) {
-            _passwordState.value = AuthState.PasswordState.Empty(R.string.error_password_empty)
-        } else {
-            validatePassword(password)
+            _credentialsState.value = AuthState.Error
         }
     }
 
