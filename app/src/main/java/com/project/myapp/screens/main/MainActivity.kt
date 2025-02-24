@@ -29,13 +29,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun goToPreviousActivity() {
         val intent = Intent(this@MainActivity, AuthActivity::class.java)
-        val option =
+        val animation =
             ActivityOptionsCompat.makeCustomAnimation(
                 this@MainActivity,
                 R.anim.slide_in_right,
                 R.anim.slide_out_right,
             )
-        startActivity(intent, option.toBundle())
+        startActivity(intent, animation.toBundle())
         finish()
     }
 
