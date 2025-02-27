@@ -23,10 +23,6 @@ class AuthViewModel : ViewModel() {
     private val _passwordState = MutableStateFlow<AuthState.PasswordState>(AuthState.PasswordState.Initial)
     val passwordState: StateFlow<AuthState.PasswordState> get() = _passwordState
 
-    /**
-     * Validates email, changes _emailState.value as AuthState.EmailState
-     * which depends on filled data
-     */
     fun validateEmail(email: String) {
         val pattern = Patterns.EMAIL_ADDRESS.matcher(email).matches()
         if (!pattern && email.isNotEmpty()) {
@@ -39,17 +35,12 @@ class AuthViewModel : ViewModel() {
     }
 
     /**
-     * Changes emailState.value to AuthState.EmailState.InvisibleError
-     * when validation is not required (user changes text inside chosen field)
+     * Changes state value when validation is not required
+     * (user changes text inside chosen field)
      */
     fun pauseCheckEmail() {
         _emailState.value = AuthState.EmailState.InvisibleError
     }
-
-    /**
-     * Validates password, changes _passwordState.value as AuthState.PasswordState
-     * which depends on filled data
-     */
 
     fun validatePassword(text: String) {
         when {
@@ -73,8 +64,8 @@ class AuthViewModel : ViewModel() {
     }
 
     /**
-     * Changes _passwordState.value to AuthState.Password.InvisibleError
-     * when validation is not required (user changes text inside chosen field)
+     * Changes state value when validation is not required
+     * (user changes text inside chosen field)
      */
 
     fun pauseCheckPassword() {
@@ -86,7 +77,6 @@ class AuthViewModel : ViewModel() {
      * @param email
      * @param password
      * When both fields need to be checked at the same time
-     * Depending on the result, changes _credentialsState.value
      */
 
     fun checkCredentials(

@@ -46,7 +46,8 @@ class AuthActivity : AppCompatActivity() {
 
     /**
      * Sets TextChangedListeners
-     * pauses email and password validation when text inside fields changes
+     * pauses email and password validation and hides error if it was shown
+     * when text inside fields changes
      */
 
     private fun setTextChangedListener() {
@@ -101,11 +102,7 @@ class AuthActivity : AppCompatActivity() {
 
                         is AuthState.PasswordState.ErrorEmpty ->
                             getString(R.string.error_password_empty)
-
-                        is AuthState.PasswordState.InvisibleError,
-                        is AuthState.PasswordState.Valid,
-                        is AuthState.PasswordState.Initial,
-                        -> null
+                        else -> null
                     }
             }
         }
@@ -116,10 +113,7 @@ class AuthActivity : AppCompatActivity() {
                     when (state) {
                         is AuthState.EmailState.Error -> getString(R.string.error_incorrect_e_mail_address)
                         is AuthState.EmailState.ErrorEmpty -> getString(R.string.error_email_empty)
-                        is AuthState.EmailState.InvisibleError,
-                        is AuthState.EmailState.Valid,
-                        is AuthState.EmailState.Initial,
-                        -> null
+                        else -> null
                     }
             }
         }
