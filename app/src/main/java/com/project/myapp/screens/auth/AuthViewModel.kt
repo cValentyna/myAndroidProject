@@ -25,13 +25,14 @@ class AuthViewModel : ViewModel() {
 
     fun validateEmail(email: String) {
         val pattern = Patterns.EMAIL_ADDRESS.matcher(email).matches()
-        if (!pattern && email.isNotEmpty()) {
-            _emailState.value = AuthState.EmailState.Error
-        } else if (email.isEmpty()) {
-            _emailState.value = AuthState.EmailState.ErrorEmpty
-        } else if (pattern) {
-            _emailState.value = AuthState.EmailState.Valid
-        }
+        _emailState.value =
+            if (email.isEmpty()) {
+                AuthState.EmailState.ErrorEmpty
+            } else if (!pattern) {
+                AuthState.EmailState.Error
+            } else {
+                AuthState.EmailState.Valid
+            }
     }
 
     /**
