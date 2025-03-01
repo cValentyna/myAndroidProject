@@ -125,7 +125,7 @@ class AuthActivity : AppCompatActivity() {
                         toast(getString(R.string.error_invalid_email_or_password))
 
                     is AuthState.Valid -> goToNextActivity()
-                    is AuthState.Initial -> {}
+                    else -> {}
                 }
             }
         }
