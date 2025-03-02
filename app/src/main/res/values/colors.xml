@@ -8,6 +8,7 @@
     <color name="button_log_out_stroke_color">#B2B2B3</color>
 
     <color name="invisible">#00000000</color>
+    <color name="button_edit_contacts_gradient">#50FB5E06</color>
 
     <color name="primary_brightest_text_font">#FAFAFA</color>
     <color name="the_brightest_font">#FFFFFF</color>
