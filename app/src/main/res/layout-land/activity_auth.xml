@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/primary_background"
     android:enabled="true"
-    tools:context=".AuthActivity">
+    tools:context=".screens.auth.AuthActivity">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewAuthAcquainted"
