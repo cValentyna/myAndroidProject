@@ -7,6 +7,9 @@ import androidx.core.app.ActivityOptionsCompat
 import com.project.myapp.KeysHolder.USER_NAME_KEY
 import com.project.myapp.R
 import com.project.myapp.databinding.ActivityMainBinding
+import com.project.myapp.ext.componentactivity.handleBackPress
+import com.project.myapp.ext.componentactivity.setEnableEdgeToEdge
+import com.project.myapp.ext.view.setVisualize
 import com.project.myapp.screens.auth.AuthActivity
 
 class MainActivity : AppCompatActivity() {
@@ -19,6 +22,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setName()
         setOnClickListener()
+        handleBackPress()
+    }
+
+    private fun setView() {
+        setEnableEdgeToEdge()
+        setContentView(binding.root)
+        binding.root.setVisualize()
     }
 
     private fun setOnClickListener() {

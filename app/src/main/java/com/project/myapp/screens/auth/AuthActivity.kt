@@ -10,7 +10,9 @@ import androidx.lifecycle.lifecycleScope
 import com.project.myapp.KeysHolder.USER_NAME_KEY
 import com.project.myapp.R
 import com.project.myapp.databinding.ActivityAuthBinding
+import com.project.myapp.ext.componentactivity.setEnableEdgeToEdge
 import com.project.myapp.ext.toast
+import com.project.myapp.ext.view.setVisualize
 import com.project.myapp.screens.main.MainActivity
 import kotlinx.coroutines.launch
 
@@ -22,11 +24,17 @@ class AuthActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+        setView()
         setFocusListener()
         setTextChangedListener()
         setOnClickListener()
         setStatesCollectors()
+    }
+
+    private fun setView() {
+        setEnableEdgeToEdge()
+        setContentView(binding.root)
+        binding.root.setVisualize()
     }
 
     /**
