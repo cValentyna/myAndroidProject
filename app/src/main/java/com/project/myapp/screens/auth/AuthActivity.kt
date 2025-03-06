@@ -6,6 +6,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
+import com.project.myapp.DataStore
+import com.project.myapp.DataStore.DataStoreKeys.USER_NAME
 import com.project.myapp.KeysHolder.USER_NAME_KEY
 import com.project.myapp.R
 import com.project.myapp.databinding.ActivityAuthBinding
@@ -14,13 +16,19 @@ import com.project.myapp.ext.context.customAnimationForward
 import com.project.myapp.ext.context.toast
 import com.project.myapp.ext.view.setVisualize
 import com.project.myapp.screens.main.MainActivity
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class AuthActivity : AppCompatActivity() {
     private val binding: ActivityAuthBinding by lazy {
         ActivityAuthBinding.inflate(layoutInflater)
     }
+    private val dataStore: DataStore by lazy {
+        DataStore(this)
+    }
     private val viewModel: AuthViewModel by viewModels()
+
+    private lateinit var userName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +37,11 @@ class AuthActivity : AppCompatActivity() {
         setTextChangedListener()
         setOnClickListener()
         setStatesCollectors()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        goToNextActivityIfUserSaved()
     }
 
     private fun setView() {
@@ -140,7 +153,12 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun goToNextActivity() {
-        val userName = viewModel.parseName(binding.textInputEditTextAuthEmail.text.toString())
+        userName = viewModel.parseName(binding.textInputEditTextAuthEmail.text.toString())
+        binding.apply {
+            if (checkboxAuth.isChecked) {
+                saveUser(checkboxAuth.isChecked, userName)
+            }
+        }
         val intent =
             Intent(this, MainActivity::class.java).apply {
                 putExtra(USER_NAME_KEY, userName)
@@ -148,5 +166,28 @@ class AuthActivity : AppCompatActivity() {
 
         startActivity(intent, customAnimationForward().toBundle())
         finish()
+    }
+
+    private fun saveUser(
+        isChecked: Boolean,
+        name: String,
+    ) {
+        lifecycleScope.launch {
+            dataStore.saveData(isChecked, name)
+        }
+    }
+
+    private fun goToNextActivityIfUserSaved() {
+        lifecycleScope.launch {
+            if (dataStore.getWasChecked().first()) {
+                val intent = Intent(this@AuthActivity, MainActivity::class.java)
+                intent.putExtra(
+                    USER_NAME_KEY,
+                    dataStore.getSavedString(USER_NAME).first(),
+                )
+                startActivity(intent)
+                finish()
+            }
+        }
     }
 }
