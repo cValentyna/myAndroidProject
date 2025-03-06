@@ -4,14 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.project.myapp.KeysHolder.USER_NAME_KEY
 import com.project.myapp.R
 import com.project.myapp.databinding.ActivityAuthBinding
 import com.project.myapp.ext.componentactivity.setEnableEdgeToEdge
-import com.project.myapp.ext.toast
+import com.project.myapp.ext.context.customAnimationForward
+import com.project.myapp.ext.context.toast
 import com.project.myapp.ext.view.setVisualize
 import com.project.myapp.screens.main.MainActivity
 import kotlinx.coroutines.launch
@@ -141,18 +141,12 @@ class AuthActivity : AppCompatActivity() {
 
     private fun goToNextActivity() {
         val userName = viewModel.parseName(binding.textInputEditTextAuthEmail.text.toString())
-        val animation =
-            ActivityOptionsCompat.makeCustomAnimation(
-                this@AuthActivity,
-                R.anim.slide_in_left,
-                R.anim.slide_out_left,
-            )
         val intent =
             Intent(this, MainActivity::class.java).apply {
                 putExtra(USER_NAME_KEY, userName)
             }
 
-        startActivity(intent, animation.toBundle())
+        startActivity(intent, customAnimationForward().toBundle())
         finish()
     }
 }
