@@ -6,27 +6,24 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
-import com.project.myapp.DataStore
-import com.project.myapp.DataStore.DataStoreKeys.USER_NAME
 import com.project.myapp.KeysHolder.USER_NAME_KEY
 import com.project.myapp.R
 import com.project.myapp.databinding.ActivityAuthBinding
-import com.project.myapp.ext.componentactivity.setEnableEdgeToEdge
+import com.project.myapp.ext.componentactivity.EnableEdgeToEdgeGrayStatusBar
 import com.project.myapp.ext.context.customAnimationForward
 import com.project.myapp.ext.context.toast
-import com.project.myapp.ext.view.setVisualize
+import com.project.myapp.ext.view.initializeWindowInsetsHandling
 import com.project.myapp.screens.main.MainActivity
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class AuthActivity : AppCompatActivity() {
     private val binding: ActivityAuthBinding by lazy {
         ActivityAuthBinding.inflate(layoutInflater)
     }
-    private val dataStore: DataStore by lazy {
-        DataStore(this)
+
+    private val viewModel: AuthViewModel by viewModels {
+        AuthViewModel.Factory
     }
-    private val viewModel: AuthViewModel by viewModels()
 
     private lateinit var userName: String
 
@@ -45,9 +42,9 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun setView() {
-        setEnableEdgeToEdge()
+        EnableEdgeToEdgeGrayStatusBar()
         setContentView(binding.root)
-        binding.root.setVisualize()
+        binding.root.initializeWindowInsetsHandling()
     }
 
     /**
@@ -156,7 +153,7 @@ class AuthActivity : AppCompatActivity() {
         userName = viewModel.parseName(binding.textInputEditTextAuthEmail.text.toString())
         binding.apply {
             if (checkboxAuth.isChecked) {
-                saveUser(checkboxAuth.isChecked, userName)
+                viewModel.saveUser(userName, checkboxAuth.isChecked)
             }
         }
         val intent =
@@ -168,22 +165,13 @@ class AuthActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun saveUser(
-        isChecked: Boolean,
-        name: String,
-    ) {
-        lifecycleScope.launch {
-            dataStore.saveData(isChecked, name)
-        }
-    }
-
     private fun goToNextActivityIfUserSaved() {
         lifecycleScope.launch {
-            if (dataStore.getWasChecked().first()) {
+            if (viewModel.wasSavedUser()) {
                 val intent = Intent(this@AuthActivity, MainActivity::class.java)
                 intent.putExtra(
                     USER_NAME_KEY,
-                    dataStore.getSavedString(USER_NAME).first(),
+                    viewModel.getSavedName(),
                 )
                 startActivity(intent)
                 finish()

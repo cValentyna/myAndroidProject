@@ -7,10 +7,10 @@ import androidx.lifecycle.lifecycleScope
 import com.project.myapp.DataStore
 import com.project.myapp.KeysHolder.USER_NAME_KEY
 import com.project.myapp.databinding.ActivityMainBinding
+import com.project.myapp.ext.componentactivity.EnableEdgeToEdgeGrayStatusBar
 import com.project.myapp.ext.componentactivity.handleBackPress
-import com.project.myapp.ext.componentactivity.setEnableEdgeToEdge
 import com.project.myapp.ext.context.customAnimationBackward
-import com.project.myapp.ext.view.setVisualize
+import com.project.myapp.ext.view.initializeWindowInsetsHandling
 import com.project.myapp.screens.auth.AuthActivity
 import kotlinx.coroutines.launch
 
@@ -32,9 +32,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setView() {
-        setEnableEdgeToEdge()
+        EnableEdgeToEdgeGrayStatusBar()
         setContentView(binding.root)
-        binding.root.setVisualize()
+        binding.root.initializeWindowInsetsHandling()
     }
 
     private fun setOnClickListener() {

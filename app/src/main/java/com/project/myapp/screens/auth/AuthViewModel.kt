@@ -3,14 +3,25 @@ package com.project.myapp.screens.auth
 import android.util.Patterns
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.project.myapp.DataStore
+import com.project.myapp.MyApp
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 /**
  * ViewModel for saving AuthActivity state
  */
 
-class AuthViewModel : ViewModel() {
+class AuthViewModel(
+    private val dataStore: DataStore,
+) : ViewModel() {
     /**
      * Variables to track the states
      */
@@ -108,11 +119,28 @@ class AuthViewModel : ViewModel() {
             .split(".", "_")
             .joinToString(" ") { it -> it.lowercase().replaceFirstChar { it.uppercaseChar() } }
 
-    /**
-     * Companion object for password validation
-     */
+    suspend fun wasSavedUser(): Boolean = dataStore.getWasChecked().first()
+
+    suspend fun getSavedName(): String = dataStore.getSavedString(DataStore.USER_NAME).first()
+
+    fun saveUser(
+        name: String,
+        isChecked: Boolean,
+    ) {
+        viewModelScope.launch {
+            dataStore.saveData(isChecked, name)
+        }
+    }
 
     companion object {
+        val Factory: ViewModelProvider.Factory =
+            viewModelFactory {
+                initializer {
+                    val myDataStore = (this[APPLICATION_KEY] as MyApp).dataStore
+                    AuthViewModel(myDataStore)
+                }
+            }
+
         const val MINIMUM_PASSWORD_SIZE = 8
 
         private fun String.onlyLetters() = all { it.isLetter() }
