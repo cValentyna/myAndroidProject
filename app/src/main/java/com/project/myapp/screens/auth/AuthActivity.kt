@@ -2,9 +2,9 @@ package com.project.myapp.screens.auth
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.project.myapp.KeysHolder.USER_NAME_KEY
 import com.project.myapp.R
@@ -20,9 +20,9 @@ class AuthActivity : AppCompatActivity() {
     private val binding: ActivityAuthBinding by lazy {
         ActivityAuthBinding.inflate(layoutInflater)
     }
-
-    private val viewModel: AuthViewModel by viewModels {
-        AuthViewModel.Factory
+    private val viewModel: AuthViewModel by lazy {
+        val viewModelFactory = AuthViewModel.Companion.MyViewModelFactory(this)
+        ViewModelProvider(this, viewModelFactory)[AuthViewModel::class.java]
     }
 
     private lateinit var userName: String

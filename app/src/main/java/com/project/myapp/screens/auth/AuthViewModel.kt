@@ -1,15 +1,12 @@
 package com.project.myapp.screens.auth
 
+import android.content.Context
 import android.util.Patterns
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.project.myapp.DataStore
-import com.project.myapp.MyApp
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
@@ -133,13 +130,18 @@ class AuthViewModel(
     }
 
     companion object {
-        val Factory: ViewModelProvider.Factory =
-            viewModelFactory {
-                initializer {
-                    val myDataStore = (this[APPLICATION_KEY] as MyApp).dataStore
-                    AuthViewModel(myDataStore)
+        class MyViewModelFactory(
+            private val context: Context,
+        ) : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                if (modelClass.isAssignableFrom(AuthViewModel::class.java)) {
+                    val dataStore = DataStore(context)
+                    return AuthViewModel(dataStore) as T
                 }
+                throw IllegalArgumentException("Unknown ViewModel class")
             }
+        }
 
         const val MINIMUM_PASSWORD_SIZE = 8
 
