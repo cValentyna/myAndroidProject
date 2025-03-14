@@ -4,8 +4,9 @@ import android.content.Context
 import android.util.Patterns
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.project.myapp.DataStore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -130,16 +131,10 @@ class AuthViewModel(
     }
 
     companion object {
-        class MyViewModelFactory(
-            private val context: Context,
-        ) : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                if (modelClass.isAssignableFrom(AuthViewModel::class.java)) {
-                    val dataStore = DataStore(context)
-                    return AuthViewModel(dataStore) as T
-                }
-                throw IllegalArgumentException("Unknown ViewModel class")
+        fun myViewModelFactory(context: Context) = viewModelFactory {
+            initializer {
+                val dataStore = DataStore(context)
+                AuthViewModel(dataStore)
             }
         }
 
