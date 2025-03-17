@@ -131,12 +131,13 @@ class AuthViewModel(
     }
 
     companion object {
-        fun myViewModelFactory(context: Context) = viewModelFactory {
-            initializer {
-                val dataStore = DataStore(context)
-                AuthViewModel(dataStore)
+        fun myViewModelFactory(context: Context) =
+            viewModelFactory {
+                initializer {
+                    val dataStore = DataStore(context)
+                    AuthViewModel(dataStore)
+                }
             }
-        }
 
         const val MINIMUM_PASSWORD_SIZE = 8
 

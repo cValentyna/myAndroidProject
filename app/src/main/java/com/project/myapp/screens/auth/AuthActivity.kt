@@ -29,16 +29,12 @@ class AuthActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        goToNextActivityIfUserSaved()
         setView()
         setFocusListener()
         setTextChangedListener()
         setOnClickListener()
         setStatesCollectors()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        goToNextActivityIfUserSaved()
     }
 
     private fun setView() {
