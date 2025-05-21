@@ -2,9 +2,9 @@ package com.project.myapp.screens.main
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.project.myapp.DataStore
 import com.project.myapp.KeysHolder.USER_NAME_KEY
 import com.project.myapp.databinding.ActivityMainBinding
 import com.project.myapp.ext.componentactivity.EnableEdgeToEdgeGrayStatusBar
@@ -12,16 +12,15 @@ import com.project.myapp.ext.componentactivity.handleBackPress
 import com.project.myapp.ext.context.customAnimationBackward
 import com.project.myapp.ext.view.initializeWindowInsetsHandling
 import com.project.myapp.screens.auth.AuthActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
-
-    private val dataStore: DataStore by lazy {
-        DataStore(this)
-    }
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     private fun setOnClickListener() {
         binding.buttonMainLogout.setOnClickListener {
             lifecycleScope.launch {
-                dataStore.clearPreferences()
+                viewModel.forgetUser()
             }
             goToPreviousActivity()
         }
