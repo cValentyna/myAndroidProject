@@ -1,32 +1,30 @@
 package com.project.myapp
 
-import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
+import javax.inject.Singleton
 
-private val Context.userDataStore: DataStore<Preferences> by preferencesDataStore(name = "userInfo")
 
-class DataStore(
-    context: Context,
+@Singleton
+class DataStore @Inject constructor(
+    private val dataStore: DataStore<Preferences>
 ) {
-    private val dataStore = context.userDataStore
-
     suspend fun saveData(
         isChecked: Boolean,
         name: String,
     ) {
-        dataStore.edit { usrData ->
-            usrData[CHECKBOX_IS_CHECKED] = isChecked
-            usrData[USER_NAME] = name
+        dataStore.edit { userData ->
+            userData[CHECKBOX_IS_CHECKED] = isChecked
+            userData[USER_NAME] = name
         }
     }
 
@@ -41,7 +39,7 @@ class DataStore(
                 preferences[CHECKBOX_IS_CHECKED] ?: false
             }
 
-    fun getSavedString(key: Preferences.Key<String>): Flow<String> =
+    fun getSavedString(): Flow<String> =
         dataStore.data
             .catch { exception ->
                 when (exception) {
@@ -49,7 +47,7 @@ class DataStore(
                     else -> throw exception
                 }
             }.map { preferences ->
-                preferences[key] ?: ""
+                preferences[USER_NAME] ?: ""
             }
 
     suspend fun clearPreferences() {

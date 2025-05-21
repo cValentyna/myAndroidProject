@@ -14,18 +14,15 @@ import com.project.myapp.ext.context.customAnimationForward
 import com.project.myapp.ext.context.toast
 import com.project.myapp.ext.view.initializeWindowInsetsHandling
 import com.project.myapp.screens.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class AuthActivity : AppCompatActivity() {
     private val binding: ActivityAuthBinding by lazy {
         ActivityAuthBinding.inflate(layoutInflater)
     }
-
-    private val viewModel: AuthViewModel by viewModels {
-        AuthViewModel.myViewModelFactory(context = this)
-    }
-
-    private lateinit var userName: String
+    private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -146,7 +143,7 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun goToNextActivity() {
-        userName = viewModel.parseName(binding.textInputEditTextAuthEmail.text.toString())
+        val userName = viewModel.parseName(binding.textInputEditTextAuthEmail.text.toString())
         binding.apply {
             if (checkboxAuth.isChecked) {
                 viewModel.saveUser(userName, checkboxAuth.isChecked)
