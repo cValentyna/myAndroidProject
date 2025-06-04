@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MyApp!</string>
+    <string name="main_settings">Налаштування</string>
+    <string name="main_log_out">Вийти</string>
+    <string name="main_user_photo">My Photo</string>
+    <string name="main_user_name">Ім\'я користувача</string>
+    <string name="main_user_career">Android Developer</string>
+    <string name="main_user_address">65009 New St, 27</string>
+    <string name="main_edit_user_profile">Редагувати профіль</string>
+    <string name="main_user_contacts">ПЕРЕГЛЯНУТИ МОЇ КОНТАКТИ</string>
+
+    <string name="hello">Hello!</string>
+    <string name="auth_register_information">Заповнюйте профіль та переходьте до облікового запису!</string>
+    <string name="auth_acquainted">Давайте познайомимось</string>
+    <string name="auth_google">Google</string>
+    <string name="auth_text_terms">Натиснувши Реєстрація, ви погоджуєтеся з нашими Положеннями та Умовами </string>
+    <string name="auth_text_or">або</string>
+    <string name="auth_bt_text_register">РЕЄСТРАЦІЯ</string>
+    <string name="auth_text_have_account">Вже маєте акаунт?</string>
+    <string name="auth_text_sign_in">Увійти</string>
+    <string name="auth_e_mail">Електронна пошта</string>
+    <string name="auth_password">Пароль</string>
+    <string name="auth_remember_me">Запам\`ятайте мене</string>
+
+    <string name="error_password_letters">Пароль має містити принаймні одну літеру (A-z).</string>
+    <string name="error_password_unpredictable_symbols"><![CDATA[Пароль може містити лише a–z, A–Z, 0–9 та поширені розділові знаки.]]></string>
+    <string name="error_password_digit">Пароль має містити принаймні одну цифру (0–9).</string>
+    <string name="error_password_minimum_characters">Мінімальна кількість символів в паролі-8.</string>
+    <string name="error_incorrect_e_mail_address">Недопустима електронна адреса.</string>
+    <string name="error_email_empty">Необхідно вказати адресу електронної пошти.</string>
+    <string name="error_password_empty">Необхідно ввести пароль.</string>
+    <string name="error_invalid_email_or_password">Некоректна пошта або пароль</string>
+
+</resources>
