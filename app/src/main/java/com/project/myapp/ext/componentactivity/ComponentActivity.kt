@@ -12,7 +12,7 @@ fun ComponentActivity.handleBackPress() {
     }
 }
 
-fun ComponentActivity.EnableEdgeToEdgeGrayStatusBar() {
+fun ComponentActivity.enableEdgeToEdgeGrayStatusBar() {
     enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(Color.GRAY))
 }
 

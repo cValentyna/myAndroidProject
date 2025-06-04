@@ -8,7 +8,6 @@ import com.project.myapp.DataStore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -115,10 +114,6 @@ class AuthViewModel @Inject constructor(
             .substringBefore("@")
             .split(".", "_")
             .joinToString(" ") { it -> it.lowercase().replaceFirstChar { it.uppercaseChar() } }
-
-    suspend fun wasSavedUser(): Boolean = dataStore.getWasChecked().first()
-
-    suspend fun getSavedName(): String = dataStore.getSavedString().first()
 
     fun saveUser(
         name: String,
