@@ -3,14 +3,22 @@ package com.project.myapp.screens.auth
 import android.util.Patterns
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.project.myapp.DataStore
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * ViewModel for saving AuthActivity state
  */
-
-class AuthViewModel : ViewModel() {
+@HiltViewModel
+class AuthViewModel @Inject constructor(
+    private val dataStore: DataStore
+) : ViewModel() {
     /**
      * Variables to track the states
      */
@@ -108,9 +116,18 @@ class AuthViewModel : ViewModel() {
             .split(".", "_")
             .joinToString(" ") { it -> it.lowercase().replaceFirstChar { it.uppercaseChar() } }
 
-    /**
-     * Companion object for password validation
-     */
+    suspend fun wasSavedUser(): Boolean = dataStore.getWasChecked().first()
+
+    suspend fun getSavedName(): String = dataStore.getSavedString().first()
+
+    fun saveUser(
+        name: String,
+        isChecked: Boolean,
+    ) {
+        viewModelScope.launch {
+            dataStore.saveData(isChecked, name)
+        }
+    }
 
     companion object {
         const val MINIMUM_PASSWORD_SIZE = 8

@@ -4,16 +4,20 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.project.myapp.KeysHolder.USER_NAME_KEY
 import com.project.myapp.R
 import com.project.myapp.databinding.ActivityAuthBinding
-import com.project.myapp.ext.toast
+import com.project.myapp.ext.componentactivity.EnableEdgeToEdgeGrayStatusBar
+import com.project.myapp.ext.context.customAnimationForward
+import com.project.myapp.ext.context.toast
+import com.project.myapp.ext.view.initializeWindowInsetsHandling
 import com.project.myapp.screens.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class AuthActivity : AppCompatActivity() {
     private val binding: ActivityAuthBinding by lazy {
         ActivityAuthBinding.inflate(layoutInflater)
@@ -22,11 +26,18 @@ class AuthActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+        setView()
+        goToNextActivityIfUserSaved()
         setFocusListener()
         setTextChangedListener()
         setOnClickListener()
         setStatesCollectors()
+    }
+
+    private fun setView() {
+        EnableEdgeToEdgeGrayStatusBar()
+        setContentView(binding.root)
+        binding.root.initializeWindowInsetsHandling()
     }
 
     /**
@@ -133,18 +144,31 @@ class AuthActivity : AppCompatActivity() {
 
     private fun goToNextActivity() {
         val userName = viewModel.parseName(binding.textInputEditTextAuthEmail.text.toString())
-        val animation =
-            ActivityOptionsCompat.makeCustomAnimation(
-                this@AuthActivity,
-                R.anim.slide_in_left,
-                R.anim.slide_out_left,
-            )
+        binding.apply {
+            if (checkboxAuth.isChecked) {
+                viewModel.saveUser(userName, checkboxAuth.isChecked)
+            }
+        }
         val intent =
             Intent(this, MainActivity::class.java).apply {
                 putExtra(USER_NAME_KEY, userName)
             }
 
-        startActivity(intent, animation.toBundle())
+        startActivity(intent, customAnimationForward().toBundle())
         finish()
+    }
+
+    private fun goToNextActivityIfUserSaved() {
+        lifecycleScope.launch {
+            if (viewModel.wasSavedUser()) {
+                val intent = Intent(this@AuthActivity, MainActivity::class.java)
+                intent.putExtra(
+                    USER_NAME_KEY,
+                    viewModel.getSavedName(),
+                )
+                startActivity(intent)
+                finish()
+            }
+        }
     }
 }
