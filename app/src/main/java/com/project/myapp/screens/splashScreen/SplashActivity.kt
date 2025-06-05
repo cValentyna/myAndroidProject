@@ -12,30 +12,42 @@ import com.project.myapp.ext.context.customAnimationForward
 import com.project.myapp.screens.auth.AuthActivity
 import com.project.myapp.screens.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
-    private val viewModel: SplashModel by viewModels()
+    private val viewModel: SplashViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdgeGrayStatusBar()
-        lifecycleScope.launch {
-            if (viewModel.wasSavedUser()) {
-                val intent = Intent(this@SplashActivity, MainActivity::class.java)
-                intent.putExtra(
-                    USER_NAME_KEY,
-                    viewModel.getSavedName(),
-                )
-                startActivity(intent, customAnimationForward().toBundle())
-                finish()
-            } else {
-                val intent = Intent(this@SplashActivity, AuthActivity::class.java)
-                startActivity(intent, customAnimationForward().toBundle())
-                finish()
+
+        lifecycleScope.launch(Dispatchers.Default) {
+            viewModel.getCachedCredentials.collect { cashedCredentials ->
+                when (cashedCredentials) {
+                    GetCachedCredentials.Initial -> {}
+                    is GetCachedCredentials.Success -> goToMainActivity(cashedCredentials.savedName)
+                    is GetCachedCredentials.Fail -> goToAuthActivity()
+                }
             }
         }
+    }
+
+    private fun goToMainActivity(savedName: String) {
+        val intent = Intent(this@SplashActivity, MainActivity::class.java)
+        intent.putExtra(
+            USER_NAME_KEY,
+            savedName,
+        )
+        startActivity(intent, customAnimationForward().toBundle())
+        finish()
+    }
+
+    private fun goToAuthActivity() {
+        val intent = Intent(this@SplashActivity, AuthActivity::class.java)
+        startActivity(intent, customAnimationForward().toBundle())
+        finish()
     }
 }
