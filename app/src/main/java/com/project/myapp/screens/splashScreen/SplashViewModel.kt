@@ -21,13 +21,21 @@ class SplashViewModel @Inject constructor(private val dataStore: DataStore) : Vi
 
     init {
         viewModelScope.launch(Dispatchers.Default) {
-            _getCachedCredentials.update {
-                if (wasSavedUser()) {
-                    GetCachedCredentials.Success(getSavedName())
-                } else {
-                    GetCachedCredentials.Fail
-                }
-            }
+            initializeCredentials()
+        }
+    }
+
+    private suspend fun initializeCredentials() {
+        _getCachedCredentials.update {
+            getCachedUserCredentials()
+        }
+    }
+
+    private suspend fun getCachedUserCredentials(): GetCachedCredentials {
+        return if (wasSavedUser()) {
+            GetCachedCredentials.Success(getSavedName())
+        } else {
+            GetCachedCredentials.Fail
         }
     }
 

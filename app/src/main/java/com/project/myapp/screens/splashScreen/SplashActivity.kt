@@ -23,7 +23,10 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdgeGrayStatusBar()
+        setStatesCollector()
+    }
 
+    private fun setStatesCollector() {
         lifecycleScope.launch(Dispatchers.Default) {
             viewModel.getCachedCredentials.collect { cashedCredentials ->
                 when (cashedCredentials) {
