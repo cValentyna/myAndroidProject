@@ -28,11 +28,11 @@ class SplashActivity : AppCompatActivity() {
 
     private fun setStatesCollector() {
         lifecycleScope.launch(Dispatchers.Default) {
-            viewModel.getCachedCredentials.collect { cashedCredentials ->
-                when (cashedCredentials) {
-                    GetCachedCredentials.Initial -> {}
-                    is GetCachedCredentials.Success -> goToMainActivity(cashedCredentials.savedName)
-                    is GetCachedCredentials.Fail -> goToAuthActivity()
+            viewModel.cachedCredentialsState.collect { cashedCredentialsState ->
+                when (cashedCredentialsState) {
+                    CredentialsRetrievalState.Initial -> {}
+                    is CredentialsRetrievalState.Success -> goToMainActivity(cashedCredentialsState.savedName)
+                    is CredentialsRetrievalState.Fail -> goToAuthActivity()
                 }
             }
         }

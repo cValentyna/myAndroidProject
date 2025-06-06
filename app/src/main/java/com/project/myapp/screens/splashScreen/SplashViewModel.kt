@@ -15,9 +15,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(private val dataStore: DataStore) : ViewModel() {
-    private val _getCachedCredentials =
-        MutableStateFlow<GetCachedCredentials>(GetCachedCredentials.Initial)
-    val getCachedCredentials get() = _getCachedCredentials.asStateFlow()
+    private val _cachedCredentialsState =
+        MutableStateFlow<CredentialsRetrievalState>(CredentialsRetrievalState.Initial)
+    val cachedCredentialsState get() = _cachedCredentialsState.asStateFlow()
 
     init {
         viewModelScope.launch(Dispatchers.Default) {
@@ -26,16 +26,16 @@ class SplashViewModel @Inject constructor(private val dataStore: DataStore) : Vi
     }
 
     private suspend fun initializeCredentials() {
-        _getCachedCredentials.update {
-            getCachedUserCredentials()
+        _cachedCredentialsState.update {
+            getCachedCredentialsState()
         }
     }
 
-    private suspend fun getCachedUserCredentials(): GetCachedCredentials {
+    private suspend fun getCachedCredentialsState(): CredentialsRetrievalState{
         return if (wasSavedUser()) {
-            GetCachedCredentials.Success(getSavedName())
+            CredentialsRetrievalState.Success(getSavedName())
         } else {
-            GetCachedCredentials.Fail
+            CredentialsRetrievalState.Fail
         }
     }
 
