@@ -24,7 +24,7 @@
     <string name="auth_remember_me">Запам\`ятайте мене</string>
 
     <string name="error_password_letters">Пароль має містити принаймні одну літеру (A-z).</string>
-    <string name="error_password_unpredictable_symbols"><![CDATA[Пароль може містити лише a–z, A–Z, 0–9 та поширені розділові знаки.]]></string>
+    <string name="error_password_unpredictable_symbols">Пароль може містити лише літери (A-z) і цифри (0–9).</string>
     <string name="error_password_digit">Пароль має містити принаймні одну цифру (0–9).</string>
     <string name="error_password_minimum_characters">Мінімальна кількість символів в паролі-8.</string>
     <string name="error_incorrect_e_mail_address">Недопустима електронна адреса.</string>

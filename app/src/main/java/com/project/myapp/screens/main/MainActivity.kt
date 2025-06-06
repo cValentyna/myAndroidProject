@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setView()
         setName()
-        addImage()
+        setProfilePhoto()
         setOnClickListener()
         handleBackPress()
     }
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         binding.textViewMainUserName.text = intent.getStringExtra(USER_NAME_KEY)
     }
 
-    private fun addImage() {
+    private fun setProfilePhoto() {
         binding.imageViewMainPhoto.setImageResource(R.drawable.bee)
     }
 }
