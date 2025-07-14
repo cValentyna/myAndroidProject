@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import com.project.myapp.KeysHolder.USER_NAME_KEY
 import com.project.myapp.R
 import com.project.myapp.databinding.ActivityAuthBinding
-import com.project.myapp.ext.componentactivity.EnableEdgeToEdgeGrayStatusBar
+import com.project.myapp.ext.componentactivity.enableEdgeToEdgeGrayStatusBar
 import com.project.myapp.ext.context.customAnimationForward
 import com.project.myapp.ext.context.toast
 import com.project.myapp.ext.view.initializeWindowInsetsHandling
@@ -27,7 +27,6 @@ class AuthActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setView()
-        goToNextActivityIfUserSaved()
         setFocusListener()
         setTextChangedListener()
         setOnClickListener()
@@ -35,7 +34,7 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun setView() {
-        EnableEdgeToEdgeGrayStatusBar()
+        enableEdgeToEdgeGrayStatusBar()
         setContentView(binding.root)
         binding.root.initializeWindowInsetsHandling()
     }
@@ -156,19 +155,5 @@ class AuthActivity : AppCompatActivity() {
 
         startActivity(intent, customAnimationForward().toBundle())
         finish()
-    }
-
-    private fun goToNextActivityIfUserSaved() {
-        lifecycleScope.launch {
-            if (viewModel.wasSavedUser()) {
-                val intent = Intent(this@AuthActivity, MainActivity::class.java)
-                intent.putExtra(
-                    USER_NAME_KEY,
-                    viewModel.getSavedName(),
-                )
-                startActivity(intent)
-                finish()
-            }
-        }
     }
 }

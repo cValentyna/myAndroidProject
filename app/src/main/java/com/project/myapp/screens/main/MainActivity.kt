@@ -8,7 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import com.project.myapp.KeysHolder.USER_NAME_KEY
 import com.project.myapp.R
 import com.project.myapp.databinding.ActivityMainBinding
-import com.project.myapp.ext.componentactivity.EnableEdgeToEdgeGrayStatusBar
+import com.project.myapp.ext.componentactivity.enableEdgeToEdgeGrayStatusBar
 import com.project.myapp.ext.componentactivity.handleBackPress
 import com.project.myapp.ext.context.customAnimationBackward
 import com.project.myapp.ext.view.initializeWindowInsetsHandling
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setView() {
-        EnableEdgeToEdgeGrayStatusBar()
+        enableEdgeToEdgeGrayStatusBar()
         setContentView(binding.root)
         binding.root.initializeWindowInsetsHandling()
     }
