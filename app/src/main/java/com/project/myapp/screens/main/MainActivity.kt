@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.project.myapp.KeysHolder.USER_NAME_KEY
+import com.project.myapp.R
 import com.project.myapp.databinding.ActivityMainBinding
 import com.project.myapp.ext.componentactivity.EnableEdgeToEdgeGrayStatusBar
 import com.project.myapp.ext.componentactivity.handleBackPress
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setView()
         setName()
+        setProfilePhoto()
         setOnClickListener()
         handleBackPress()
     }
@@ -53,5 +55,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun setName() {
         binding.textViewMainUserName.text = intent.getStringExtra(USER_NAME_KEY)
+    }
+
+    private fun setProfilePhoto() {
+        binding.imageViewMainPhoto.setImageResource(R.drawable.bee)
     }
 }
