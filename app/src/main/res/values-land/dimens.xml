@@ -9,7 +9,16 @@
 
     <dimen name="width_percent_auth_buttons">0.4</dimen>
 
-    <dimen name="bias_vertical_bt_google">0.85</dimen>
+    <dimen name="bias_vertical_bt_google">0.8</dimen>
+
+    <dimen name="height_percent_bt_google">0.05</dimen>
+
+    <dimen name="height_min_bt_google">48dp</dimen>
+    <dimen name="height_max_bt_google">55dp</dimen>
+
+    <dimen name="height_percent_bt_register">0.075</dimen>
+    <dimen name="height_max_bt_register">48dp</dimen>
+    <dimen name="height_min_bt_register">55dp</dimen>
 
     <dimen name="bias_vertical_text_between_buttons">0.5</dimen>
     <dimen name="bias_vertical_tv_agreement">0.5</dimen>

@@ -13,7 +13,7 @@
     <string name="hello">Hello!</string>
     <string name="auth_register_information">Заповнюйте профіль та переходьте до облікового запису!</string>
     <string name="auth_acquainted">Давайте познайомимось</string>
-    <string name="auth_google">Google</string>
+    <string name="auth_google">google</string>
     <string name="auth_text_terms">Натиснувши Реєстрація, ви погоджуєтеся з нашими Положеннями та Умовами </string>
     <string name="auth_text_or">або</string>
     <string name="auth_bt_text_register">РЕЄСТРАЦІЯ</string>
@@ -31,5 +31,6 @@
     <string name="error_email_empty">Необхідно вказати адресу електронної пошти.</string>
     <string name="error_password_empty">Необхідно ввести пароль.</string>
     <string name="error_invalid_email_or_password">Некоректна пошта або пароль</string>
+    <string name="google_button_description">Увійти за допомогою Google</string>
 
 </resources>

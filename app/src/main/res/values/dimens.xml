@@ -4,7 +4,6 @@
     <dimen name="width_stroke_button">2dp</dimen>
     <dimen name="width_stroke_button_log_out_pressed">3dp</dimen>
 
-
     <dimen name="size_percent_image">0.33</dimen>
 
     <!--  Text size, weight, etc..  -->
@@ -16,6 +15,7 @@
     <dimen name="textsize_small">12sp</dimen>
     <item name="weight_font_primary" format="integer" type="dimen">600</item>
     <item name="weight_font_smaller" format="integer" type="dimen">400</item>
+    <dimen name="space_letters_custom_view">0.07dp</dimen>
     <dimen name="space_letters">0.15</dimen>
 
     <!-- percents and biases-->
@@ -62,7 +62,7 @@
     <dimen name="height_percent_bt_google">0.066</dimen>
     <dimen name="height_min_bt_google">48dp</dimen>
     <dimen name="height_max_bt_google">55dp</dimen>
-    <dimen name="bias_vertical_bt_google">0.92</dimen>
+    <dimen name="bias_vertical_bt_google">0.9</dimen>
 
     <dimen name="bias_vertical_text_between_buttons">0.5</dimen>
 
