@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ButtonCustomGoogle">
+        <attr name="customFont" format="reference"/>
+        <attr name="googleTextColor" format="color" />
+        <attr name="googleTextAllCaps" format="boolean"/>
+        <attr name="googleButtonText" format="string"/>
+        <attr name="googleLetterSpacing" format="float"/>
+        <attr name="googleTextSize" format="dimension"/>
+        <attr name="googleBackgroundColor" format="color" />
+        <attr name="googleCornerRadius" format="dimension"/>
+        <attr name="googleIconDrawable" format="reference"/>
+        <attr name="heightPercent" format="float" />
+        <attr name="widthPercent" format="float" />
+    </declare-styleable>
+    <attr name="googleButtonStyle" format="reference" />
+
+</resources>
