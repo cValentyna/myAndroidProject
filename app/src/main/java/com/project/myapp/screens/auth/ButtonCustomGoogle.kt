@@ -1,11 +1,14 @@
 package com.project.myapp.screens.auth
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -22,6 +25,7 @@ class ButtonCustomGoogle @JvmOverloads constructor(
     defStyleRes: Int = 0,
 ) : View(context, attributeSet, defStyleAttr, defStyleRes) {
     // attr variables
+    private var customFont: Typeface? = null
     private var buttonText: String = DEFAULT_TEXT
     private var textColor: Int = DEFAULT_TEXT_COLOR
     private var backgroundColor: Int = DEFAULT_BACKGROUND_COLOR
@@ -50,21 +54,41 @@ class ButtonCustomGoogle @JvmOverloads constructor(
         defStyleAttr: Int,
         defStyleRes: Int,
     ) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.ButtonCustomGoogle, defStyleAttr, defStyleRes)
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ButtonCustomGoogle, defStyleAttr, defStyleRes)
         try {
-            buttonText = ta.getString(R.styleable.ButtonCustomGoogle_googleButtonText) ?: DEFAULT_TEXT
-            textColor = ta.getColor(R.styleable.ButtonCustomGoogle_googleTextColor, DEFAULT_TEXT_COLOR)
-            backgroundColor = ta.getColor(R.styleable.ButtonCustomGoogle_googleBackgroundColor, DEFAULT_BACKGROUND_COLOR)
-            cornerRadius = ta.getDimension(R.styleable.ButtonCustomGoogle_googleCornerRadius, DEFAULT_CORNER_RADIUS)
-            textAllCaps = ta.getBoolean(R.styleable.ButtonCustomGoogle_googleTextAllCaps, DEFAULT_TEXT_ALL_CAPS)
-            textSize = ta.getDimension(R.styleable.ButtonCustomGoogle_googleTextSize, DEFAULT_TEXT_SIZE)
-            textSpacing = ta.getFloat(R.styleable.ButtonCustomGoogle_googleLetterSpacing, DEFAULT_TEXT_SPACING)
-            iconDrawable = ta.getDrawable(R.styleable.ButtonCustomGoogle_googleIconDrawable)
+            customFont = loadTypeface(context, typedArray)
+            buttonText = typedArray.getString(R.styleable.ButtonCustomGoogle_googleButtonText) ?: DEFAULT_TEXT
+            textColor = typedArray.getColor(R.styleable.ButtonCustomGoogle_googleTextColor, DEFAULT_TEXT_COLOR)
+            backgroundColor = typedArray.getColor(R.styleable.ButtonCustomGoogle_googleBackgroundColor, DEFAULT_BACKGROUND_COLOR)
+            cornerRadius = typedArray.getDimension(R.styleable.ButtonCustomGoogle_googleCornerRadius, DEFAULT_CORNER_RADIUS)
+            textAllCaps = typedArray.getBoolean(R.styleable.ButtonCustomGoogle_googleTextAllCaps, DEFAULT_TEXT_ALL_CAPS)
+            textSize = typedArray.getDimension(R.styleable.ButtonCustomGoogle_googleTextSize, DEFAULT_TEXT_SIZE)
+            textSpacing = typedArray.getFloat(R.styleable.ButtonCustomGoogle_googleLetterSpacing, DEFAULT_TEXT_SPACING)
+            iconDrawable = typedArray.getDrawable(R.styleable.ButtonCustomGoogle_googleIconDrawable)
                 ?: ContextCompat.getDrawable(context, R.drawable.auth_android_google_icon)
-            heightPercent = ta.getFloat(R.styleable.ButtonCustomGoogle_heightPercent, 0f)
-            widthPercent = ta.getFloat(R.styleable.ButtonCustomGoogle_widthPercent, 0f)
+            heightPercent = typedArray.getFloat(R.styleable.ButtonCustomGoogle_heightPercent, 0f)
+            widthPercent = typedArray.getFloat(R.styleable.ButtonCustomGoogle_widthPercent, 0f)
         } finally {
-            ta.recycle()
+            typedArray.recycle()
+        }
+    }
+
+    private fun loadTypeface(context: Context, typedArray: TypedArray): Typeface? {
+        val fontResId = typedArray.getResourceId(R.styleable.ButtonCustomGoogle_customFont, 0)
+
+        return when {
+            fontResId != 0 -> {
+                try {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        context.resources.getFont(fontResId)
+                    } else {
+                        ResourcesCompat.getFont(context, fontResId)
+                    }
+                } catch (e: Exception) {
+                    Typeface.DEFAULT
+                }
+            }
+            else -> Typeface.DEFAULT
         }
     }
 
@@ -74,8 +98,7 @@ class ButtonCustomGoogle @JvmOverloads constructor(
         backgroundPaint.style = Paint.Style.FILL
 
         // text settings
-        val typeface = ResourcesCompat.getFont(context, R.font.open_sans_semibold)
-        textPaint.typeface = typeface
+        textPaint.typeface = customFont
         textPaint.letterSpacing = textSpacing
         textPaint.color = textColor
         textPaint.textSize = textSize
@@ -83,17 +106,9 @@ class ButtonCustomGoogle @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
-        // draws the background
         drawBackground(canvas)
-
-        // calculates metrics (text, drawable, positions), stores them in a data class
         val metrics = calculateContentMetrics()
-
-        // draws icon
         drawIcon(canvas, metrics)
-
-        // draws text
         drawText(canvas, metrics)
     }
 
@@ -101,8 +116,12 @@ class ButtonCustomGoogle @JvmOverloads constructor(
         canvas.drawRoundRect(rect, cornerRadius, cornerRadius, backgroundPaint)
     }
 
+    /**
+     * Calculates metrics (text, drawable, positions), stores them in a data class
+     */
+
     private fun calculateContentMetrics(): ContentMetrics {
-        // prepares text
+        // prepares text settings
         val displayText = if (textAllCaps) buttonText.uppercase() else buttonText
         val textWidth = textPaint.measureText(displayText)
         val fontMetrics = textPaint.fontMetrics
@@ -110,16 +129,11 @@ class ButtonCustomGoogle @JvmOverloads constructor(
         val centreLine = height / 2f - textHeight / 2
 
         // prepares drawable size
-        val drawableWidth = iconDrawable?.intrinsicWidth ?: 0
-        val drawableHeight = iconDrawable?.intrinsicHeight ?: 0
-
-        // total content width
+        val drawableWidth = iconDrawable?.intrinsicWidth ?: DEFAULT_DRAWABLE_SIZE
+        val drawableHeight = iconDrawable?.intrinsicHeight ?: DEFAULT_DRAWABLE_SIZE
         val totalContentWidth = drawableWidth + textWidth
 
-        // Start horizontal point for all content
         val startX = (width - totalContentWidth) / 2f
-
-        // Start horizontal point for text
         val textStartX = startX + drawableWidth
 
         return ContentMetrics(
@@ -146,7 +160,7 @@ class ButtonCustomGoogle @JvmOverloads constructor(
     }
 
     private fun drawText(canvas: Canvas, m: ContentMetrics) {
-        canvas.drawText(m.displayText, m.textStartX, m.baseline, textPaint)
+        canvas.drawText(m.displayText, m.textStartX, m.baselineText, textPaint)
     }
 
     override fun onMeasure(
@@ -196,7 +210,7 @@ class ButtonCustomGoogle @JvmOverloads constructor(
         val totalContentWidth: Float,
         val startX: Float,
         val textStartX: Float,
-        val baseline: Float,
+        val baselineText: Float,
     )
 
     companion object {
@@ -207,5 +221,6 @@ class ButtonCustomGoogle @JvmOverloads constructor(
         private const val DEFAULT_BACKGROUND_COLOR = Color.WHITE
         private const val DEFAULT_TEXT_SIZE = 34f
         private const val DEFAULT_TEXT_SPACING = 0.15F
+        private const val DEFAULT_DRAWABLE_SIZE = 0
     }
 }
