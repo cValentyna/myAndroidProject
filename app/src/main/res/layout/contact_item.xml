@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+   >
+<!--    <com.google.android.material.imageview.ShapeableImageView-->
+<!--        android:id="@+id/imageView"-->
+<!--        android:layout_width="100dp"-->
+<!--        android:layout_height="100dp"-->
+<!--        android:scaleType="centerCrop"-->
+<!--        android:src="@drawable/person_icon_png_transparent_15"-->
+<!--        app:shapeAppearanceOverlay="@style/shapeAppearance_image" />-->
+
+    <ImageView
+        android:id="@+id/contact_image_view"
+        android:layout_width="@dimen/size_item_image"
+        android:layout_height="@dimen/size_item_image"
+        android:layout_marginStart="@dimen/margin_item_image1"
+        android:layout_marginTop="@dimen/margin_item_image1"
+        android:layout_marginEnd="@dimen/margin_item_image2"
+        android:layout_marginBottom="@dimen/margin_item_image1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/round_icon" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageViewContactRecyclerBin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_item_image2"
+        android:src="@drawable/contact_recycle_bin"
+        app:layout_constraintBottom_toBottomOf="@id/contact_image_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintTop_toTopOf="@id/contact_image_view"
+        app:layout_constraintVertical_bias="@dimen/bias_vertical_item" />
+
+    <TextView
+        android:id="@+id/contact_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/vertical_margin_item_text"
+        android:layout_marginTop="@dimen/horizontal_margin_item_text"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="@string/name_surname"
+        android:textAppearance="@style/textAppearance_contact_item_name"
+        app:layout_constraintStart_toEndOf="@id/contact_image_view"
+        app:layout_constraintTop_toTopOf="@id/contact_image_view" />
+
+    <TextView
+        android:id="@+id/contact_profession"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="@string/contact_profession"
+        android:textAppearance="@style/textAppearance_contact_item_information"
+        app:layout_constraintStart_toStartOf="@id/contact_name"
+        app:layout_constraintTop_toBottomOf="@id/contact_name" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

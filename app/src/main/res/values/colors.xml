@@ -18,4 +18,7 @@
     <color name="error_color">#F93E3E</color>
     <color name="button_google_background">#FAFAFA</color>
     <color name="auth_underline">#B2B2B3</color>
+    <color name= "primary_gray_font">#828282</color>
+
+    <color name="background_item_stroke">#B2B2B3</color>
 </resources>

@@ -16,6 +16,11 @@
         <item name="android:textColor">@color/primary_brightest_text_font</item>
     </style>
 
+    <style name="textAppearance_medium_bright_text" parent="primary_text_style">
+        <item name="android:textSize">@dimen/textsize_medium</item>
+        <item name="android:textColor">@color/primary_brightest_text_font</item>
+    </style>
+
     <style name="textAppearance_log_in_fill_text" parent="primary_text_style">
         <item name="android:textSize">@dimen/textsize_big</item>
         <item name="android:textColor">@color/primary_brightest_text_font</item>
@@ -109,6 +114,17 @@
 
     <style name="textAppearance_bt_register" parent="text_big_button_style">
         <item name="android:textColor">@color/primary_brightest_text_font</item>
+    </style>
+
+
+    <style name="textAppearance_contact_item_name" parent="primary_text_style">
+        <item name="android:textColor">@color/primary_dark_text_font</item>
+        <item name="android:textSize">@dimen/textsize_big</item>
+    </style>
+
+    <style name="textAppearance_contact_item_information" parent="primary_light_text_style">
+        <item name="android:textColor">@color/primary_gray_font</item>
+        <item name="android:textSize">@dimen/textsize_small</item>
     </style>
 
 </resources>

@@ -83,4 +83,24 @@
     <dimen name="margin_checkbox">4dp</dimen>
     <dimen name="margin_auth_small">8dp</dimen>
     <dimen name="margin_bottom">5dp</dimen>
+
+    <dimen name="radius_item">6dp</dimen>
+    <dimen name= "gap_item">16dp</dimen>
+    <dimen name="width_item_stroke">1dp</dimen>
+    <dimen name="height_percent_top_part">0.15</dimen>
+    <dimen name="margin_text_contact">5dp</dimen>
+    <dimen name="margin_button_contact">16dp</dimen>
+    <dimen name="bias_vertical_contact_top_information">0.4</dimen>
+    <dimen name="bias_vertical_contact_add_button">0.7</dimen>
+
+
+    <dimen name="size_item_image">50dp</dimen>
+    <dimen name="size_target_load_image">200dp</dimen>
+    <dimen name="margin_item_image1">8dp</dimen>
+    <dimen name="margin_item_image2">12dp</dimen>
+    <dimen name="bias_vertical_item">0.4</dimen>
+    <dimen name="vertical_margin_item_text">24dp</dimen>
+    <dimen name="horizontal_margin_item_text">6dp</dimen>
+    <dimen name="bias_vertical_contact_title">0.1</dimen>
+
 </resources>
