@@ -1,4 +1,4 @@
-package com.project.myapp
+package com.project.myapp.data.datastore
 
 object KeysHolder {
     const val USER_NAME_KEY = "userName"

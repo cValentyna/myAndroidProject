@@ -1,4 +1,4 @@
-package com.project.myapp
+package com.project.myapp.data.datastore
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

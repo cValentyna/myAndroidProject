@@ -1,7 +1,7 @@
 package com.project.myapp.screens.main
 
 import androidx.lifecycle.ViewModel
-import com.project.myapp.DataStore
+import com.project.myapp.data.datastore.DataStore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

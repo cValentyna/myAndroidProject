@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.project.myapp.KeysHolder.USER_NAME_KEY
+import com.project.myapp.data.datastore.KeysHolder.USER_NAME_KEY
 import com.project.myapp.R
 import com.project.myapp.databinding.ActivityMainBinding
 import com.project.myapp.ext.componentactivity.enableEdgeToEdgeGrayStatusBar

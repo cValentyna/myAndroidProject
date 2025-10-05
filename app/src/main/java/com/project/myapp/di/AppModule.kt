@@ -1,11 +1,11 @@
-package com.project.myapp
+package com.project.myapp.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import com.project.myapp.KeysHolder.DATA_STORE_KEY
+import com.project.myapp.data.datastore.KeysHolder.DATA_STORE_KEY
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

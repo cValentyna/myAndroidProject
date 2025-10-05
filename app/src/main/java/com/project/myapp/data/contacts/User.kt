@@ -1,4 +1,4 @@
-package com.project.myapp.screens.contacts
+package com.project.myapp.data.contacts
 
 data class User(
     var id: Int,

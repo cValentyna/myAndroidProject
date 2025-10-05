@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.project.myapp.R
+import com.project.myapp.data.contacts.User
 import com.project.myapp.databinding.ContactItemBinding
 import com.project.myapp.ext.imageview.loadImage
 import com.project.myapp.imageloader.ImageLibrary

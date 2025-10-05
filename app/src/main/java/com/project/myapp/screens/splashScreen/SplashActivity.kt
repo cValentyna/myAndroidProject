@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.project.myapp.KeysHolder.USER_NAME_KEY
+import com.project.myapp.data.datastore.KeysHolder.USER_NAME_KEY
 import com.project.myapp.ext.componentactivity.enableEdgeToEdgeGrayStatusBar
 import com.project.myapp.ext.context.customAnimationForward
 import com.project.myapp.screens.auth.AuthActivity
