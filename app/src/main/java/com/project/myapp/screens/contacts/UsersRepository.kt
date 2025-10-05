@@ -37,7 +37,7 @@ class UsersRepository @Inject constructor() {
         if (minLength == 0) return emptyList()
 
         return List(minLength) { index ->
-            User(id = getNextId(), name = nameList[index], profession = professionList[index], photoUrl = photoList[index])
+            User(id = index+1, name = nameList[index], profession = professionList[index], photoUrl = photoList[index])
         }
     }
 

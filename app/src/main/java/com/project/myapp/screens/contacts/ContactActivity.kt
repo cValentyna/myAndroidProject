@@ -3,7 +3,9 @@ package com.project.myapp.screens.contacts
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.myapp.R
 import com.project.myapp.databinding.ActivityContactsBinding
@@ -18,6 +20,7 @@ class ContactActivity : AppCompatActivity() {
         ActivityContactsBinding.inflate(layoutInflater)
     }
     private val viewModel: ContactViewModel by viewModels()
+    private val contactsAdapter = ContactAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,22 +36,28 @@ class ContactActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView() {
-        binding.recyclerViewContacts.addItemDecoration(
-            ItemDecorator(
-                resources.getDimensionPixelSize(R.dimen.gap_item),
-                resources.getDimension(R.dimen.radius_item),
-                R.color.auth_underline,
-                resources.getDimension(R.dimen.width_item_stroke),
-            ),
-        )
-        binding.recyclerViewContacts.layoutManager = LinearLayoutManager(this)
-        binding.recyclerViewContacts.adapter = ContactAdapter(emptyList())
+        with(binding) {
+            recyclerViewContacts.addItemDecoration(
+                ItemDecorator(
+                    resources.getDimensionPixelSize(R.dimen.gap_item),
+                    resources.getDimension(R.dimen.radius_item),
+                    R.color.auth_underline,
+                    resources.getDimension(R.dimen.width_item_stroke),
+                ),
+            )
+
+            recyclerViewContacts.layoutManager = LinearLayoutManager(this@ContactActivity)
+            recyclerViewContacts.adapter = contactsAdapter
+        }
     }
 
     private fun collectUserList() {
         lifecycleScope.launch {
-            viewModel.userList.collect { userList ->
-                binding.recyclerViewContacts.adapter = ContactAdapter(userList)
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.userList
+                    .collect { users ->
+                        contactsAdapter.update(users)
+                    }
             }
         }
     }

@@ -9,7 +9,7 @@ import com.project.myapp.ext.imageview.loadImage
 import com.project.myapp.imageloader.ImageLibrary
 
 class ContactAdapter(
-    private val contacts: List<User>,
+    private var contacts: List<User> = emptyList(),
 ) : RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() {
     class ContactViewHolder(
         private val binding: ContactItemBinding,
@@ -27,6 +27,11 @@ class ContactAdapter(
             val imageView = binding.contactImageView
             imageView.loadImage(user.photoUrl, R.drawable.round_icon, currentLibrary)
         }
+    }
+
+    fun update(newList: List<User>) {
+        contacts = newList.toList()
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(
