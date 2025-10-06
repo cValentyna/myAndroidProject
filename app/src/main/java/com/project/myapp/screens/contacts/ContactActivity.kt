@@ -37,15 +37,7 @@ class ContactActivity : AppCompatActivity() {
 
     private fun initRecyclerView() {
         with(binding) {
-            recyclerViewContacts.addItemDecoration(
-                ItemDecorator(
-                    resources.getDimensionPixelSize(R.dimen.gap_item),
-                    resources.getDimension(R.dimen.radius_item),
-                    R.color.auth_underline,
-                    resources.getDimension(R.dimen.width_item_stroke),
-                ),
-            )
-
+            recyclerViewContacts.addItemDecoration(ItemDecorator(resources.getDimensionPixelSize(R.dimen.gap_item)))
             recyclerViewContacts.layoutManager = LinearLayoutManager(this@ContactActivity)
             recyclerViewContacts.adapter = contactsAdapter
         }
