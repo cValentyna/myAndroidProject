@@ -11,7 +11,6 @@ import javax.inject.Singleton
 class UsersRepository @Inject constructor() {
     private val _userList = MutableStateFlow<List<User>>(emptyList())
     val userList: StateFlow<List<User>> get() = _userList
-    private var nextId = 0
 
     init {
         initializePreparedList()
@@ -37,11 +36,9 @@ class UsersRepository @Inject constructor() {
         if (minLength == 0) return emptyList()
 
         return List(minLength) { index ->
-            User(id = index+1, name = nameList[index], profession = professionList[index], photoUrl = photoList[index])
+            User(id = index + 1, name = nameList[index], profession = professionList[index], photoUrl = photoList[index])
         }
     }
-
-    private fun getNextId(): Int = ++nextId
 
     companion object {
         val nameList =

@@ -35,13 +35,12 @@ class ContactActivity : AppCompatActivity() {
         binding.root.initializeWindowInsetsHandling()
     }
 
-    private fun initRecyclerView() {
+    private fun initRecyclerView() =
         with(binding) {
             recyclerViewContacts.addItemDecoration(ItemDecorator(resources.getDimensionPixelSize(R.dimen.gap_item)))
             recyclerViewContacts.layoutManager = LinearLayoutManager(this@ContactActivity)
             recyclerViewContacts.adapter = contactsAdapter
         }
-    }
 
     private fun collectUserList() {
         lifecycleScope.launch {
