@@ -10,7 +10,6 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.AttributeSet
-import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -41,9 +40,12 @@ class ButtonCustomGoogle @JvmOverloads constructor(
     private val backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private var rect = RectF()
+    private lateinit var textMetrics: TextMetrics
+    private var displayText = ""
 
     init {
         initAttributes(attributeSet, defStyleAttr, defStyleRes)
+        displayText = if (textAllCaps) buttonText.uppercase() else buttonText
         isClickable = true
         isFocusable = true
         setupPaint()
@@ -107,22 +109,16 @@ class ButtonCustomGoogle @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         drawBackground(canvas)
-        val metrics = calculateContentMetrics()
-        drawIcon(canvas, metrics)
-        drawText(canvas, metrics)
+        drawIcon(canvas)
+        drawText(canvas)
     }
 
     private fun drawBackground(canvas: Canvas) {
         canvas.drawRoundRect(rect, cornerRadius, cornerRadius, backgroundPaint)
     }
 
-    /**
-     * Calculates metrics (text, drawable, positions), stores them in a data class
-     */
-
-    private fun calculateContentMetrics(): ContentMetrics {
+    private fun calculateContentMetricsSetBounds(width:Int, height:Int ) {
         // prepares text settings
-        val displayText = if (textAllCaps) buttonText.uppercase() else buttonText
         val textWidth = textPaint.measureText(displayText)
         val fontMetrics = textPaint.fontMetrics
         val textHeight = fontMetrics.descent + fontMetrics.ascent
@@ -136,31 +132,27 @@ class ButtonCustomGoogle @JvmOverloads constructor(
         val startX = (width - totalContentWidth) / 2f
         val textStartX = startX + drawableWidth
 
-        return ContentMetrics(
-            displayText,
-            textWidth,
-            drawableWidth,
-            drawableHeight,
-            totalContentWidth,
-            startX,
-            textStartX,
-            centreLine,
-        )
+        val iconLeftBound = startX.toInt()
+        val iconTopBound = (height - drawableHeight) / 2
+        val iconRightBound = iconLeftBound + drawableWidth
+        val iconBottomBound = iconTopBound + drawableHeight
+
+        iconDrawable?.setBounds(iconLeftBound, iconTopBound, iconRightBound, iconBottomBound)
+
+        textMetrics =
+            TextMetrics(
+                textWidth,
+                textStartX,
+                centreLine,
+            )
     }
 
-    private fun drawIcon(canvas: Canvas, m: ContentMetrics) {
-        iconDrawable?.let { drawable ->
-            val top = (height - m.drawableHeight) / 2
-            val left = m.startX.toInt()
-            val right = left + m.drawableWidth
-            val bottom = top + m.drawableHeight
-            drawable.setBounds(left, top, right, bottom)
-            drawable.draw(canvas)
-        }
+    private fun drawIcon(canvas: Canvas) {
+        iconDrawable?.draw(canvas)
     }
 
-    private fun drawText(canvas: Canvas, m: ContentMetrics) {
-        canvas.drawText(m.displayText, m.textStartX, m.baselineText, textPaint)
+    private fun drawText(canvas: Canvas) {
+        canvas.drawText(displayText, textMetrics.textStartX, textMetrics.baselineText, textPaint)
     }
 
     override fun onMeasure(
@@ -186,14 +178,7 @@ class ButtonCustomGoogle @JvmOverloads constructor(
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         rect.set(0f, 0f, w.toFloat(), h.toFloat())
-    }
-
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (event.action == MotionEvent.ACTION_DOWN) {
-            performClick()
-            return true
-        }
-        return super.onTouchEvent(event)
+        calculateContentMetricsSetBounds(w, h)
     }
 
     override fun performClick(): Boolean {
@@ -202,12 +187,7 @@ class ButtonCustomGoogle @JvmOverloads constructor(
         return true
     }
 
-    private data class ContentMetrics(
-        val displayText: String,
-        val textWidth: Float,
-        val drawableWidth: Int,
-        val drawableHeight: Int,
-        val totalContentWidth: Float,
+    private data class TextMetrics(
         val startX: Float,
         val textStartX: Float,
         val baselineText: Float,
