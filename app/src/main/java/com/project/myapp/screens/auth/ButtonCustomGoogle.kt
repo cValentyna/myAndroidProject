@@ -40,7 +40,7 @@ class ButtonCustomGoogle @JvmOverloads constructor(
     private val backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private var rect = RectF()
-    private lateinit var textMetrics: TextMetrics
+    private var textMetrics: TextMetrics? = null
     private var displayText = ""
 
     init {
@@ -141,7 +141,6 @@ class ButtonCustomGoogle @JvmOverloads constructor(
 
         textMetrics =
             TextMetrics(
-                textWidth,
                 textStartX,
                 centreLine,
             )
@@ -152,6 +151,7 @@ class ButtonCustomGoogle @JvmOverloads constructor(
     }
 
     private fun drawText(canvas: Canvas) {
+        val textMetrics = textMetrics ?: return
         canvas.drawText(displayText, textMetrics.textStartX, textMetrics.baselineText, textPaint)
     }
 
@@ -177,6 +177,8 @@ class ButtonCustomGoogle @JvmOverloads constructor(
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
+        if (w <= 0 || h <= 0) return
+        if (w == oldw && h == oldh) return
         rect.set(0f, 0f, w.toFloat(), h.toFloat())
         calculateContentMetricsSetBounds(w, h)
     }
@@ -188,7 +190,6 @@ class ButtonCustomGoogle @JvmOverloads constructor(
     }
 
     private data class TextMetrics(
-        val startX: Float,
         val textStartX: Float,
         val baselineText: Float,
     )
