@@ -151,8 +151,9 @@ class ButtonCustomGoogle @JvmOverloads constructor(
     }
 
     private fun drawText(canvas: Canvas) {
-        val textMetrics = textMetrics ?: return
-        canvas.drawText(displayText, textMetrics.textStartX, textMetrics.baselineText, textPaint)
+        textMetrics?.let {
+            canvas.drawText(displayText, it.textStartX, it.baselineText, textPaint)
+        }
     }
 
     override fun onMeasure(
