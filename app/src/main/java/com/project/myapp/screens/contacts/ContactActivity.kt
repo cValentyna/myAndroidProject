@@ -11,8 +11,11 @@ import com.project.myapp.R
 import com.project.myapp.databinding.ActivityContactsBinding
 import com.project.myapp.ext.componentactivity.enableEdgeToEdgeGrayStatusBar
 import com.project.myapp.ext.view.initializeWindowInsetsHandling
+import com.project.myapp.imageloader.ImageLoader
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ContactActivity : AppCompatActivity() {
@@ -20,7 +23,10 @@ class ContactActivity : AppCompatActivity() {
         ActivityContactsBinding.inflate(layoutInflater)
     }
     private val viewModel: ContactViewModel by viewModels()
-    private val contactsAdapter = ContactAdapter()
+
+    @Inject lateinit var imageLoader: ImageLoader
+
+    private val contactsAdapter by lazy { ContactAdapter(imageLoader) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +52,7 @@ class ContactActivity : AppCompatActivity() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.userList
-                    .collect { users ->
+                    .collectLatest { users ->
                         contactsAdapter.update(users)
                     }
             }

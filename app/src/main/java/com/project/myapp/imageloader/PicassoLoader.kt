@@ -1,6 +1,7 @@
 package com.project.myapp.imageloader
 
 
+import android.util.Log
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
@@ -8,6 +9,7 @@ import javax.inject.Inject
 
 class PicassoLoader @Inject constructor(): ImageLoader {
     override fun load(imageView: ImageView, url: String, placeholder: Int) {
+        Log.d("ImageDebug", "PicassoLoader.load image")
         if (url.isEmpty()) return imageView.setImageResource(placeholder)
         Picasso
             .get()
