@@ -8,9 +8,9 @@ import javax.inject.Singleton
 
 
 @Singleton
-class UsersRepository @Inject constructor() {
+class UsersRepository @Inject constructor(): IUsersRepository {
     private val _userList = MutableStateFlow<List<User>>(emptyList())
-    val userList: StateFlow<List<User>> get() = _userList
+    override val userList: StateFlow<List<User>> get() = _userList
 
     init {
         initializePreparedList()
