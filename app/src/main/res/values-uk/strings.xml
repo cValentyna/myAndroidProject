@@ -37,5 +37,7 @@
     <string name="contact_add_contacts">Додати контакт</string>
     <string name="contact_name_surname">Ім\'я Призвіще</string>
     <string name="contact_profession">Професія</string>
+    <string name="contact_has_been_removed">контакт видалено</string>
+    <string name="contact_restore_information">Відновити</string>
 
 </resources>
