@@ -39,7 +39,7 @@
         android:layout_marginTop="@dimen/horizontal_margin_item_text"
         android:ellipsize="end"
         android:lines="1"
-        android:text="@string/name_surname"
+        android:text="@string/contact_name_surname"
         android:textAppearance="@style/textAppearance_contact_item_name"
         app:layout_constraintStart_toEndOf="@id/contact_image_view"
         app:layout_constraintTop_toTopOf="@id/contact_image_view" />
