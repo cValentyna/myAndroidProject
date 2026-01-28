@@ -37,6 +37,8 @@
     <string name="contact_add_contacts">Add contacts</string>
     <string name="contact_name_surname">Name Surname</string>
     <string name="contact_profession">profession</string>
+    <string name="contact_has_been_removed">contact has been removed</string>
+    <string name="contact_restore_information">Restore</string>
 
 
 </resources>

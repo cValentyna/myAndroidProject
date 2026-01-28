@@ -6,4 +6,8 @@ interface IUsersRepository {
     val userList: StateFlow<List<User>>
 
     fun deleteUser(user: User)
+
+    fun undoDeleteUser()
+
+    fun getLastRestoredIndex(): Int?
 }

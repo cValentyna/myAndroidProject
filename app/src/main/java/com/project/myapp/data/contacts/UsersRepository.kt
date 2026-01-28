@@ -8,7 +8,11 @@ import javax.inject.Singleton
 
 
 @Singleton
-class UsersRepository @Inject constructor(): IUsersRepository {
+class UsersRepository @Inject constructor() : IUsersRepository {
+    private var lastDeletedUser: User? = null
+    private var lastDeletedIndex: Int? = null
+    private var lastRestoredIndex: Int? = null
+
     private val _userList = MutableStateFlow<List<User>>(emptyList())
     override val userList: StateFlow<List<User>> get() = _userList
 
@@ -44,10 +48,32 @@ class UsersRepository @Inject constructor(): IUsersRepository {
         _userList.update { current ->
             val index = current.indexOf(user)
             if (index == -1) return@update current
+            lastDeletedUser = user
+            lastDeletedIndex = index
             current.filterIndexed { i, _ -> i != index }
         }
     }
 
+    override fun undoDeleteUser() {
+        val user = lastDeletedUser ?: return
+        val index = lastDeletedIndex ?: _userList.value.size
+
+        val currentList = _userList.value.toMutableList()
+        val safeIndex = if (index in 0..currentList.size) index else currentList.size
+        currentList.add(safeIndex, user)
+        _userList.value = currentList
+
+        lastDeletedUser = null
+        lastDeletedIndex = null
+
+        lastRestoredIndex = safeIndex
+    }
+
+    override fun getLastRestoredIndex(): Int? {
+        val index = lastRestoredIndex
+        lastRestoredIndex = null
+        return index
+    }
 
 
     companion object {
@@ -55,7 +81,7 @@ class UsersRepository @Inject constructor(): IUsersRepository {
             listOf(
                 "James Moriarty", "Ginny Weasley", "Robinson Crusoe", "Samwise Gamgee", "Arya Stark",
                 "Peter Pan", "Clark Kent", "Forrest Gump", "Amy March", "Elizabet Bennet",
-                "Jean Valjean", "Scarlet O`Hara",
+                "Jean Valjean", "Scarlet O'Hara",
             )
         val professionList =
             listOf(
