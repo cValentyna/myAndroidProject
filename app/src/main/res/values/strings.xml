@@ -39,6 +39,14 @@
     <string name="contact_profession">profession</string>
     <string name="contact_has_been_removed">contact has been removed</string>
     <string name="contact_restore_information">Restore</string>
+    <string name="contact_new_contact">New contact</string>
+    <string name="contact_first_name_required">First name (required)</string>
+    <string name="contact_last_name_optional">Last name</string>
+    <string name="contact_profession_optional">Profession</string>
+    <string name="contact_cancel">Cancel</string>
+    <string name="save_contact">Save contact</string>
+    <string name="error_contact_name">Name should contain letters only, with optional spaces, hyphens, or apostrophes.</string>
+    <string name="error_contact_name_empty">Name is required</string>
 
 
 </resources>

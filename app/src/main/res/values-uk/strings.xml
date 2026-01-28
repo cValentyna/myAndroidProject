@@ -38,5 +38,13 @@
     <string name="contact_profession">Професія</string>
     <string name="contact_has_been_removed">контакт видалено</string>
     <string name="contact_restore_information">Відновити</string>
+    <string name="contact_new_contact">Новий контакт</string>
+    <string name="contact_first_name_required">Ім\'я (обов\'язково)</string>
+    <string name="contact_last_name_optional">Прізвище</string>
+    <string name="contact_profession_optional">Професія</string>
+    <string name="contact_cancel">Скасувати </string>
+    <string name="save_contact">Зберегти контакт</string>
+    <string name="error_contact_name">Ім’я має складатися з літер. Дозволені також пробіли, дефіси та апострофи.</string>
+    <string name="error_contact_name_empty">Необхідно ввести ім\'я</string>
 
 </resources>

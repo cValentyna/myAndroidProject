@@ -127,4 +127,15 @@
         <item name="android:textSize">@dimen/textsize_small</item>
     </style>
 
+    <style name="textAppearance_dialog_fragment" parent="primary_text_style">
+        <item name="android:textSize">@dimen/textsize_big</item>
+        <item name="android:textColor">@color/primary_dark_text_font</item>
+        <item name="backgroundTint">@color/auth_underline</item>
+    </style>
+
+    <style name="textInputLayout_style_fragment_dialog" parent="textInputLayout_style" >
+        <item name="cursorColor">@color/primary_dark_text_font</item>
+        <item name="hintTextColor">@color/primary_dark_text_font</item>
+    </style>
+
 </resources>
