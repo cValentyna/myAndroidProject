@@ -24,9 +24,13 @@ class ContactActivity : AppCompatActivity() {
     }
     private val viewModel: ContactViewModel by viewModels()
 
-    @Inject lateinit var imageLoader: ImageLoader
-
-    private val contactsAdapter by lazy { ContactAdapter(imageLoader) }
+    @Inject
+    lateinit var imageLoader: ImageLoader
+    private val contactsAdapter by lazy {
+        ContactAdapter(imageLoader) { user ->
+            viewModel.deleteUser(user)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +50,7 @@ class ContactActivity : AppCompatActivity() {
             recyclerViewContacts.addItemDecoration(ItemDecorator(resources.getDimensionPixelSize(R.dimen.gap_item)))
             recyclerViewContacts.layoutManager = LinearLayoutManager(this@ContactActivity)
             recyclerViewContacts.adapter = contactsAdapter
+            recyclerViewContacts.itemAnimator = null
         }
 
     private fun collectUserList() {
