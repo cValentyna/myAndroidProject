@@ -44,6 +44,22 @@ class UsersRepository @Inject constructor() : IUsersRepository {
         }
     }
 
+    /**
+     * Adds a new user to _userList when needed in the future (for example using a button).
+     */
+
+    override fun addUser(
+        name: String,
+        profession: String,
+        photoUrl: String,
+    ) {
+        _userList.update { current ->
+            val nextId = (current.maxOfOrNull { it.id } ?: 1) + 1
+            val user = User(id = nextId, name = name, profession = profession, photoUrl = photoUrl)
+            current + user
+        }
+    }
+
     override fun deleteUser(user: User) {
         _userList.update { current ->
             val index = current.indexOf(user)

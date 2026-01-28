@@ -16,6 +16,9 @@ import com.project.myapp.ext.componentactivity.enableEdgeToEdgeGrayStatusBar
 import com.project.myapp.ext.view.initializeWindowInsetsHandling
 import com.project.myapp.ext.view.snackBar
 import com.project.myapp.imageloader.ImageLoader
+import com.project.myapp.screens.contacts.ContactDialogFragment.Companion.KEY_NAME
+import com.project.myapp.screens.contacts.ContactDialogFragment.Companion.KEY_PROFESSION
+import com.project.myapp.screens.contacts.ContactDialogFragment.Companion.REQUEST_KEY
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -43,6 +46,7 @@ class ContactActivity : AppCompatActivity() {
         initRecyclerView()
         collectUserList()
         swipeToDelete()
+        setDialogFragment()
     }
 
     private fun setView() {
@@ -115,5 +119,21 @@ class ContactActivity : AppCompatActivity() {
                 }
             },
         ).attachToRecyclerView(binding.recyclerViewContacts)
+    }
+
+    private fun setDialogFragment() {
+        binding.contactAddContacts.setOnClickListener {
+            val dialog = ContactDialogFragment()
+            dialog.show(supportFragmentManager, "customDialog")
+        }
+        addNewUserFromDialogFragment()
+    }
+
+    private fun addNewUserFromDialogFragment() {
+        supportFragmentManager.setFragmentResultListener(REQUEST_KEY, this) { _, bundle ->
+            val name = bundle.getString(KEY_NAME)
+            val profession = bundle.getString(KEY_PROFESSION)
+            viewModel.addUser(name.toString(), profession.toString())
+        }
     }
 }
