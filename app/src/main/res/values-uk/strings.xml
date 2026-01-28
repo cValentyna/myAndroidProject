@@ -34,8 +34,8 @@
     <string name="google_button_description">Увійти за допомогою Google</string>
 
     <string name="contacts">Контакти</string>
-    <string name="add_contacts">Додати контакт</string>
-    <string name="name_surname">Ім\'я Призвіще</string>
+    <string name="contact_add_contacts">Додати контакт</string>
+    <string name="contact_name_surname">Ім\'я Призвіще</string>
     <string name="contact_profession">Професія</string>
 
 </resources>
