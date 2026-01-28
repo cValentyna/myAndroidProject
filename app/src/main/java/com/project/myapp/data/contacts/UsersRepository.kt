@@ -40,6 +40,16 @@ class UsersRepository @Inject constructor(): IUsersRepository {
         }
     }
 
+    override fun deleteUser(user: User) {
+        _userList.update { current ->
+            val index = current.indexOf(user)
+            if (index == -1) return@update current
+            current.filterIndexed { i, _ -> i != index }
+        }
+    }
+
+
+
     companion object {
         val nameList =
             listOf(
