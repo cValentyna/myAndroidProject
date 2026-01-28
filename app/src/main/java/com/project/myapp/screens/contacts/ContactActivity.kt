@@ -8,9 +8,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.myapp.R
+import com.project.myapp.data.contacts.User
 import com.project.myapp.databinding.ActivityContactsBinding
 import com.project.myapp.ext.componentactivity.enableEdgeToEdgeGrayStatusBar
 import com.project.myapp.ext.view.initializeWindowInsetsHandling
+import com.project.myapp.ext.view.snackBar
 import com.project.myapp.imageloader.ImageLoader
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -29,6 +31,7 @@ class ContactActivity : AppCompatActivity() {
     private val contactsAdapter by lazy {
         ContactAdapter(imageLoader) { user ->
             viewModel.deleteUser(user)
+            showUndoSnackbar(user)
         }
     }
 
@@ -60,6 +63,28 @@ class ContactActivity : AppCompatActivity() {
                     .collectLatest { users ->
                         contactsAdapter.update(users)
                     }
+            }
+        }
+    }
+    private fun showUndoSnackbar(user: User) {
+        binding.root.snackBar(
+            getString(R.string.contact_has_been_removed),
+            getString(R.string.contact_restore_information),
+            resources.getInteger(R.integer.duration_snackbar_5sec),
+        ) {
+            viewModel.restoreUser()
+            val restoredIndex = viewModel.getLastRestoredIndex()
+            restoredIndex?.let { index ->
+                contactsAdapter.submitList(viewModel.userList.value) {
+                    binding.recyclerViewContacts.post {
+                        val layoutManager = binding.recyclerViewContacts.layoutManager as LinearLayoutManager
+                        val firstVisible = layoutManager.findFirstVisibleItemPosition()
+                        val lastVisible = layoutManager.findLastVisibleItemPosition()
+                        if (index < firstVisible || index > lastVisible) {
+                            binding.recyclerViewContacts.smoothScrollToPosition(index)
+                        }
+                    }
+                }
             }
         }
     }
