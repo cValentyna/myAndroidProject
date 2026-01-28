@@ -63,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_button_contact"
-        android:text="@string/add_contacts"
+        android:text="@string/contact_add_contacts"
         android:textAppearance="@style/textAppearance_medium_bright_text"
         app:layout_constraintBottom_toBottomOf="@id/contact_view_top_part"
         app:layout_constraintStart_toStartOf="parent"
