@@ -56,11 +56,11 @@ class ContactActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView() =
-        with(binding) {
-            recyclerViewContacts.addItemDecoration(ItemDecorator(resources.getDimensionPixelSize(R.dimen.gap_item)))
-            recyclerViewContacts.layoutManager = LinearLayoutManager(this@ContactActivity)
-            recyclerViewContacts.adapter = contactsAdapter
-            recyclerViewContacts.itemAnimator = null
+        with(binding.recyclerViewContacts) {
+            addItemDecoration(ItemDecorator(resources.getDimensionPixelSize(R.dimen.gap_item)))
+            layoutManager = LinearLayoutManager(this@ContactActivity)
+            adapter = contactsAdapter
+            itemAnimator = null
         }
 
     private fun collectUserList() {
@@ -73,7 +73,8 @@ class ContactActivity : AppCompatActivity() {
             }
         }
     }
-    private fun showUndoSnackbar(user: User) {
+
+    fun showUndoSnackbar(user: User) {
         binding.root.snackBar(
             getString(R.string.contact_has_been_removed),
             getString(R.string.contact_restore_information),

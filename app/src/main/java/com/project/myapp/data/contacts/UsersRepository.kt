@@ -1,10 +1,12 @@
 package com.project.myapp.data.contacts
 
+import com.github.javafaker.Faker
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.random.Random
 
 
 @Singleton
@@ -22,9 +24,7 @@ class UsersRepository @Inject constructor() : IUsersRepository {
 
     private fun initializePreparedList() {
         val users = buildInitialUsersFromDifLists()
-        if (users.isNotEmpty()) {
-            addInitialUsers(users)
-        }
+        addInitialUsers(users)
     }
 
     private fun addInitialUsers(users: List<User>) {
@@ -37,27 +37,37 @@ class UsersRepository @Inject constructor() : IUsersRepository {
 
     private fun buildInitialUsersFromDifLists(): List<User> {
         val minLength = minOf(nameList.size, professionList.size, photoList.size)
-        if (minLength == 0) return emptyList()
-
         return List(minLength) { index ->
             User(id = index + 1, name = nameList[index], profession = professionList[index], photoUrl = photoList[index])
         }
     }
 
     /**
-     * Adds a new user to _userList when needed in the future (for example using a button).
+     * Adds a new user to _userList (for example using a button).
      */
 
     override fun addUser(
         name: String,
         profession: String,
-        photoUrl: String,
     ) {
+        val faker = Faker()
+
         _userList.update { current ->
             val nextId = (current.maxOfOrNull { it.id } ?: 1) + 1
-            val user = User(id = nextId, name = name, profession = profession, photoUrl = photoUrl)
+            val finalProfession =
+                profession.let {
+                    it.ifEmpty { faker.job().title() }
+                }
+            val user = User(id = nextId, name = name, profession = finalProfession, photoUrl = randomAvatar())
             current + user
         }
+    }
+
+    private fun randomAvatar(): String {
+        val isFemale = Random.nextBoolean()
+        val genderPath = if (isFemale) "women" else "men"
+        val id = Random.nextInt(1, 20)
+        return "https://randomuser.me/api/portraits/$genderPath/$id.jpg"
     }
 
     override fun deleteUser(user: User) {
@@ -90,7 +100,6 @@ class UsersRepository @Inject constructor() : IUsersRepository {
         lastRestoredIndex = null
         return index
     }
-
 
     companion object {
         val nameList =
