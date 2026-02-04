@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.StateFlow
 interface IUsersRepository {
     val userList: StateFlow<List<User>>
 
-    fun addUser(name: String, profession: String, photoUrl: String)
+    fun addUser(name: String, profession: String)
 
     fun deleteUser(user: User)
 

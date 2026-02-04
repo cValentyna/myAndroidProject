@@ -2,7 +2,6 @@ package com.project.myapp.screens.contacts
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.project.myapp.R
@@ -19,7 +18,7 @@ class ContactAdapter(
         viewType: Int,
     ): ContactViewHolder {
         val binding = ContactItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ContactViewHolder(binding, imageLoader, onDeleteUser)
+        return ContactViewHolder(binding)
     }
 
     override fun onBindViewHolder(
@@ -29,10 +28,8 @@ class ContactAdapter(
         holder.bind(getItem(position))
     }
 
-    class ContactViewHolder(
+    inner class ContactViewHolder(
         private val binding: ContactItemBinding,
-        private val imageLoader: ImageLoader,
-        private val onDeleteUser: (User) -> Unit,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(user: User) {
             val name = "${user.name} ${user.id}"
@@ -49,20 +46,4 @@ class ContactAdapter(
     fun update(newList: List<User>) {
         submitList(newList)
     }
-
-    companion object {
-        private val UserDiffCallback =
-            object : DiffUtil.ItemCallback<User>() {
-                override fun areItemsTheSame(
-                    oldItem: User,
-                    newItem: User,
-                ) = oldItem.id == newItem.id
-
-                override fun areContentsTheSame(
-                    oldItem: User,
-                    newItem: User,
-                ) = oldItem == newItem
-            }
-    }
-
 }

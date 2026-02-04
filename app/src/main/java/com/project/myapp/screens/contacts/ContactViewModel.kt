@@ -14,7 +14,7 @@ class ContactViewModel @Inject constructor(
     val userList: StateFlow<List<User>> get() = usersRepository.userList
 
     fun addUser(name: String, profession: String){
-        usersRepository.addUser(name, profession, "")
+        usersRepository.addUser(name, profession)
     }
 
     fun deleteUser(user: User) {

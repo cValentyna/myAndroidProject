@@ -45,6 +45,7 @@
     <string name="contact_cancel">Скасувати </string>
     <string name="save_contact">Зберегти контакт</string>
     <string name="error_contact_name">Ім’я має складатися з літер. Дозволені також пробіли, дефіси та апострофи.</string>
+    <string name="error_contact_name_length">Ім’я має бути від 2 до 20 символів</string>
     <string name="error_contact_name_empty">Необхідно ввести ім\'я</string>
 
 </resources>
