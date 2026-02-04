@@ -1,7 +1,6 @@
 package com.project.myapp.ext.string
 
-fun String.capitalizeFirstLetter(): String {
-    return this.replaceFirstChar {
-        if (it.isLowerCase()) it.titlecase() else it.toString()
+fun String.capitalizeFirstLetter(): String =
+    this.replaceFirstChar {
+        it.uppercaseChar()
     }
-}

@@ -4,15 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import com.project.myapp.R
 import com.project.myapp.databinding.ContactDialogBinding
 import com.project.myapp.ext.string.capitalizeFirstLetter
+import com.project.myapp.validation.NameValidator
+import com.project.myapp.validation.ValidationResult
 
 
 class ContactDialogFragment : DialogFragment() {
     private var _binding: ContactDialogBinding? = null
     private val binding get() = _binding!!
+
+    private val nameValidator = NameValidator()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,46 +28,38 @@ class ContactDialogFragment : DialogFragment() {
         val savedHelperText = savedInstanceState?.getString(KEY_SAVEDINSTANCE_STATE)
         binding.textInputLayoutContactUserName.helperText = savedHelperText
 
-        binding.buttonCancel.setOnClickListener {
-            dismiss()
-        }
-
-        binding.buttonSaveUser.setOnClickListener {
-            saveUser()
-        }
-
+        setupListeners()
         return binding.root
     }
 
-    private fun saveUser() {
-        val contactName = binding.textInputEditTextUserName.text.toString().trim()
-        val contactLastName = binding.textInputEditTextUserLastName.text.toString().trim()
-        val profession = binding.textInputEditTextUserProfession.text.toString().trim()
-
-        if (!isValidName(contactName)) {
-            binding.textInputLayoutContactUserName.helperText =
-                when {
-                    contactName.isEmpty() -> getString(R.string.error_contact_name_empty)
-                    else -> getString(R.string.error_contact_name)
-                }
-            return
+    private fun setupListeners() {
+        binding.buttonCancel.setOnClickListener {
+            dismiss()
         }
+        binding.buttonSaveUser.setOnClickListener {
+            saveUser()
+        }
+    }
 
-        val fullName =
-            if (contactLastName.isNotEmpty()) {
-                "${contactName.capitalizeFirstLetter()} ${contactLastName.capitalizeFirstLetter()}"
-            } else {
-                contactName.capitalizeFirstLetter()
+    private fun saveUser() {
+        with(binding) {
+            val contactName = textInputEditTextUserName.text.toString().trim()
+            val contactLastName = textInputEditTextUserLastName.text.toString().trim()
+            val profession = textInputEditTextUserProfession.text.toString().trim()
+
+            val result = nameValidator.validateName(contactName)
+
+            if (result is ValidationResult.Error) {
+                textInputLayoutContactUserName.helperText = getString(result.messageRId)
+                return
             }
+            val fullName = "${contactName.capitalizeFirstLetter()} ${contactLastName.capitalizeFirstLetter()}"
 
-        val bundle =
-            Bundle().apply {
-                putString(KEY_NAME, fullName)
-                putString(KEY_PROFESSION, profession.capitalizeFirstLetter())
-            }
+            val bundle = bundleOf(KEY_NAME to fullName, KEY_PROFESSION to profession.capitalizeFirstLetter())
 
-        parentFragmentManager.setFragmentResult(REQUEST_KEY, bundle)
-        dismiss()
+            parentFragmentManager.setFragmentResult(REQUEST_KEY, bundle)
+            dismiss()
+        }
     }
 
     override fun onDestroyView() {
@@ -81,51 +77,5 @@ class ContactDialogFragment : DialogFragment() {
         const val KEY_NAME = "new_user_name"
         const val KEY_PROFESSION = "new_user_profession"
         const val KEY_SAVEDINSTANCE_STATE = "helperText"
-
-        private fun isValidName(name: String): Boolean {
-            val trimmed = name.trim()
-
-            if (trimmed.isEmpty()) return false
-            if (trimmed.length < 2 || trimmed.length > 20) return false
-
-            var hasLetter = false
-            var prevWasApostrophe = false
-            var prevWasHyphen = false
-
-            for (ch in trimmed) {
-                val apostrophes = setOf('\'', '’', 'ʼ', '‘')
-                val isApostrophe = ch in apostrophes
-                when {
-                    ch.isLetter() -> {
-                        hasLetter = true
-                        prevWasApostrophe = false
-                        prevWasHyphen = false
-                    }
-
-                    ch == ' ' -> {
-                        prevWasApostrophe = false
-                        prevWasHyphen = false
-                    }
-
-                    ch == '-' -> {
-                        if (prevWasHyphen) return false
-                        if (prevWasApostrophe) return false
-                        prevWasHyphen = true
-                        prevWasApostrophe = false
-                    }
-
-                    isApostrophe -> {
-                        if (prevWasApostrophe) return false
-                        if (prevWasHyphen) return false
-                        prevWasApostrophe = true
-                        prevWasHyphen = false
-                    }
-
-                    else -> return false
-                }
-            }
-
-            return hasLetter
-        }
     }
 }

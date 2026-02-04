@@ -59,7 +59,9 @@ dependencies {
     implementation(libs.picasso)
     implementation(libs.wasabeef.picasso.transformations)
     implementation(libs.coil)
+    implementation(libs.javafaker)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
 }
