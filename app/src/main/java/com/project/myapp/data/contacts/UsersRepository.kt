@@ -54,20 +54,16 @@ class UsersRepository @Inject constructor() : IUsersRepository {
 
         _userList.update { current ->
             val nextId = (current.maxOfOrNull { it.id } ?: 1) + 1
-            val finalProfession =
-                profession.let {
-                    it.ifEmpty { faker.job().title() }
-                }
-            val user = User(id = nextId, name = name, profession = finalProfession, photoUrl = randomAvatar())
+            val finalProfession = profession.ifEmpty { faker.job().title() }
+            val user = User(id = nextId, name = name, profession = finalProfession.toString(), photoUrl = randomAvatar())
             current + user
         }
     }
 
     private fun randomAvatar(): String {
-        val isFemale = Random.nextBoolean()
-        val genderPath = if (isFemale) "women" else "men"
+        val gender = GenderPath.random()
         val id = Random.nextInt(1, 20)
-        return "https://randomuser.me/api/portraits/$genderPath/$id.jpg"
+        return gender.avatarUrl(id)
     }
 
     override fun deleteUser(user: User) {
@@ -89,8 +85,7 @@ class UsersRepository @Inject constructor() : IUsersRepository {
         currentList.add(safeIndex, user)
         _userList.value = currentList
 
-        lastDeletedUser = null
-        lastDeletedIndex = null
+        clearLastDeleted()
 
         lastRestoredIndex = safeIndex
     }
@@ -99,6 +94,11 @@ class UsersRepository @Inject constructor() : IUsersRepository {
         val index = lastRestoredIndex
         lastRestoredIndex = null
         return index
+    }
+
+    override fun clearLastDeleted() {
+        lastDeletedUser = null
+        lastDeletedIndex = null
     }
 
     companion object {

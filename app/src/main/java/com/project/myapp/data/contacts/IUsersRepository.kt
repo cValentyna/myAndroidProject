@@ -12,4 +12,6 @@ interface IUsersRepository {
     fun undoDeleteUser()
 
     fun getLastRestoredIndex(): Int?
+
+    fun clearLastDeleted()
 }
