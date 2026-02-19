@@ -78,6 +78,7 @@ class ContactActivity : AppCompatActivity() {
             getString(R.string.contact_has_been_removed),
             getString(R.string.contact_restore_information),
             resources.getInteger(R.integer.duration_snackbar_5sec),
+            onDismiss = { viewModel.clearLastDeleted() },
         ) {
             viewModel.restoreUser()
             val restoredIndex = viewModel.getLastRestoredIndex()
