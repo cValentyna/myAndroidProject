@@ -28,4 +28,8 @@ class ContactViewModel @Inject constructor(
     fun getLastRestoredIndex(): Int?{
         return usersRepository.getLastRestoredIndex()
     }
+
+    fun clearLastDeleted(){
+        usersRepository.clearLastDeleted()
+    }
 }
