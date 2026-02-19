@@ -38,13 +38,13 @@ class NameValidator {
                 }
 
                 ch == '-' -> {
-                    if (prevWasHyphen|| prevWasApostrophe) return ValidationResult.Error(R.string.error_contact_name)
+                    if (prevWasHyphen || prevWasApostrophe) return ValidationResult.Error(R.string.error_contact_name)
                     prevWasHyphen = true
                     prevWasApostrophe = false
                 }
 
                 isApostrophe -> {
-                    if (prevWasApostrophe|| prevWasHyphen ) return ValidationResult.Error(R.string.error_contact_name)
+                    if (prevWasApostrophe || prevWasHyphen) return ValidationResult.Error(R.string.error_contact_name)
                     prevWasApostrophe = true
                     prevWasHyphen = false
                 }
