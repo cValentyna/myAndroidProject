@@ -45,7 +45,7 @@ class ContactActivity : AppCompatActivity() {
         initRecyclerView()
         collectUserList()
         swipeToDelete()
-        setDialogFragment()
+        setupAddContactDialog()
     }
 
     private fun setView() {
@@ -65,10 +65,30 @@ class ContactActivity : AppCompatActivity() {
     private fun collectUserList() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.userList
-                    .collectLatest { users ->
-                        contactsAdapter.update(users)
+                viewModel.userList.collectLatest { users ->
+                    contactsAdapter.update(users) {
+                        scrollToRestorePosition()
                     }
+                }
+            }
+        }
+    }
+
+    /*
+      Scrolls RecyclerView to the restored user if it was last or first.
+      Uses "post" to make sure LayoutManager position are updated after
+      the list has been drawn again.
+     */
+
+    private fun scrollToRestorePosition() {
+        val restoredIndex = viewModel.getLastRestoredIndex() ?: return
+        binding.recyclerViewContacts.post {
+            val layoutManager =
+                binding.recyclerViewContacts.layoutManager as LinearLayoutManager
+            val firstVisible = layoutManager.findFirstVisibleItemPosition()
+            val lastVisible = layoutManager.findLastVisibleItemPosition()
+            if (restoredIndex < firstVisible || restoredIndex > lastVisible) {
+                binding.recyclerViewContacts.smoothScrollToPosition(restoredIndex)
             }
         }
     }
@@ -81,19 +101,6 @@ class ContactActivity : AppCompatActivity() {
             onDismiss = { viewModel.clearLastDeleted() },
         ) {
             viewModel.restoreUser()
-            val restoredIndex = viewModel.getLastRestoredIndex()
-            restoredIndex?.let { index ->
-                contactsAdapter.submitList(viewModel.userList.value) {
-                    binding.recyclerViewContacts.post {
-                        val layoutManager = binding.recyclerViewContacts.layoutManager as LinearLayoutManager
-                        val firstVisible = layoutManager.findFirstVisibleItemPosition()
-                        val lastVisible = layoutManager.findLastVisibleItemPosition()
-                        if (index < firstVisible || index > lastVisible) {
-                            binding.recyclerViewContacts.smoothScrollToPosition(index)
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -122,15 +129,15 @@ class ContactActivity : AppCompatActivity() {
         ).attachToRecyclerView(binding.recyclerViewContacts)
     }
 
-    private fun setDialogFragment() {
+    private fun setupAddContactDialog() {
         binding.contactAddContacts.setOnClickListener {
             val dialog = ContactDialogFragment()
             dialog.show(supportFragmentManager, "customDialog")
         }
-        addNewUserFromDialogFragment()
+        setAddUserResultListener()
     }
 
-    private fun addNewUserFromDialogFragment() {
+    private fun setAddUserResultListener() {
         supportFragmentManager.setFragmentResultListener(REQUEST_KEY, this) { _, bundle ->
             val name = bundle.getString(KEY_NAME)
             val profession = bundle.getString(KEY_PROFESSION)

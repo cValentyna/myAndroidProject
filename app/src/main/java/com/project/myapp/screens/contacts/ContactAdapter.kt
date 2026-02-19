@@ -43,7 +43,7 @@ class ContactAdapter(
         }
     }
 
-    fun update(newList: List<User>) {
-        submitList(newList)
+    fun update(newList: List<User>, commitCallback: (() -> Unit)? = null) {
+        submitList(newList, commitCallback)
     }
 }
