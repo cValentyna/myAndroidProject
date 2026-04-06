@@ -2,11 +2,28 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.MyApp" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
+        <item name="googleButtonStyle">@style/defaultGoogleButtonStyle</item>
     </style>
     <style name="Theme.MyApp" parent="Base.Theme.MyApp" />
 
     <style name="SplashTheme" parent="Theme.MyApp">
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
+
+    <style name = "defaultGoogleButtonStyle">
+        <item name="customFont">@font/open_sans_semibold</item>
+        <item name="googleBackgroundColor">@color/button_google_background</item>
+        <item name="googleCornerRadius">@dimen/size_radius_button</item>
+        <item name="googleTextColor">@color/primary_dark_text_font</item>
+        <item name="googleTextSize">@dimen/textsize_big_button</item>
+        <item name="googleLetterSpacing">@dimen/space_letters</item>
+        <item name="googleIconDrawable">@drawable/auth_android_google_icon</item>
+        <item name="heightPercent">@dimen/height_percent_bt_google</item>
+        <item name="widthPercent">@dimen/width_percent_auth_buttons</item>
+    </style>
+
+    <style name="GlobalGoogleButtonStyle" parent = "defaultGoogleButtonStyle">
+    </style>
+
 
 </resources>

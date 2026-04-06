@@ -98,20 +98,6 @@
         <item name="helperTextTextAppearance">@style/textAppearance_error</item>
     </style>
 
-    <style name="textAppearance_bt_google" parent="text_big_button_style">
-        <item name="android:textColor">@color/primary_dark_text_font</item>
-    </style>
-
-    <style name="google_button_style" parent="@style/Theme.MaterialComponents">
-        <item name="android:backgroundTint">@color/button_google_background</item>
-        <item name="cornerRadius">@dimen/size_radius_button</item>
-        <item name="iconTint">@color/invisible</item>
-        <item name="iconGravity">textStart</item>
-        <item name="iconTintMode">add</item>
-        <item name="android:insetBottom">0dp</item>
-        <item name="android:insetTop">0dp</item>
-    </style>
-
     <style name="textAppearance_bt_register" parent="text_big_button_style">
         <item name="android:textColor">@color/primary_brightest_text_font</item>
     </style>

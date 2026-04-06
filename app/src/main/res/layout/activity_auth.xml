@@ -39,27 +39,18 @@
         app:layout_constraintTop_toBottomOf="@id/textViewAuthAcquainted"
         app:layout_constraintWidth_percent="@dimen/width_percent_primary" />
 
-<!--  I tried to follow buttons size from figma design,
-but I also can change if it is necessary-->
-    <com.google.android.material.button.MaterialButton
+    <com.project.myapp.screens.auth.ButtonCustomGoogle
+        style="@style/GlobalGoogleButtonStyle"
         android:id="@+id/buttonAuthGoogle"
-        style="@style/google_button_style"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="@string/auth_google"
-        android:textAllCaps="true"
-        android:textAppearance="@style/textAppearance_bt_google"
-        android:theme="@style/Theme.MaterialComponents"
-        app:icon="@drawable/auth_android_google_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/google_button_description"
+        app:googleButtonText="@string/auth_google"
         app:layout_constraintBottom_toTopOf="@id/buttonAuthRegister"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_max="@dimen/height_max_bt_google"
-        app:layout_constraintHeight_min="@dimen/height_min_bt_google"
-        app:layout_constraintHeight_percent="@dimen/height_percent_bt_google"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="@dimen/bias_vertical_bt_google"
-        app:layout_constraintWidth_percent="@dimen/width_percent_auth_buttons" />
+        app:layout_constraintVertical_bias="@dimen/bias_vertical_bt_google"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewAuthBetweenButtons"

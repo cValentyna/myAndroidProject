@@ -38,24 +38,20 @@
         app:layout_constraintTop_toBottomOf="@id/textViewAuthAcquainted"
         app:layout_constraintWidth_percent="@dimen/width_percent_primary" />
 
-    <com.google.android.material.button.MaterialButton
+    <com.project.myapp.screens.auth.ButtonCustomGoogle
         android:id="@+id/buttonAuthGoogle"
-        style="@style/google_button_style"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/auth_google"
-        android:textAllCaps="true"
-        android:textAppearance="@style/textAppearance_bt_google"
-        android:theme="@style/Theme.MaterialComponents"
-        app:icon="@drawable/auth_android_google_icon"
-        app:layout_constraintHeight_max="48dp"
+        style="@style/defaultGoogleButtonStyle"
+        android:contentDescription="@string/google_button_description"
+        app:googleButtonText="@string/auth_google"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/textViewAuthBetweenButtons"
         app:layout_constraintVertical_bias="@dimen/bias_vertical_bt_google"
-        app:layout_constraintWidth_percent="@dimen/width_percent_auth_buttons"
-        app:layout_constraintHorizontal_chainStyle="spread"/>
+        app:layout_constraintHorizontal_chainStyle="spread"
+        />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewAuthBetweenButtons"
