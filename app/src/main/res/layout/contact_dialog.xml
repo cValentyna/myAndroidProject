@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="@dimen/contact_dialog_min_width">
+
+    <TextView
+        android:id="@+id/contact_dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/contact_dialog_margin"
+        android:text="@string/contact_new_contact"
+        android:textAppearance="@style/textAppearance_title_text"
+        android:textColor="@color/primary_gray_font"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutContactUserName"
+        style="@style/textInputLayout_style_fragment_dialog"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/contact_first_name_required"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/contact_dialog_title"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintWidth_percent="@dimen/width_percent_primary">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditTextUserName"
+            style="@style/textAppearance_dialog_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_error"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:lines="1"
+            android:paddingStart="@dimen/padding_text_textInputEditText"
+            android:paddingTop="@dimen/padding_text_top_textInputEditText"
+            android:paddingEnd="@dimen/padding_text_textInputEditText" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutContactUserLastName"
+        style="@style/textInputLayout_style_fragment_dialog"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/contact_last_name_optional"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayoutContactUserName"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintWidth_percent="@dimen/width_percent_primary">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditTextUserLastName"
+            style="@style/textAppearance_dialog_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:lines="1"
+            android:paddingStart="@dimen/padding_text_textInputEditText"
+            android:paddingTop="@dimen/padding_text_top_textInputEditText"
+            android:paddingEnd="@dimen/padding_text_textInputEditText" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutContactUserProfession"
+        style="@style/textInputLayout_style_fragment_dialog"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/contact_profession_optional"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayoutContactUserLastName"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintWidth_percent="@dimen/width_percent_primary">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditTextUserProfession"
+            style="@style/textAppearance_dialog_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:lines="1"
+            android:paddingStart="@dimen/padding_text_textInputEditText"
+            android:paddingTop="@dimen/padding_text_top_textInputEditText"
+            android:paddingEnd="@dimen/padding_text_textInputEditText" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/buttonCancel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintHorizontal_weight="1"
+        android:text="@string/contact_cancel"
+        app:layout_constraintBottom_toBottomOf="@id/buttonSaveUser"
+        app:layout_constraintEnd_toStartOf="@id/buttonSaveUser"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/buttonSaveUser" />
+
+    <Button
+        android:id="@+id/buttonSaveUser"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_weight="1"
+        android:text="@string/save_contact"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/buttonCancel"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayoutContactUserProfession" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

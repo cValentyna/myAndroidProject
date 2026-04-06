@@ -1,14 +1,20 @@
 package com.project.myapp.data.contacts
 
+import com.github.javafaker.Faker
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.random.Random
 
 
 @Singleton
-class UsersRepository @Inject constructor(): IUsersRepository {
+class UsersRepository @Inject constructor() : IUsersRepository {
+    private var lastDeletedUser: User? = null
+    private var lastDeletedIndex: Int? = null
+    private var lastRestoredIndex: Int? = null
+
     private val _userList = MutableStateFlow<List<User>>(emptyList())
     override val userList: StateFlow<List<User>> get() = _userList
 
@@ -18,9 +24,7 @@ class UsersRepository @Inject constructor(): IUsersRepository {
 
     private fun initializePreparedList() {
         val users = buildInitialUsersFromDifLists()
-        if (users.isNotEmpty()) {
-            addInitialUsers(users)
-        }
+        addInitialUsers(users)
     }
 
     private fun addInitialUsers(users: List<User>) {
@@ -33,11 +37,68 @@ class UsersRepository @Inject constructor(): IUsersRepository {
 
     private fun buildInitialUsersFromDifLists(): List<User> {
         val minLength = minOf(nameList.size, professionList.size, photoList.size)
-        if (minLength == 0) return emptyList()
-
         return List(minLength) { index ->
             User(id = index + 1, name = nameList[index], profession = professionList[index], photoUrl = photoList[index])
         }
+    }
+
+    /**
+     * Adds a new user to _userList (for example using a button).
+     */
+
+    override fun addUser(
+        name: String,
+        profession: String,
+    ) {
+        val faker = Faker()
+
+        _userList.update { current ->
+            val nextId = (current.maxOfOrNull { it.id } ?: 1) + 1
+            val finalProfession = profession.ifEmpty { faker.job().title() }
+            val user = User(id = nextId, name = name, profession = finalProfession.toString(), photoUrl = randomAvatar())
+            current + user
+        }
+    }
+
+    private fun randomAvatar(): String {
+        val gender = GenderPath.random()
+        val id = Random.nextInt(1, 20)
+        return gender.avatarUrl(id)
+    }
+
+    override fun deleteUser(user: User) {
+        _userList.update { current ->
+            val index = current.indexOf(user)
+            if (index == -1) return@update current
+            lastDeletedUser = user
+            lastDeletedIndex = index
+            current.filterIndexed { i, _ -> i != index }
+        }
+    }
+
+    override fun undoDeleteUser() {
+        val user = lastDeletedUser ?: return
+        val index = lastDeletedIndex ?: _userList.value.size
+
+        val currentList = _userList.value.toMutableList()
+        val safeIndex = if (index in 0..currentList.size) index else currentList.size
+        currentList.add(safeIndex, user)
+        _userList.value = currentList
+
+        clearLastDeleted()
+
+        lastRestoredIndex = safeIndex
+    }
+
+    override fun getLastRestoredIndex(): Int? {
+        val index = lastRestoredIndex
+        lastRestoredIndex = null
+        return index
+    }
+
+    override fun clearLastDeleted() {
+        lastDeletedUser = null
+        lastDeletedIndex = null
     }
 
     companion object {
@@ -45,7 +106,7 @@ class UsersRepository @Inject constructor(): IUsersRepository {
             listOf(
                 "James Moriarty", "Ginny Weasley", "Robinson Crusoe", "Samwise Gamgee", "Arya Stark",
                 "Peter Pan", "Clark Kent", "Forrest Gump", "Amy March", "Elizabet Bennet",
-                "Jean Valjean", "Scarlet O`Hara",
+                "Jean Valjean", "Scarlet O'Hara",
             )
         val professionList =
             listOf(

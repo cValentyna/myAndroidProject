@@ -12,4 +12,24 @@ class ContactViewModel @Inject constructor(
     private val usersRepository: IUsersRepository
 ) : ViewModel() {
     val userList: StateFlow<List<User>> get() = usersRepository.userList
+
+    fun addUser(name: String, profession: String){
+        usersRepository.addUser(name, profession)
+    }
+
+    fun deleteUser(user: User) {
+        usersRepository.deleteUser(user)
+    }
+
+    fun restoreUser() {
+        usersRepository.undoDeleteUser()
+    }
+
+    fun getLastRestoredIndex(): Int?{
+        return usersRepository.getLastRestoredIndex()
+    }
+
+    fun clearLastDeleted(){
+        usersRepository.clearLastDeleted()
+    }
 }

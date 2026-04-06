@@ -102,5 +102,7 @@
     <dimen name="vertical_margin_item_text">24dp</dimen>
     <dimen name="horizontal_margin_item_text">6dp</dimen>
     <dimen name="bias_vertical_contact_title">0.1</dimen>
+    <dimen name="contact_dialog_min_width">300dp</dimen>
+    <dimen name="contact_dialog_margin">5dp</dimen>
 
 </resources>

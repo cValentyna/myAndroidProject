@@ -34,9 +34,20 @@
     <string name="error_invalid_email_or_password">Invalid email or password</string>
 
     <string name="contacts">Contacts</string>
-    <string name="add_contacts">Add contacts</string>
-    <string name="name_surname">Name Surname</string>
+    <string name="contact_add_contacts">Add contacts</string>
+    <string name="contact_name_surname">Name Surname</string>
     <string name="contact_profession">profession</string>
+    <string name="contact_has_been_removed">contact has been removed</string>
+    <string name="contact_restore_information">Restore</string>
+    <string name="contact_new_contact">New contact</string>
+    <string name="contact_first_name_required">First name (required)</string>
+    <string name="contact_last_name_optional">Last name</string>
+    <string name="contact_profession_optional">Profession</string>
+    <string name="contact_cancel">Cancel</string>
+    <string name="save_contact">Save contact</string>
+    <string name="error_contact_name">Name should contain letters only, with optional spaces, hyphens, or apostrophes.</string>
+    <string name="error_contact_name_length">Name must be between 2 and 20 characters</string>
+    <string name="error_contact_name_empty">Name is required</string>
 
     <string name="google_button_description">Sign in with Google</string>
 
