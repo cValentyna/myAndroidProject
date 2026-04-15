@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.myapp.R
+import com.project.myapp.data.contacts.User
 import com.project.myapp.databinding.ActivityContactsBinding
 import com.project.myapp.ext.componentactivity.enableEdgeToEdgeGrayStatusBar
 import com.project.myapp.ext.view.initializeWindowInsetsHandling
@@ -35,7 +36,8 @@ class ContactActivity : AppCompatActivity() {
     private val contactsAdapter by lazy {
         ContactAdapter(imageLoader) { user ->
             viewModel.deleteUser(user)
-            showUndoSnackbar()
+            val deletedUser = user
+            showUndoSnackbar(deletedUser)
         }
     }
 
@@ -93,12 +95,12 @@ class ContactActivity : AppCompatActivity() {
         }
     }
 
-    private fun showUndoSnackbar() {
+    private fun showUndoSnackbar(deletedUser: User) {
         binding.root.snackBar(
             getString(R.string.contact_has_been_removed),
             getString(R.string.contact_restore_information),
             resources.getInteger(R.integer.duration_snackbar_5sec),
-            onDismiss = { viewModel.clearLastDeleted() },
+            onDismiss = { viewModel.clearIfSame(deletedUser) },
         ) {
             viewModel.restoreUser()
         }
@@ -123,7 +125,8 @@ class ContactActivity : AppCompatActivity() {
                     val position = viewHolder.adapterPosition
                     val item = contactsAdapter.currentList[position]
                     viewModel.deleteUser(item)
-                    showUndoSnackbar()
+                    val deletedUser = item
+                    showUndoSnackbar(deletedUser)
                 }
             },
         ).attachToRecyclerView(binding.recyclerViewContacts)
