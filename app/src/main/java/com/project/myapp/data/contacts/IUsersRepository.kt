@@ -13,5 +13,5 @@ interface IUsersRepository {
 
     fun getLastRestoredIndex(): Int?
 
-    fun clearLastDeleted()
+    fun clearIfSame(user: User)
 }

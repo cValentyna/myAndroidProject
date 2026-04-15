@@ -96,9 +96,15 @@ class UsersRepository @Inject constructor() : IUsersRepository {
         return index
     }
 
-    override fun clearLastDeleted() {
+    private fun clearLastDeleted() {
         lastDeletedUser = null
         lastDeletedIndex = null
+    }
+
+    override fun clearIfSame(user: User) {
+        val current = lastDeletedUser ?: return
+        if (current.id != user.id) return
+        clearLastDeleted()
     }
 
     companion object {

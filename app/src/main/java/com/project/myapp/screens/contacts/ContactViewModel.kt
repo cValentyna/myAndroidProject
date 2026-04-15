@@ -25,11 +25,11 @@ class ContactViewModel @Inject constructor(
         usersRepository.undoDeleteUser()
     }
 
-    fun getLastRestoredIndex(): Int?{
+    fun getLastRestoredIndex(): Int? {
         return usersRepository.getLastRestoredIndex()
     }
 
-    fun clearLastDeleted(){
-        usersRepository.clearLastDeleted()
+    fun clearIfSame(user: User) {
+        usersRepository.clearIfSame(user)
     }
 }
