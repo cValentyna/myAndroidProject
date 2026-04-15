@@ -24,13 +24,17 @@ fun View.snackBar(
         .make(this, message, Snackbar.LENGTH_INDEFINITE)
         .setDuration(duration)
         .setAction(actionText) { action() }
-        .addCallback(object:Snackbar.Callback() {
-            override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                super.onDismissed(transientBottomBar, event)
-                if(event != DISMISS_EVENT_ACTION){
-                    onDismiss()
+        .addCallback(
+            object : Snackbar.Callback() {
+                override fun onDismissed(
+                    transientBottomBar: Snackbar?,
+                    event: Int,
+                ) {
+                    super.onDismissed(transientBottomBar, event)
+                    if (event != DISMISS_EVENT_ACTION && event != DISMISS_EVENT_CONSECUTIVE) {
+                        onDismiss()
+                    }
                 }
-            }
-        })
-        .show()
+            },
+        ).show()
 }
