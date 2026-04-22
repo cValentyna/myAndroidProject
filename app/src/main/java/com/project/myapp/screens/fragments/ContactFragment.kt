@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ContactFragment : Fragment() {
+class ContactFragment : Fragment(R.layout.fragment_contact) {
     private var _binding: FragmentContactBinding? = null
     private val binding get() = _binding!!
 
@@ -43,10 +43,8 @@ class ContactFragment : Fragment() {
             imageLoader,
             onDeleteUser = { user ->
                 viewModel.deleteUser(user)
-                showUndoSnackBar(user)
-            },
-            onOpenDetails = { user ->
-                openDetailsFragment(user)
+                val deletedUser = user
+                showUndoSnackbar(deletedUser)
             },
         )
     }
@@ -75,61 +73,52 @@ class ContactFragment : Fragment() {
 
     private fun initRecyclerView() =
         with(binding.recyclerViewContacts) {
-            addItemDecoration(ItemDecorator(resources.getDimensionPixelSize(R.dimen.gap_item)))
+            addItemDecoration(ItemDecorator(resources.getDimensionPixelSize(com.project.myapp.R.dimen.gap_item)))
             layoutManager = LinearLayoutManager(requireContext())
             adapter = contactsAdapter
         }
 
-    private fun openDetailsFragment(user: User) {
-        val fragment =
-            ContactProfileFragment.newInstance(
-                name = user.name,
-                profession = user.profession,
-                photoUrl = user.photoUrl,
-            )
-
-        parentFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container_view, fragment)
-            .addToBackStack(null)
-            .commit()
-    }
-
     private fun collectUserList() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.userList
                     .collectLatest { users ->
-                        contactsAdapter.update(users) {
-                            scrollToRestorePosition()
-                        }
+                        contactsAdapter.update(users)
+                        scrollToRestorePosition()
                     }
             }
         }
     }
 
     /*
-      Scrolls RecyclerView to the restored user if it was last, first
-      or the restored position is currently invisible.
-      Uses post() to ensure restore after submitList()
+      Scrolls RecyclerView to the restored user if it was last or first.
+      Uses "post" to make sure LayoutManager position are updated after
+      the list has been drawn again.
+      added addOnLayoutChangeListener
      */
 
     private fun scrollToRestorePosition() {
-        val restoredIndex =
-            viewModel.getLastRestoredIndex() ?: return
-        binding.recyclerViewContacts.apply {
-            post {
-                val layoutManager = layoutManager as LinearLayoutManager
-                val firstVisible = layoutManager.findFirstVisibleItemPosition()
-                val lastVisible = layoutManager.findLastVisibleItemPosition()
-                if (restoredIndex < firstVisible || restoredIndex > lastVisible) {
-                    smoothScrollToPosition(restoredIndex)
+        binding.recyclerViewContacts.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
+            override fun onLayoutChange(
+                v: View?, left: Int, top: Int, right: Int, bottom: Int,
+                oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int,
+            ) {
+                val restoredIndex = viewModel.getLastRestoredIndex() ?: return
+                binding.recyclerViewContacts.post {
+                    val layoutManager =
+                        binding.recyclerViewContacts.layoutManager as LinearLayoutManager
+                    val firstVisible = layoutManager.findFirstVisibleItemPosition()
+                    val lastVisible = layoutManager.findLastVisibleItemPosition()
+                    if (restoredIndex < firstVisible || restoredIndex > lastVisible) {
+                        binding.recyclerViewContacts.smoothScrollToPosition(restoredIndex)
+                    }
                 }
+                binding.recyclerViewContacts.removeOnLayoutChangeListener(this)
             }
-        }
+        })
     }
 
-    private fun showUndoSnackBar(deletedUser: User) {
+    private fun showUndoSnackbar(deletedUser: User) {
         binding.root.snackBar(
             getString(R.string.contact_has_been_removed),
             getString(R.string.contact_restore_information),
@@ -159,7 +148,8 @@ class ContactFragment : Fragment() {
                     val position = viewHolder.adapterPosition
                     val item = contactsAdapter.currentList[position]
                     viewModel.deleteUser(item)
-                    showUndoSnackBar(item)
+                    val deletedUser = item
+                    showUndoSnackbar(deletedUser)
                 }
             },
         ).attachToRecyclerView(binding.recyclerViewContacts)
