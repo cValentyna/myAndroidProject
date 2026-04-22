@@ -12,6 +12,7 @@ import com.project.myapp.imageloader.ImageLoader
 class ContactAdapter(
     private val imageLoader: ImageLoader,
     private val onDeleteUser: (User) -> Unit,
+    private val onOpenDetails: (User, String) -> Unit,
 ) : ListAdapter<User, ContactAdapter.ContactViewHolder>(UserDiffCallback) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -39,6 +40,12 @@ class ContactAdapter(
             imageLoader.load(imageView, user.photoUrl, R.drawable.round_icon)
             binding.imageViewContactRecyclerBin.setOnClickListener {
                 onDeleteUser(user)
+            }
+            binding.contactName.setOnClickListener {
+                onOpenDetails(user, binding.contactName.text.toString())
+            }
+            binding.contactImageView.setOnClickListener {
+                onOpenDetails(user, binding.contactName.text.toString())
             }
         }
     }
