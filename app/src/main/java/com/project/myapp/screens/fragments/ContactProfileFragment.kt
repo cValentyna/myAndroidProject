@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ContactProfileFragment : Fragment() {
+class ContactProfileFragment : Fragment(R.layout.fragment_contact_profile) {
     private var _binding: FragmentContactProfileBinding? = null
     private val binding get() = _binding!!
 
@@ -24,7 +24,7 @@ class ContactProfileFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View {
+    ): View? {
         _binding = FragmentContactProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
