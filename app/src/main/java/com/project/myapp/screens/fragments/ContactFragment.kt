@@ -46,8 +46,12 @@ class ContactFragment : Fragment(R.layout.fragment_contact) {
                 val deletedUser = user
                 showUndoSnackbar(deletedUser)
             },
+            onOpenDetails = { user, userName ->
+                openDetailsFragment(user)
+            },
         )
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,6 +81,21 @@ class ContactFragment : Fragment(R.layout.fragment_contact) {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = contactsAdapter
         }
+
+    private fun openDetailsFragment(user: User) {
+        val fragment =
+            ContactProfileFragment.newInstance(
+                name = user.name,
+                profession = user.profession,
+                photoUrl = user.photoUrl,
+            )
+
+        parentFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container_view, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
 
     private fun collectUserList() {
         lifecycleScope.launch {
