@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +30,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ContactFragment : Fragment() {
+class ContactFragment : Fragment(R.layout.fragment_contact) {
     private var _binding: FragmentContactBinding? = null
     private val binding get() = _binding!!
 
@@ -44,10 +43,8 @@ class ContactFragment : Fragment() {
             imageLoader,
             onDeleteUser = { user ->
                 viewModel.deleteUser(user)
-                showUndoSnackBar(user)
-            },
-            onOpenDetails = { user ->
-                openDetailsFragment(user)
+                val deletedUser = user
+                showUndoSnackbar(deletedUser)
             },
         )
     }
@@ -66,7 +63,7 @@ class ContactFragment : Fragment() {
         initRecyclerView()
         collectUserList()
         swipeToDelete()
-        setupClicklisteners()
+        setupAddContactDialog()
     }
 
     override fun onDestroyView() {
@@ -76,53 +73,52 @@ class ContactFragment : Fragment() {
 
     private fun initRecyclerView() =
         with(binding.recyclerViewContacts) {
-            addItemDecoration(ItemDecorator(resources.getDimensionPixelSize(R.dimen.gap_item)))
+            addItemDecoration(ItemDecorator(resources.getDimensionPixelSize(com.project.myapp.R.dimen.gap_item)))
             layoutManager = LinearLayoutManager(requireContext())
             adapter = contactsAdapter
         }
 
-    private fun openDetailsFragment(user: User) {
-        val action =
-            ContactFragmentDirections
-                .actionContactFragmentToContactProfileFragment(user)
-        findNavController().navigate(action)
-    }
-
     private fun collectUserList() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.userList
                     .collectLatest { users ->
-                        contactsAdapter.update(users) {
-                            scrollToRestorePosition()
-                        }
+                        contactsAdapter.update(users)
+                        scrollToRestorePosition()
                     }
             }
         }
     }
 
     /*
-      Scrolls RecyclerView to the restored user if it was last, first
-      or the restored position is currently invisible.
-      Uses post() to ensure restore after submitList()
+      Scrolls RecyclerView to the restored user if it was last or first.
+      Uses "post" to make sure LayoutManager position are updated after
+      the list has been drawn again.
+      added addOnLayoutChangeListener
      */
 
     private fun scrollToRestorePosition() {
-        val restoredIndex =
-            viewModel.getLastRestoredIndex() ?: return
-        binding.recyclerViewContacts.apply {
-            post {
-                val layoutManager = layoutManager as LinearLayoutManager
-                val firstVisible = layoutManager.findFirstVisibleItemPosition()
-                val lastVisible = layoutManager.findLastVisibleItemPosition()
-                if (restoredIndex < firstVisible || restoredIndex > lastVisible) {
-                    smoothScrollToPosition(restoredIndex)
+        binding.recyclerViewContacts.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
+            override fun onLayoutChange(
+                v: View?, left: Int, top: Int, right: Int, bottom: Int,
+                oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int,
+            ) {
+                val restoredIndex = viewModel.getLastRestoredIndex() ?: return
+                binding.recyclerViewContacts.post {
+                    val layoutManager =
+                        binding.recyclerViewContacts.layoutManager as LinearLayoutManager
+                    val firstVisible = layoutManager.findFirstVisibleItemPosition()
+                    val lastVisible = layoutManager.findLastVisibleItemPosition()
+                    if (restoredIndex < firstVisible || restoredIndex > lastVisible) {
+                        binding.recyclerViewContacts.smoothScrollToPosition(restoredIndex)
+                    }
                 }
+                binding.recyclerViewContacts.removeOnLayoutChangeListener(this)
             }
-        }
+        })
     }
 
-    private fun showUndoSnackBar(deletedUser: User) {
+    private fun showUndoSnackbar(deletedUser: User) {
         binding.root.snackBar(
             getString(R.string.contact_has_been_removed),
             getString(R.string.contact_restore_information),
@@ -152,18 +148,14 @@ class ContactFragment : Fragment() {
                     val position = viewHolder.adapterPosition
                     val item = contactsAdapter.currentList[position]
                     viewModel.deleteUser(item)
-                    showUndoSnackBar(item)
+                    val deletedUser = item
+                    showUndoSnackbar(deletedUser)
                 }
             },
         ).attachToRecyclerView(binding.recyclerViewContacts)
     }
 
-    private fun setupClicklisteners() {
-        setupAddContactClick()
-        setupBackButtonClick()
-    }
-
-    private fun setupAddContactClick() {
+    private fun setupAddContactDialog() {
         binding.contactAddContacts.setOnClickListener {
             val dialog = ContactDialogFragment()
             dialog.show(childFragmentManager, "customDialog")
@@ -171,16 +163,6 @@ class ContactFragment : Fragment() {
         setAddUserResultListener()
     }
 
-    private fun setupBackButtonClick() {
-        binding.contactBackButton.setOnClickListener {
-            findNavController().navigateUp()
-        }
-    }
-
-    /*
-   Using FragmentResult API with Bundle because SavedStateHandle
-   loses previousBackStackEntry after DialogFragment rotation.
-     */
     private fun setAddUserResultListener() {
         childFragmentManager.setFragmentResultListener(REQUEST_KEY, this) { _, bundle ->
             val name = bundle.getString(KEY_NAME)
