@@ -78,6 +78,7 @@ class ContactFragment : Fragment() {
             addItemDecoration(ItemDecorator(resources.getDimensionPixelSize(R.dimen.gap_item)))
             layoutManager = LinearLayoutManager(requireContext())
             adapter = contactsAdapter
+            itemAnimator = null
         }
 
     private fun openDetailsFragment(user: User) {
