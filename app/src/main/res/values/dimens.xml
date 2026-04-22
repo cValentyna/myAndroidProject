@@ -15,7 +15,7 @@
     <dimen name="textsize_small">12sp</dimen>
     <item name="weight_font_primary" format="integer" type="dimen">600</item>
     <item name="weight_font_smaller" format="integer" type="dimen">400</item>
-    <dimen name="space_letters_custom_view">0.07dp</dimen>
+    <dimen name="width_percent_big_button_profile">0.9</dimen>
     <dimen name="space_letters">0.15</dimen>
 
     <!-- percents and biases-->
@@ -38,7 +38,7 @@
 
     <dimen name="bias_vertical_user_name">0.3</dimen>
 
-    <dimen name="bias_vertical_social_network_frame">0.4</dimen>
+    <dimen name="bias_vertical_social_network_frame">0.3</dimen>
 
     <dimen name="height_edit_button">48dp</dimen>
     <dimen name="margin_edit_button">2dp</dimen>
@@ -72,7 +72,6 @@
     <dimen name="bias_vertical_bt_register">0.27</dimen>
 
     <dimen name="bias_vertical_tv_agreement">0.5</dimen>
-<!--    <dimen name="bias_vertical_tv_have_account">0.5</dimen>-->
     <dimen name="margin_start_tv_sign_in">12dp</dimen>
     <dimen name="bias_vertical_email_layout">0.80</dimen>
     <dimen name="bias_horizontal_checkbox">0</dimen>

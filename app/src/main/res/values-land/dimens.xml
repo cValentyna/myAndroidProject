@@ -2,6 +2,10 @@
 <resources>
     <dimen name="size_percent_image">0.25</dimen>
     <dimen name="width_percent_primary">0.9</dimen>
+    <dimen name="bias_vertical_card_view">0.2</dimen>
+    <dimen name="bias_vertical_social_network_frame">0.9</dimen>
+    <dimen name="bias_vertical_view_contacts_button">0.9</dimen>
+    <dimen name="width_percent_big_button_profile">0.4</dimen>
 
     <!-- Activity auth -->
     <dimen name="bias_vertical_auth_acquainted">0.5</dimen>
