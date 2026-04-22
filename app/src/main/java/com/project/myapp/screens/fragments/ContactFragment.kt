@@ -48,8 +48,12 @@ class ContactFragment : Fragment() {
             onOpenDetails = { user ->
                 openDetailsFragment(user)
             },
+            onOpenDetails = { user, userName ->
+                openDetailsFragment(user)
+            },
         )
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
