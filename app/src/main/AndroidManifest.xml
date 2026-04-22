@@ -15,27 +15,13 @@
         android:theme="@style/Theme.MyApp"
         tools:targetApi="31">
         <activity
-            android:name=".screens.contacts.ContactActivity"
+            android:name=".screens.ContactsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-      <activity  android:name=".screens.splashScreen.SplashActivity"
-        android:theme="@style/SplashTheme"
-        android:exported="true">
-      </activity>
-        <activity
-        android:name=".screens.auth.AuthActivity"
-        android:exported="true">
-        </activity>
-
-        <activity
-            android:name=".screens.main.MainActivity"
-            android:exported="true">
         </activity>
     </application>
 
