@@ -46,7 +46,7 @@
 
     <dimen name="height_view_contact_button">55dp</dimen>
     <dimen name="margin_view_contact_button">2dp</dimen>
-    <dimen name="bias_vertical_view_contacts_button">0.95</dimen>
+    <dimen name="bias_vertical_view_contacts_button">0.9</dimen>
 
     <dimen name="margin_top_user_name">8dp</dimen>
     <dimen name="margin_top_user_job">8dp</dimen>

@@ -24,7 +24,7 @@ class ContactProfileFragment : Fragment(R.layout.fragment_contact_profile) {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         _binding = FragmentContactProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
