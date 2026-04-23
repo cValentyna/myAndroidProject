@@ -43,15 +43,13 @@ class ContactFragment : Fragment(R.layout.fragment_contact) {
             imageLoader,
             onDeleteUser = { user ->
                 viewModel.deleteUser(user)
-                val deletedUser = user
-                showUndoSnackbar(deletedUser)
+                showUndoSnackBar(user)
             },
-            onOpenDetails = { user, userName ->
+            onOpenDetails = { user ->
                 openDetailsFragment(user)
             },
         )
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,7 +75,7 @@ class ContactFragment : Fragment(R.layout.fragment_contact) {
 
     private fun initRecyclerView() =
         with(binding.recyclerViewContacts) {
-            addItemDecoration(ItemDecorator(resources.getDimensionPixelSize(com.project.myapp.R.dimen.gap_item)))
+            addItemDecoration(ItemDecorator(resources.getDimensionPixelSize(R.dimen.gap_item)))
             layoutManager = LinearLayoutManager(requireContext())
             adapter = contactsAdapter
         }
@@ -110,34 +108,34 @@ class ContactFragment : Fragment(R.layout.fragment_contact) {
     }
 
     /*
-      Scrolls RecyclerView to the restored user if it was last or first.
-      Uses "post" to make sure LayoutManager position are updated after
-      the list has been drawn again.
-      added addOnLayoutChangeListener
+      Scrolls RecyclerView to the restored user if it was last or first
+      or if the restored position is currently invisible.
+      Added LayoutChangeListener in Fragment version to ensure
+      scroll restore after submitList.
+      Activity version: Used post  instead of LayoutChangeListener
      */
 
     private fun scrollToRestorePosition() {
-        binding.recyclerViewContacts.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
-            override fun onLayoutChange(
-                v: View?, left: Int, top: Int, right: Int, bottom: Int,
-                oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int,
-            ) {
-                val restoredIndex = viewModel.getLastRestoredIndex() ?: return
-                binding.recyclerViewContacts.post {
-                    val layoutManager =
-                        binding.recyclerViewContacts.layoutManager as LinearLayoutManager
+        binding.recyclerViewContacts.apply {
+            addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
+                override fun onLayoutChange(
+                    v: View?, left: Int, top: Int, right: Int, bottom: Int,
+                    oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int,
+                ) {
+                    val restoredIndex = viewModel.getLastRestoredIndex() ?: return
+                    val layoutManager = layoutManager as LinearLayoutManager
                     val firstVisible = layoutManager.findFirstVisibleItemPosition()
                     val lastVisible = layoutManager.findLastVisibleItemPosition()
                     if (restoredIndex < firstVisible || restoredIndex > lastVisible) {
-                        binding.recyclerViewContacts.smoothScrollToPosition(restoredIndex)
+                        smoothScrollToPosition(restoredIndex)
                     }
+                    removeOnLayoutChangeListener(this)
                 }
-                binding.recyclerViewContacts.removeOnLayoutChangeListener(this)
-            }
-        })
+            })
+        }
     }
 
-    private fun showUndoSnackbar(deletedUser: User) {
+    private fun showUndoSnackBar(deletedUser: User) {
         binding.root.snackBar(
             getString(R.string.contact_has_been_removed),
             getString(R.string.contact_restore_information),
@@ -167,8 +165,7 @@ class ContactFragment : Fragment(R.layout.fragment_contact) {
                     val position = viewHolder.adapterPosition
                     val item = contactsAdapter.currentList[position]
                     viewModel.deleteUser(item)
-                    val deletedUser = item
-                    showUndoSnackbar(deletedUser)
+                    showUndoSnackBar(item)
                 }
             },
         ).attachToRecyclerView(binding.recyclerViewContacts)
