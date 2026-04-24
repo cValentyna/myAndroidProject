@@ -17,9 +17,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="?attr/selectableItemBackgroundBorderless"
         tools:src="@drawable/round_icon" />
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -43,9 +40,6 @@
         android:ellipsize="end"
         android:lines="1"
         android:text="@string/contact_name_surname"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="?attr/selectableItemBackground"
         android:textAppearance="@style/textAppearance_contact_item_name"
         app:layout_constraintStart_toEndOf="@id/contact_image_view"
         app:layout_constraintTop_toTopOf="@id/contact_image_view" />
