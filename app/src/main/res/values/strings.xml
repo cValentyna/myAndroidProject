@@ -48,6 +48,8 @@
     <string name="error_contact_name">Name should contain letters only, with optional spaces, hyphens, or apostrophes.</string>
     <string name="error_contact_name_length">Name must be between 2 and 20 characters</string>
     <string name="error_contact_name_empty">Name is required</string>
+    <string name="profile">Profile</string>
+    <string name="message">Message</string>
 
     <string name="google_button_description">Sign in with Google</string>
 

@@ -1,8 +1,11 @@
-package com.project.myapp.screens.contacts
+package com.project.myapp.screens.fragments
 
 import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -11,91 +14,122 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.myapp.R
 import com.project.myapp.data.contacts.User
-import com.project.myapp.databinding.ActivityContactsBinding
-import com.project.myapp.ext.componentactivity.enableEdgeToEdgeGrayStatusBar
-import com.project.myapp.ext.view.initializeWindowInsetsHandling
+import com.project.myapp.databinding.FragmentContactBinding
 import com.project.myapp.ext.view.snackBar
 import com.project.myapp.imageloader.ImageLoader
+import com.project.myapp.screens.contacts.ContactAdapter
+import com.project.myapp.screens.contacts.ContactDialogFragment
 import com.project.myapp.screens.contacts.ContactDialogFragment.Companion.KEY_NAME
 import com.project.myapp.screens.contacts.ContactDialogFragment.Companion.KEY_PROFESSION
 import com.project.myapp.screens.contacts.ContactDialogFragment.Companion.REQUEST_KEY
+import com.project.myapp.screens.contacts.ContactViewModel
+import com.project.myapp.screens.contacts.ItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ContactActivity : AppCompatActivity() {
-    private val binding: ActivityContactsBinding by lazy {
-        ActivityContactsBinding.inflate(layoutInflater)
-    }
+class ContactFragment : Fragment() {
+    private var _binding: FragmentContactBinding? = null
+    private val binding get() = _binding!!
+
     private val viewModel: ContactViewModel by viewModels()
 
     @Inject
     lateinit var imageLoader: ImageLoader
     private val contactsAdapter by lazy {
-        ContactAdapter(imageLoader) { user ->
-            viewModel.deleteUser(user)
-            val deletedUser = user
-            showUndoSnackbar(deletedUser)
-        }
+        ContactAdapter(
+            imageLoader,
+            onDeleteUser = { user ->
+                viewModel.deleteUser(user)
+                showUndoSnackBar(user)
+            },
+            onOpenDetails = { user ->
+                openDetailsFragment(user)
+            },
+        )
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setView()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        _binding = FragmentContactBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         collectUserList()
         swipeToDelete()
         setupAddContactDialog()
     }
 
-    private fun setView() {
-        enableEdgeToEdgeGrayStatusBar()
-        setContentView(binding.root)
-        binding.root.initializeWindowInsetsHandling()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun initRecyclerView() =
         with(binding.recyclerViewContacts) {
             addItemDecoration(ItemDecorator(resources.getDimensionPixelSize(R.dimen.gap_item)))
-            layoutManager = LinearLayoutManager(this@ContactActivity)
+            layoutManager = LinearLayoutManager(requireContext())
             adapter = contactsAdapter
-            itemAnimator = null
         }
 
+    private fun openDetailsFragment(user: User) {
+        val fragment =
+            ContactProfileFragment.newInstance(
+                name = user.name,
+                profession = user.profession,
+                photoUrl = user.photoUrl,
+            )
+
+        parentFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container_view, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
     private fun collectUserList() {
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.userList.collectLatest { users ->
-                    contactsAdapter.update(users) {
-                        scrollToRestorePosition()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.userList
+                    .collectLatest { users ->
+                        contactsAdapter.update(users) {
+                            scrollToRestorePosition()
+                        }
                     }
-                }
             }
         }
     }
 
     /*
-      Scrolls RecyclerView to the restored user if it was last or first.
-      Uses "post" to make sure LayoutManager position are updated after
-      the list has been drawn again.
+      Scrolls RecyclerView to the restored user if it was last, first
+      or the restored position is currently invisible.
+      Uses post() to ensure restore after submitList()
      */
 
     private fun scrollToRestorePosition() {
-        val restoredIndex = viewModel.getLastRestoredIndex() ?: return
-        binding.recyclerViewContacts.post {
-            val layoutManager =
-                binding.recyclerViewContacts.layoutManager as LinearLayoutManager
-            val firstVisible = layoutManager.findFirstVisibleItemPosition()
-            val lastVisible = layoutManager.findLastVisibleItemPosition()
-            if (restoredIndex < firstVisible || restoredIndex > lastVisible) {
-                binding.recyclerViewContacts.smoothScrollToPosition(restoredIndex)
+        val restoredIndex =
+            viewModel.getLastRestoredIndex() ?: return
+        binding.recyclerViewContacts.apply {
+            post {
+                val layoutManager = layoutManager as LinearLayoutManager
+                val firstVisible = layoutManager.findFirstVisibleItemPosition()
+                val lastVisible = layoutManager.findLastVisibleItemPosition()
+                if (restoredIndex < firstVisible || restoredIndex > lastVisible) {
+                    smoothScrollToPosition(restoredIndex)
+                }
             }
         }
     }
 
-    private fun showUndoSnackbar(deletedUser: User) {
+    private fun showUndoSnackBar(deletedUser: User) {
         binding.root.snackBar(
             getString(R.string.contact_has_been_removed),
             getString(R.string.contact_restore_information),
@@ -125,8 +159,7 @@ class ContactActivity : AppCompatActivity() {
                     val position = viewHolder.adapterPosition
                     val item = contactsAdapter.currentList[position]
                     viewModel.deleteUser(item)
-                    val deletedUser = item
-                    showUndoSnackbar(deletedUser)
+                    showUndoSnackBar(item)
                 }
             },
         ).attachToRecyclerView(binding.recyclerViewContacts)
@@ -135,13 +168,13 @@ class ContactActivity : AppCompatActivity() {
     private fun setupAddContactDialog() {
         binding.contactAddContacts.setOnClickListener {
             val dialog = ContactDialogFragment()
-            dialog.show(supportFragmentManager, "customDialog")
+            dialog.show(childFragmentManager, "customDialog")
         }
         setAddUserResultListener()
     }
 
     private fun setAddUserResultListener() {
-        supportFragmentManager.setFragmentResultListener(REQUEST_KEY, this) { _, bundle ->
+        childFragmentManager.setFragmentResultListener(REQUEST_KEY, this) { _, bundle ->
             val name = bundle.getString(KEY_NAME)
             val profession = bundle.getString(KEY_PROFESSION)
             viewModel.addUser(name.toString(), profession.toString())

@@ -49,6 +49,13 @@
     <style name="textAppearance_bt_contact" parent="text_big_button_style">
         <item name="android:textColor">@color/the_brightest_font</item>
     </style>
+
+    <style name="textAppearance_bt_message" parent="text_big_button_style">
+        <item name="android:textColor">@color/the_brightest_font</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.2</item>
+    </style>
+
     <!-- style for image frame   -->
     <style name="shapeAppearance_image" parent="">
         <item name="cornerFamily">rounded</item>
@@ -124,4 +131,5 @@
         <item name="hintTextColor">@color/primary_dark_text_font</item>
     </style>
 
+    <item name="letterSpacingButtons" type="dimen" format="float">1.5</item>
 </resources>
