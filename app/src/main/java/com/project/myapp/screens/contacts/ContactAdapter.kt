@@ -41,12 +41,12 @@ class ContactAdapter(
             binding.imageViewContactRecyclerBin.setOnClickListener {
                 onDeleteUser(user)
             }
-            binding.contactName.setOnClickListener {
+            binding.root.setOnClickListener {
                 onOpenDetails(user)
             }
-            binding.contactImageView.setOnClickListener {
-                onOpenDetails(user)
-            }
+//            binding.contactImageView.setOnClickListener {
+//                onOpenDetails(user)
+//            }
         }
     }
 
