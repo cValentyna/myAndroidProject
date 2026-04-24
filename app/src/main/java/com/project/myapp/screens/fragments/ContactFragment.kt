@@ -100,26 +100,25 @@ class ContactFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.userList
                     .collectLatest { users ->
-                        contactsAdapter.update(users)
-                        scrollToRestorePosition()
+                        contactsAdapter.update(users) {
+                            scrollToRestorePosition()
+                        }
                     }
             }
         }
     }
 
     /*
-      Scrolls RecyclerView to the restored user if it was last or first
-      or if the restored position is currently invisible.
-      Added LayoutChangeListener in Fragment version to ensure
-      scroll restore after submitList.
-      Activity version: Used post  instead of LayoutChangeListener
+      Scrolls RecyclerView to the restored user if it was last, first
+      or the restored position is currently invisible.
+      Uses post() to ensure restore after submitList()
      */
 
     private fun scrollToRestorePosition() {
+        val restoredIndex =
+            viewModel.getLastRestoredIndex() ?: return
         binding.recyclerViewContacts.apply {
-            addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
-                val restoredIndex =
-                    viewModel.getLastRestoredIndex() ?: return@addOnLayoutChangeListener
+            post {
                 val layoutManager = layoutManager as LinearLayoutManager
                 val firstVisible = layoutManager.findFirstVisibleItemPosition()
                 val lastVisible = layoutManager.findLastVisibleItemPosition()
