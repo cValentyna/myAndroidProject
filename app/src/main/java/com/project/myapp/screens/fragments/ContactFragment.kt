@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ContactFragment : Fragment(R.layout.fragment_contact) {
+class ContactFragment : Fragment() {
     private var _binding: FragmentContactBinding? = null
     private val binding get() = _binding!!
 
@@ -96,8 +96,8 @@ class ContactFragment : Fragment(R.layout.fragment_contact) {
     }
 
     private fun collectUserList() {
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.userList
                     .collectLatest { users ->
                         contactsAdapter.update(users)
@@ -117,21 +117,16 @@ class ContactFragment : Fragment(R.layout.fragment_contact) {
 
     private fun scrollToRestorePosition() {
         binding.recyclerViewContacts.apply {
-            addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
-                override fun onLayoutChange(
-                    v: View?, left: Int, top: Int, right: Int, bottom: Int,
-                    oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int,
-                ) {
-                    val restoredIndex = viewModel.getLastRestoredIndex() ?: return
-                    val layoutManager = layoutManager as LinearLayoutManager
-                    val firstVisible = layoutManager.findFirstVisibleItemPosition()
-                    val lastVisible = layoutManager.findLastVisibleItemPosition()
-                    if (restoredIndex < firstVisible || restoredIndex > lastVisible) {
-                        smoothScrollToPosition(restoredIndex)
-                    }
-                    removeOnLayoutChangeListener(this)
+            addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+                val restoredIndex =
+                    viewModel.getLastRestoredIndex() ?: return@addOnLayoutChangeListener
+                val layoutManager = layoutManager as LinearLayoutManager
+                val firstVisible = layoutManager.findFirstVisibleItemPosition()
+                val lastVisible = layoutManager.findLastVisibleItemPosition()
+                if (restoredIndex < firstVisible || restoredIndex > lastVisible) {
+                    smoothScrollToPosition(restoredIndex)
                 }
-            })
+            }
         }
     }
 
