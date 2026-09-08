@@ -41,6 +41,10 @@ class ContactDialogFragment : DialogFragment() {
         }
     }
 
+    /*
+       Using FragmentResult API because SavedStateHandle loses
+       previousBackStackEntry after DialogFragment rotation.
+     */
     private fun saveUser() {
         with(binding) {
             val contactName = textInputEditTextUserName.text.toString().trim()
