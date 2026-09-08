@@ -44,9 +44,6 @@ class ContactAdapter(
             binding.root.setOnClickListener {
                 onOpenDetails(user)
             }
-//            binding.contactImageView.setOnClickListener {
-//                onOpenDetails(user)
-//            }
         }
     }
 

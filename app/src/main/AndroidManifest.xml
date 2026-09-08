@@ -15,8 +15,9 @@
         android:theme="@style/Theme.MyApp"
         tools:targetApi="31">
         <activity
-            android:name=".screens.ContactsActivity"
-            android:exported="true">
+            android:name=".screens.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MyApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -3,12 +3,10 @@ package com.project.myapp.screens.auth
 import android.util.Patterns
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.project.myapp.data.datastore.DataStore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -115,17 +113,15 @@ class AuthViewModel @Inject constructor(
             .split(".", "_")
             .joinToString(" ") { it -> it.lowercase().replaceFirstChar { it.uppercaseChar() } }
 
-    fun saveUser(
+    suspend fun saveUser(
         name: String,
         isChecked: Boolean,
     ) {
-        viewModelScope.launch {
-            dataStore.saveData(isChecked, name)
-        }
+        dataStore.saveData(isChecked, name)
     }
 
     companion object {
-        const val MINIMUM_PASSWORD_SIZE = 8
+        const val MINIMUM_PASSWORD_SIZE = 5
 
         private fun String.onlyLetters() = all { it.isLetter() }
 

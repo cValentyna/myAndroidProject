@@ -41,7 +41,7 @@ class SplashViewModel @Inject constructor(private val dataStore: DataStore) : Vi
 
     private suspend fun wasSavedUser(): Boolean {
         return withContext(Dispatchers.IO) {
-            dataStore.getWasChecked().first()
+            dataStore.getIsChecked().first()
         }
     }
 

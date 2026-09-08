@@ -4,12 +4,9 @@
         <!-- Customize your light theme here. -->
         <item name="googleButtonStyle">@style/defaultGoogleButtonStyle</item>
     </style>
-    <style name="Theme.MyApp" parent="Base.Theme.MyApp" />
-
-    <style name="SplashTheme" parent="Theme.MyApp">
-        <item name="android:windowBackground">@drawable/splash_screen</item>
+    <style name="Theme.MyApp" parent="Base.Theme.MyApp">
+        <item name="android:windowBackground">@color/primary_background</item>
     </style>
-
     <style name = "defaultGoogleButtonStyle">
         <item name="customFont">@font/open_sans_semibold</item>
         <item name="googleBackgroundColor">@color/button_google_background</item>

@@ -2,12 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activityAuth"
+    android:id="@+id/fragment_auth"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary_background"
     android:enabled="true"
-    tools:context=".screens.auth.AuthActivity">
+    tools:context=".screens.fragments.AuthFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewAuthAcquainted"
@@ -169,7 +169,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textInputLayoutAuthEmail"
         app:layout_constraintWidth_percent="@dimen/width_percent_primary">
-        
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textInputEditTextAuthPassword"
             style="@style/textAppearance_log_in_filling_text"
@@ -181,7 +181,7 @@
             android:paddingTop="@dimen/padding_text_top_textInputEditText"
             android:paddingEnd="@dimen/padding_text_textInputEditText" />
     </com.google.android.material.textfield.TextInputLayout>
-<!--    added text inside checkbox and minimum height-->
+    <!--    added text inside checkbox and minimum height-->
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/checkboxAuth"
         android:layout_width="wrap_content"
