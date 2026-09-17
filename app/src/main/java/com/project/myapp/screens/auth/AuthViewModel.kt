@@ -3,10 +3,14 @@ package com.project.myapp.screens.auth
 import android.util.Patterns
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.project.myapp.data.datastore.DataStore
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -19,8 +23,8 @@ class AuthViewModel @Inject constructor(
     /**
      * Variables to track the states
      */
-    private val _credentialsState = MutableStateFlow<AuthState>(AuthState.Initial)
-    val credentialsState: StateFlow<AuthState> get() = _credentialsState
+    private val _credentialsState = Channel<AuthState>(Channel.BUFFERED)
+    val credentialsState = _credentialsState.receiveAsFlow()
 
     private val _emailState = MutableStateFlow<AuthState.EmailState>(AuthState.EmailState.Initial)
     val emailState: StateFlow<AuthState.EmailState> get() = _emailState
@@ -91,13 +95,14 @@ class AuthViewModel @Inject constructor(
     ) {
         validateEmail(email)
         validatePassword(password)
-
-        if (_passwordState.value is AuthState.PasswordState.Valid &&
-            _emailState.value is AuthState.EmailState.Valid
-        ) {
-            _credentialsState.value = AuthState.Valid
-        } else {
-            _credentialsState.value = AuthState.Error
+        viewModelScope.launch {
+            if (_passwordState.value is AuthState.PasswordState.Valid &&
+                _emailState.value is AuthState.EmailState.Valid
+            ) {
+                _credentialsState.send(AuthState.Valid)
+            } else {
+                _credentialsState.send(AuthState.Error)
+            }
         }
     }
 
