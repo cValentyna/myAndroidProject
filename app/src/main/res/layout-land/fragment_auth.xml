@@ -152,7 +152,9 @@
             android:inputType="textEmailAddress"
             android:paddingStart="@dimen/padding_text_textInputEditText"
             android:paddingTop="@dimen/padding_text_top_textInputEditText"
-            android:paddingEnd="@dimen/padding_text_textInputEditText" />
+            android:paddingEnd="@dimen/padding_text_textInputEditText"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -179,7 +181,9 @@
             android:inputType="textPassword"
             android:paddingStart="@dimen/padding_text_textInputEditText"
             android:paddingTop="@dimen/padding_text_top_textInputEditText"
-            android:paddingEnd="@dimen/padding_text_textInputEditText" />
+            android:paddingEnd="@dimen/padding_text_textInputEditText"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
     </com.google.android.material.textfield.TextInputLayout>
     <!--    added text inside checkbox and minimum height-->
     <androidx.appcompat.widget.AppCompatCheckBox

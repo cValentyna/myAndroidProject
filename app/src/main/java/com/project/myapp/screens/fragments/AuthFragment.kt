@@ -76,10 +76,15 @@ class AuthFragment : Fragment() {
     private fun setTextChangedListener() {
         binding.apply {
             textInputEditTextAuthEmail.doOnTextChanged { _, _, _, _ ->
-                viewModel.pauseCheckEmail()
+                if (textInputEditTextAuthEmail.hasFocus()) {
+                    viewModel.pauseCheckEmail()
+                }
             }
+
             textInputEditTextAuthPassword.doOnTextChanged { _, _, _, _ ->
-                viewModel.pauseCheckPassword()
+                if (textInputEditTextAuthPassword.hasFocus()) {
+                    viewModel.pauseCheckPassword()
+                }
             }
         }
     }
@@ -91,17 +96,22 @@ class AuthFragment : Fragment() {
     private fun setFocusListener() {
         binding.apply {
             textInputEditTextAuthEmail.setOnFocusChangeListener { _, hasFocus ->
+                if (!isFragmentResumed()) return@setOnFocusChangeListener
                 if (!hasFocus) {
                     viewModel.validateEmail(textInputEditTextAuthEmail.text.toString())
                 }
-                textInputEditTextAuthPassword.setOnFocusChangeListener { _, hasFocus ->
-                    if (!hasFocus) {
-                        viewModel.validatePassword(textInputEditTextAuthPassword.text.toString())
-                    }
+            }
+
+            textInputEditTextAuthPassword.setOnFocusChangeListener { _, hasFocus ->
+                if (!isFragmentResumed()) return@setOnFocusChangeListener
+                if (!hasFocus) {
+                    viewModel.validatePassword(textInputEditTextAuthPassword.text.toString())
                 }
             }
         }
     }
+
+    private fun Fragment.isFragmentResumed() = viewLifecycleOwner.lifecycle.currentState == Lifecycle.State.RESUMED
 
     /**
      * Sets collectors for monitored states
@@ -146,12 +156,15 @@ class AuthFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.credentialsState.collect { state ->
-                when (state) {
-                    is AuthState.Error -> requireContext().toast(getString(R.string.error_invalid_email_or_password))
-
-                    is AuthState.Valid -> goToNextFragment()
-                    else -> {}
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.credentialsState.collect { event ->
+                    when (event) {
+                        is AuthState.Error -> {
+                            requireContext().toast(getString(R.string.error_invalid_email_or_password))
+                        }
+                        is AuthState.Valid -> goToNextFragment()
+                        else -> {}
+                    }
                 }
             }
         }
