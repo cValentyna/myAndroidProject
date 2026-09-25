@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -65,7 +66,7 @@ class ContactFragment : Fragment() {
         initRecyclerView()
         collectUserList()
         swipeToDelete()
-        setupAddContactDialog()
+        setupClicklisteners()
     }
 
     override fun onDestroyView() {
@@ -81,18 +82,10 @@ class ContactFragment : Fragment() {
         }
 
     private fun openDetailsFragment(user: User) {
-        val fragment =
-            ContactProfileFragment.newInstance(
-                name = user.name,
-                profession = user.profession,
-                photoUrl = user.photoUrl,
-            )
-
-        parentFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container_view, fragment)
-            .addToBackStack(null)
-            .commit()
+        val action =
+            ContactFragmentDirections
+                .actionContactFragmentToContactProfileFragment(user)
+        findNavController().navigate(action)
     }
 
     private fun collectUserList() {
@@ -165,7 +158,12 @@ class ContactFragment : Fragment() {
         ).attachToRecyclerView(binding.recyclerViewContacts)
     }
 
-    private fun setupAddContactDialog() {
+    private fun setupClicklisteners() {
+        setupAddContactClick()
+        setupBackButtonClick()
+    }
+
+    private fun setupAddContactClick() {
         binding.contactAddContacts.setOnClickListener {
             val dialog = ContactDialogFragment()
             dialog.show(childFragmentManager, "customDialog")
@@ -173,6 +171,16 @@ class ContactFragment : Fragment() {
         setAddUserResultListener()
     }
 
+    private fun setupBackButtonClick() {
+        binding.contactBackButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
+    }
+
+    /*
+   Using FragmentResult API with Bundle because SavedStateHandle
+   loses previousBackStackEntry after DialogFragment rotation.
+     */
     private fun setAddUserResultListener() {
         childFragmentManager.setFragmentResultListener(REQUEST_KEY, this) { _, bundle ->
             val name = bundle.getString(KEY_NAME)
