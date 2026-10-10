@@ -48,8 +48,12 @@ class ContactFragment : Fragment() {
             onOpenDetails = { user ->
                 openDetailsFragment(user)
             },
+            onOpenDetails = { user, userName ->
+                openDetailsFragment(user)
+            },
         )
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,6 +82,7 @@ class ContactFragment : Fragment() {
             addItemDecoration(ItemDecorator(resources.getDimensionPixelSize(R.dimen.gap_item)))
             layoutManager = LinearLayoutManager(requireContext())
             adapter = contactsAdapter
+            itemAnimator = null
         }
 
     private fun openDetailsFragment(user: User) {
