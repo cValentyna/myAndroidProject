@@ -2,12 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activityAuth"
+    android:id="@+id/fragment_auth"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary_background"
     android:enabled="true"
-    tools:context=".screens.auth.AuthActivity">
+    tools:context=".screens.fragments.AuthFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textViewAuthAcquainted"
@@ -153,7 +153,9 @@
             android:inputType="textEmailAddress"
             android:paddingStart="@dimen/padding_text_textInputEditText"
             android:paddingTop="@dimen/padding_text_top_textInputEditText"
-            android:paddingEnd="@dimen/padding_text_textInputEditText" />
+            android:paddingEnd="@dimen/padding_text_textInputEditText"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -178,7 +180,9 @@
             android:inputType="textPassword"
             android:paddingStart="@dimen/padding_text_textInputEditText"
             android:paddingTop="@dimen/padding_text_top_textInputEditText"
-            android:paddingEnd="@dimen/padding_text_textInputEditText" />
+            android:paddingEnd="@dimen/padding_text_textInputEditText"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- without margin start location of checkbox was strange

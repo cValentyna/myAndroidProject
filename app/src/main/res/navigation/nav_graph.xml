@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <action
+        android:id="@+id/action_global_auth_graph"
+        app:destination="@id/auth_graph" />
+
+    <action
+        android:id="@+id/action_global_main_graph"
+        app:destination="@id/main_graph" />
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.project.myapp.screens.fragments.SplashFragment"
+        android:label="Splash">
+        <action
+            android:id="@+id/action_splashFragment_to_main_graph"
+            app:destination="@id/main_graph" />
+        <action
+            android:id="@+id/action_splashFragment_to_auth_graph"
+            app:destination="@id/auth_graph" />
+    </fragment>
+
+    <navigation
+        android:id="@+id/auth_graph"
+        app:startDestination="@id/loginFragment">
+        <fragment
+            android:id="@+id/loginFragment"
+            android:name="com.project.myapp.screens.fragments.AuthFragment"
+            android:label="Login" />
+    </navigation>
+
+    <navigation android:id="@+id/main_graph"
+        app:startDestination="@id/mainFragment">
+        <argument
+            android:name="user_name"
+            android:defaultValue="user"
+            app:argType="string" />
+        <fragment
+            android:id="@+id/mainFragment"
+            android:name="com.project.myapp.screens.fragments.MainFragment"
+            android:label="fragment_main"
+            tools:layout="@layout/fragment_main" >
+            <action
+                android:id="@+id/action_mainFragment_to_contactFragment"
+                app:destination="@id/contactFragment" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/contactFragment"
+            android:name="com.project.myapp.screens.fragments.ContactFragment"
+            android:label="fragment_contact"
+            tools:layout="@layout/fragment_contact" >
+            <action
+                android:id="@+id/action_contactFragment_to_contactProfileFragment"
+                app:destination="@id/contactProfileFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/contactProfileFragment"
+            android:name="com.project.myapp.screens.fragments.ContactProfileFragment"
+            android:label="fragment_contact_profile"
+            tools:layout="@layout/fragment_contact_profile">
+            <argument
+                android:name="user"
+                app:argType="com.project.myapp.data.contacts.User" />
+        </fragment>
+    </navigation>
+
+
+</navigation>
