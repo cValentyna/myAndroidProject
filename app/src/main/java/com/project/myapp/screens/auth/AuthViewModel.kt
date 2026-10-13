@@ -4,7 +4,7 @@ import android.util.Patterns
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.project.myapp.data.datastore.DataStore
+import com.project.myapp.data.datastore.UserDataStore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +18,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val dataStore: DataStore
+    private val dataStore: UserDataStore
 ) : ViewModel() {
     /**
      * Variables to track the states
@@ -118,11 +118,11 @@ class AuthViewModel @Inject constructor(
             .split(".", "_")
             .joinToString(" ") { it -> it.lowercase().replaceFirstChar { it.uppercaseChar() } }
 
-    suspend fun saveUser(
-        name: String,
+    suspend fun saveUserData(
         isChecked: Boolean,
+        name: String,
     ) {
-        dataStore.saveData(isChecked, name)
+        dataStore.saveUserData(isChecked, name)
     }
 
     companion object {

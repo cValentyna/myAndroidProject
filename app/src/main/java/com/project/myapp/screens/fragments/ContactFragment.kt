@@ -47,7 +47,7 @@ class ContactFragment : Fragment() {
                 showUndoSnackBar(user)
             },
             onOpenDetails = { user ->
-                openDetailsFragment(user)
+                navigateToContactProfileFragment(user)
             },
         )
     }
@@ -66,7 +66,7 @@ class ContactFragment : Fragment() {
         initRecyclerView()
         collectUserList()
         swipeToDelete()
-        setupClicklisteners()
+        setupClickListeners()
     }
 
     override fun onDestroyView() {
@@ -81,7 +81,7 @@ class ContactFragment : Fragment() {
             adapter = contactsAdapter
         }
 
-    private fun openDetailsFragment(user: User) {
+    private fun navigateToContactProfileFragment(user: User) {
         val action =
             ContactFragmentDirections
                 .actionContactFragmentToContactProfileFragment(user)
@@ -158,7 +158,7 @@ class ContactFragment : Fragment() {
         ).attachToRecyclerView(binding.recyclerViewContacts)
     }
 
-    private fun setupClicklisteners() {
+    private fun setupClickListeners() {
         setupAddContactClick()
         setupBackButtonClick()
     }

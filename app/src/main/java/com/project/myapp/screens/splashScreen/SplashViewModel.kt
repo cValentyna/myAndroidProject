@@ -2,19 +2,17 @@ package com.project.myapp.screens.splashScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.project.myapp.data.datastore.DataStore
+import com.project.myapp.data.datastore.UserDataStore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class SplashViewModel @Inject constructor(private val dataStore: DataStore) : ViewModel() {
+class SplashViewModel @Inject constructor(private val dataStore: UserDataStore) : ViewModel() {
     private val _cachedCredentialsState =
         MutableStateFlow<CredentialsRetrievalState>(CredentialsRetrievalState.Initial)
     val cachedCredentialsState get() = _cachedCredentialsState.asStateFlow()
@@ -31,23 +29,20 @@ class SplashViewModel @Inject constructor(private val dataStore: DataStore) : Vi
         }
     }
 
-    private suspend fun getCachedCredentialsState(): CredentialsRetrievalState{
-        return if (wasSavedUser()) {
-            CredentialsRetrievalState.Success(getSavedName())
+    private suspend fun getCachedCredentialsState(): CredentialsRetrievalState {
+        if (isUserRemembered()) {
+            val savedName = getSavedUserName()
+            return if (savedName.isNotEmpty()) {
+                CredentialsRetrievalState.Success(savedName)
+            } else {
+                CredentialsRetrievalState.Fail
+            }
         } else {
-            CredentialsRetrievalState.Fail
+            return CredentialsRetrievalState.Fail
         }
     }
 
-    private suspend fun wasSavedUser(): Boolean {
-        return withContext(Dispatchers.IO) {
-            dataStore.getIsChecked().first()
-        }
-    }
+    private suspend fun isUserRemembered(): Boolean = dataStore.isUserRemembered()
 
-    private suspend fun getSavedName(): String {
-        return withContext(Dispatchers.IO) {
-            dataStore.getSavedString().first()
-        }
-    }
+    private suspend fun getSavedUserName(): String = dataStore.getSavedUserName()
 }

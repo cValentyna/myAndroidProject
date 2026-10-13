@@ -57,13 +57,11 @@ class MainFragment : Fragment() {
 
     private fun setOnClickListener() {
         binding.buttonMainLogout.setOnClickListener {
-            viewModel.forgetUser()
             viewLifecycleOwner.lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.isCheckedFlow.collect { isChecked ->
-                        if (!isChecked) {
-                            goToAthFragment()
-                        }
+                    viewModel.forgetUser()
+                    if (!viewModel.isUserRemembered()) {
+                        navigateToAuthFragment()
                     }
                 }
             }
@@ -75,7 +73,7 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun goToAthFragment() {
+    private fun navigateToAuthFragment() {
         val action = NavGraphDirections.actionGlobalAuthGraph()
         val options =
             navOptions {

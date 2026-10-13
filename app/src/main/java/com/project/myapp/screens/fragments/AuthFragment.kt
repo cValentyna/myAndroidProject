@@ -162,7 +162,7 @@ class AuthFragment : Fragment() {
                         is AuthState.Error -> {
                             requireContext().toast(getString(R.string.error_invalid_email_or_password))
                         }
-                        is AuthState.Valid -> goToNextFragment()
+                        is AuthState.Valid -> navigateToUserProfileScreen()
                         else -> {}
                     }
                 }
@@ -170,23 +170,25 @@ class AuthFragment : Fragment() {
         }
     }
 
-    private fun goToNextFragment() {
+    private fun navigateToUserProfileScreen() {
         val userName = viewModel.parseName(binding.textInputEditTextAuthEmail.text.toString())
         viewLifecycleOwner.lifecycleScope.launch {
-            binding.apply {
-                if (checkboxAuth.isChecked) {
-                    viewModel.saveUser(userName, checkboxAuth.isChecked)
-                }
-            }
-
-            val action = NavGraphDirections.actionGlobalMainGraph(userName)
-            val options =
-                navOptions {
-                    popUpTo(R.id.auth_graph) {
-                        inclusive = true
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                binding.apply {
+                    if (checkboxAuth.isChecked) {
+                        viewModel.saveUserData(checkboxAuth.isChecked, userName)
                     }
                 }
-            findNavController().navigate(action, options)
+
+                val action = NavGraphDirections.actionGlobalMainGraph(userName)
+                val options =
+                    navOptions {
+                        popUpTo(R.id.auth_graph) {
+                            inclusive = true
+                        }
+                    }
+                findNavController().navigate(action, options)
+            }
         }
     }
 }
