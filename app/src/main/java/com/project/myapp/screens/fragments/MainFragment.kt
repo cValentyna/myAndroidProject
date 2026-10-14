@@ -1,14 +1,8 @@
 package com.project.myapp.screens.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navOptions
@@ -19,25 +13,12 @@ import com.project.myapp.databinding.FragmentMainBinding
 import com.project.myapp.screens.MainActivity
 import com.project.myapp.screens.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainFragment : Fragment() {
-    private var _binding: FragmentMainBinding? = null
-    private val binding get() = _binding!!
-
+class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::inflate) {
     private val viewModel: MainViewModel by viewModels()
 
     private val args: MainGraphArgs by navArgs()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(
         view: View,
@@ -47,24 +28,19 @@ class MainFragment : Fragment() {
         setName()
         setProfilePhoto()
         setOnClickListener()
+        setStatesCollectors()
         (requireActivity() as MainActivity).setOnBackPressed()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun setStatesCollectors() {
+        collectFlowWithLifecycle(viewModel.logoutSuccessEvent) {
+            navigateToAuthFragment()
+        }
     }
 
     private fun setOnClickListener() {
         binding.buttonMainLogout.setOnClickListener {
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.forgetUser()
-                    if (!viewModel.isUserRemembered()) {
-                        navigateToAuthFragment()
-                    }
-                }
-            }
+            viewModel.onLogoutClicked()
         }
 
         binding.buttonMainContact.setOnClickListener {

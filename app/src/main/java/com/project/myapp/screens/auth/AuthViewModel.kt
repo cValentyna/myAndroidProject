@@ -83,22 +83,30 @@ class AuthViewModel @Inject constructor(
     }
 
     /**
-     * Checks credentials
+     * Checks credentials when user clicked Register button
+     * and saves userData in DataStore if needed
      * @param email
      * @param password
-     * When both fields need to be checked at the same time
+     * @param shouldRememberUser
      */
 
-    fun checkCredentials(
+    fun onLoginClicked(
         email: String,
         password: String,
+        shouldRememberUser: Boolean,
     ) {
         validateEmail(email)
         validatePassword(password)
+
+        val isEmailValid = _emailState.value is AuthState.EmailState.Valid
+        val isPasswordValid = _passwordState.value is AuthState.PasswordState.Valid
         viewModelScope.launch {
-            if (_passwordState.value is AuthState.PasswordState.Valid &&
-                _emailState.value is AuthState.EmailState.Valid
+            if (isEmailValid && isPasswordValid
             ) {
+                if (shouldRememberUser) {
+                    val name = parseName(email)
+                    saveUserData(true, name)
+                }
                 _credentialsState.send(AuthState.Valid)
             } else {
                 _credentialsState.send(AuthState.Error)
